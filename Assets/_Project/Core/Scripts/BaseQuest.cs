@@ -1,15 +1,36 @@
 ﻿using UnityEngine;
+using UnityEngine.UIElements;
+using Zenject;
 
+[RequireComponent(typeof(BoxCollider))]
 public abstract class BaseQuest : MonoBehaviour, IQuest
 {
+    public int QuestNumber;
     [SerializeField]
     private NarratorPhraseScriptable _phraseScriptable;
     private Narrator _narrator;
+    private SaveSystem _saveSystem;
     private bool _childsEnabled = false;
+    private bool _isFinished = false;
 
-    private void Start()
+    [Inject]
+    private void Construct(SaveSystem saveSystem, Narrator narrator)
     {
-        
+        _saveSystem = saveSystem;
+        _narrator = narrator;
+    }
+
+    void Start()
+    {
+        EnableChildGameObjects(false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (_isFinished)
+        {
+            StartGame();
+        }        
     }
 
     private void Update()
@@ -23,27 +44,25 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
         }
     }
 
-    protected void EnableChildGameObjects()
+    protected void EnableChildGameObjects(bool status)
     {
         foreach(Transform child in transform)
         {
-            child.gameObject.SetActive(true);
+            if(child.tag != "Decor")
+            {
+                child.gameObject.SetActive(status);
+            }            
         }
-    }
 
-    protected void DisableChildGameObjects()
-    {
-        foreach (Transform child in transform)
-        {
-            child.gameObject.SetActive(false);
-        }
+        _childsEnabled = status;
     }
 
     public void FinishGame()
     {
-        _narrator.Play(_phraseScriptable.Greetings[0]);
-        _saveSystem.Save();
-        DisableChildGameObjects();
+        _narrator.Play(_phraseScriptable.End[0]);
+        _saveSystem.Save(QuestNumber);
+        EnableChildGameObjects(false);
+        _isFinished = true;
     }
 
     public virtual void GiveCongrats()
@@ -60,7 +79,8 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     public void StartGame()
     {
-        EnableChildGameObjects();
+        _narrator.Play(_phraseScriptable.Greetings[0]);
+        EnableChildGameObjects(true);
     }
 }
 
