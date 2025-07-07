@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-abstract class Operator : MonoBehaviour, IOperator
+class Operator : MonoBehaviour, IOperator
 {
     [SerializeField]
     // TODO время в зависимости от возраста ребенка
