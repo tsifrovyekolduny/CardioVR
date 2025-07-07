@@ -77,7 +77,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     abstract public bool IsFinished();
 
-    public void StartGame()
+    public virtual void StartGame()
     {
         _narrator.Play(_phraseScriptable.Greetings[0]);
         EnableChildGameObjects(true);
