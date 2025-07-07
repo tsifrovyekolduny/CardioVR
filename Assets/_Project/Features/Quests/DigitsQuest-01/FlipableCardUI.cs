@@ -1,27 +1,50 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FlipableCardUI : MonoBehaviour
 {
-    TextMeshPro _text;
+    private TMP_Text _text;
+    private Button _button;
     [SerializeField]
+    private float _animationTime = 3f;
+    private int _number;
+    private bool _isOpened;
+    public bool IsOpened { get { return _isOpened; } }
+
+    public Action OnCardOpen;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnEnable()
     {
-        _text = GetComponentInChildren<TextMeshPro>();
+        _text = GetComponentInChildren<TMP_Text>();
+        _button = GetComponent<Button>();
     }
-
-    private int _number { get; set; }
 
     public void Flip(bool open, bool temporary = false)
     {
-        if(transform.rotation.y == 0)
-        {
+        _isOpened = open;
 
+        float degree = open ? 0f : 180f;
+        _button.interactable = !open;
+
+        LTDescr animation = LeanTween.rotateY(gameObject, degree, _animationTime);
+
+        // Обычно temporary вызывается при открытии
+        if (temporary)
+        {
+            Action action = () => Flip(!open);
+            animation.setDelay(_animationTime * 1.5f).setOnComplete(action);
         }
-        float degree = open ? 180 : -180;
+        // Проверка числа после открытия карточки
+        else
+        {
+            if (open)
+            {
+                animation.setDelay(_animationTime * 0.5f).setOnComplete(OnCardOpen);
+            }
+        }
     }
 
     public void ShowCard()
@@ -31,13 +54,7 @@ public class FlipableCardUI : MonoBehaviour
 
     public void SetNumber(int number)
     {
+        _number = number;
         _text.text = _number.ToString();
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

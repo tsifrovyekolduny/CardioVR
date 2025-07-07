@@ -20,7 +20,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
         _narrator = narrator;
     }
 
-    void Start()
+    public virtual void Start()
     {
         EnableChildGameObjects(false);
     }
