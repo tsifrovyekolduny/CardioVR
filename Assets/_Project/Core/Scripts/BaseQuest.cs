@@ -10,8 +10,10 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
     private NarratorPhraseScriptable _phraseScriptable;
     private Narrator _narrator;
     private SaveSystem _saveSystem;
-    private bool _childsEnabled = false;
-    private bool _isFinished = false;
+
+    // для просмотра состояния квеста в инспекторе
+    [SerializeField]
+    private QuestStates _currentState = QuestStates.NotStarted;    
 
     [Inject]
     private void Construct(SaveSystem saveSystem, Narrator narrator)
@@ -27,7 +29,8 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!_isFinished)
+        // Нельзя начать игру, если она в процессе или завершена
+        if (_currentState == QuestStates.NotStarted)
         {
             StartGame();
         }        
@@ -35,9 +38,10 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     private void Update()
     {
-        if (_childsEnabled)
+        // Проверка условия только, когда игра началась
+        if (_currentState == QuestStates.Started)
         {
-            if (IsFinished())
+            if (IsFinished() && _currentState != QuestStates.Finished)
             {
                 FinishGame();
             }
@@ -52,9 +56,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
             {
                 child.gameObject.SetActive(status);
             }            
-        }
-
-        _childsEnabled = status;
+        }        
     }
 
     public void FinishGame()
@@ -62,12 +64,12 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
         _narrator.Play(_phraseScriptable.End[0]);
         _saveSystem.Save(QuestNumber);
         EnableChildGameObjects(false);
-        _isFinished = true;
+        _currentState = QuestStates.Finished;
     }
 
     public virtual void GiveCongrats()
     {
-        _narrator.Play(_phraseScriptable.Supports[0]);
+        _narrator.Play(_phraseScriptable.Congrats[0]);
     }
 
     public void GiveHint()
@@ -81,6 +83,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
     {
         _narrator.Play(_phraseScriptable.Greetings[0]);
         EnableChildGameObjects(true);
+        _currentState = QuestStates.Started;
     }
 }
 

@@ -5,6 +5,6 @@ public class NarratorPhraseScriptable : ScriptableObject
 {
     [SerializeField] public string[] Greetings;
     [SerializeField] public string[] Hints;
-    [SerializeField] public string[] Supports;
+    [SerializeField] public string[] Congrats;
     [SerializeField] public string[] End;
 }
