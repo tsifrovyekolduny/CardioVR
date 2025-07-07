@@ -19,6 +19,7 @@ public class SceneInstaller : MonoInstaller
     {
         Container.Bind<Narrator>().AsSingle().NonLazy();
         Container.Bind<SaveSystem>().AsSingle().NonLazy();
+        Container.Bind<Operator>().AsSingle().NonLazy();
     }
 
     private void BindQuests()
