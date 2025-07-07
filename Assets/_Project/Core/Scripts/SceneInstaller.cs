@@ -3,12 +3,12 @@ using Zenject;
 using Zenject.Asteroids;
 
 public class SceneInstaller : MonoInstaller
-{    
+{
 
     [SerializeField] private BaseQuest[] _questThings;
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private float _xOffset = 10f;
-    private float _tempXOffset = 0f;
+    [SerializeField] private Vector3 _offset = new Vector3(0f, 0f, 10f);
+    private Vector3 _tempOffset = Vector3.zero;
     public override void InstallBindings()
     {
         BindSystems();
@@ -25,10 +25,10 @@ public class SceneInstaller : MonoInstaller
     {
         foreach (var quest in _questThings)
         {
-            Vector3 newSpawnPoint = new Vector3(_spawnPoint.position.x + _tempXOffset, _spawnPoint.position.y, _spawnPoint.position.z);
+            Vector3 newSpawnPoint = _spawnPoint.position + _tempOffset;
             BaseQuest baseQuest = Container.InstantiatePrefabForComponent<BaseQuest>(quest, newSpawnPoint, Quaternion.identity, null);
             Container.BindInterfacesAndSelfTo<BaseQuest>().FromInstance(baseQuest).AsTransient();
-            _tempXOffset += _xOffset;
+            _tempOffset += _offset;
         }
     }
 }

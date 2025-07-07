@@ -27,7 +27,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_isFinished)
+        if (!_isFinished)
         {
             StartGame();
         }        
