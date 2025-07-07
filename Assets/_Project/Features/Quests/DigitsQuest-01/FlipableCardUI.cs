@@ -29,7 +29,7 @@ public class FlipableCardUI : MonoBehaviour
         float degree = open ? 0f : 180f;
         _button.interactable = !open;
 
-        LTDescr animation = LeanTween.rotateY(gameObject, degree, _animationTime);
+        LTDescr animation = LeanTween.rotateLocal(gameObject, Vector3.up * degree, _animationTime);
 
         // Обычно temporary вызывается при открытии
         if (temporary)
