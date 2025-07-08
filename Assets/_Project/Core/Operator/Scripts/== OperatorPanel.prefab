@@ -884,7 +884,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -429.685}
+  m_AnchoredPosition: {x: 0, y: -477.65}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4996538391307066632
@@ -1072,9 +1072,9 @@ MonoBehaviour:
   _timeLabel: {fileID: 6314148451110678349}
   _chosedFioText: {fileID: 6318202686664070853}
   _chosedAgeText: {fileID: 4747222576997345609}
-  hintBox: {fileID: 0}
+  hintBox: {fileID: 74962871042471617}
   _hintPrefab: {fileID: 1468812687324726011, guid: 4cf334829dd14744993312966bc60032, type: 3}
-  _profilePrefab: {fileID: 4317033242054815066, guid: 1d0fd53cf6581d44791fe6d611f9ab33, type: 3}
+  _profilePrefab: {fileID: 6218156155377049076, guid: 1d0fd53cf6581d44791fe6d611f9ab33, type: 3}
 --- !u!1 &2420581488145384889
 GameObject:
   m_ObjectHideFlags: 0
@@ -5043,10 +5043,10 @@ MonoBehaviour:
       - m_Target: {fileID: 151073134352997903}
         m_TargetAssemblyTypeName: OperatorPanel, Assembly-CSharp
         m_MethodName: OnFioChanged
-        m_Mode: 5
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 3352411760818700784}
+          m_ObjectArgumentAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6270,7 +6270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2314190723195767969, guid: 6b392242d5c9fc1418b6cc1ceef41431, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -6.7600007
+      value: -6.7599945
       objectReference: {fileID: 0}
     - target: {fileID: 2314190723195767969, guid: 6b392242d5c9fc1418b6cc1ceef41431, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6290,7 +6290,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3804456785465168845, guid: 6b392242d5c9fc1418b6cc1ceef41431, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -6.7600007
+      value: -6.7599945
       objectReference: {fileID: 0}
     - target: {fileID: 3804456785465168845, guid: 6b392242d5c9fc1418b6cc1ceef41431, type: 3}
       propertyPath: m_AnchoredPosition.y

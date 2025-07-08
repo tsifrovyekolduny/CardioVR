@@ -8,8 +8,7 @@ class Operator : IOperator, ITickable
     [SerializeField]
     // TODO время в зависимости от возраста ребенка
     public float _lostTime = 120f;
-    public float LostTime { get { return _lostTime; } }
-    private Coroutine _tickingTime;
+    public float LostTime { get { return _lostTime; } }    
 
     public event Action OnProfileChose;
     public event Action OnSessionEnd;
@@ -28,7 +27,7 @@ class Operator : IOperator, ITickable
     {
         _sessionIsEnabled = false;
         //StopCoroutine(_tickingTime);
-        OnSessionEnd.Invoke();
+        OnSessionEnd?.Invoke();
     }
 
     //IEnumerator TickingTime()
@@ -43,12 +42,12 @@ class Operator : IOperator, ITickable
 
     public void GiveHint()
     {
-        OnGivingHint.Invoke();
+        OnGivingHint?.Invoke();
     }
 
     public void GiveAnswer()
     {
-        OnGettingAnswer.Invoke();
+        OnGettingAnswer?.Invoke();
     }
 
     public void Tick()

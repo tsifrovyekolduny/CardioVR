@@ -1,8 +1,9 @@
 ﻿public class ChildProfile
 {
-    public int Surname { get; set; }
-    public int Name { get; set; }
-    public int Patronymic { get; set; }
+    public string Surname { get; set; }
+    public string Name { get; set; }
+    public string Patronymic { get; set; }
+    public int Age { get; set; }
     public QuestProgress Progress { get; set; }
 }
 

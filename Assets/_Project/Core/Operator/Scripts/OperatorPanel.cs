@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -55,41 +56,53 @@ class OperatorPanel : MonoBehaviour
         SyncProfiles();
     }
 
-    private void SyncProfiles()
-    {        
-         = _saveSystem.GetProfiles();                
-
-        for (int pooledProfileIndex = 0; pooledProfileIndex < _profileBox.transform.childCount; ++pooledProfileIndex)
-        {
-            ProfileUI profUI = _profileBox.transform.GetChild(pooledProfileIndex).GetComponent<ProfileUI>();
-            if (pooledProfileIndex < profiles.Count) {
-                ChildProfile prof = profiles[pooledProfileIndex];
-                profUI.InitProfile($"{prof.Surname} {prof.Name} {prof.Patronymic}", prof.Age.ToString());
-            }
-            else
-            {
-                profUI.gameObject.SetActive(false);
-            }   
-
-        }
-    }
-
-    public void OnFioChanged(string text)
-    {
-        
-    }
-
-    private void FixedUpdate()
-    {
-        SyncTimeAndLabel();
-    }
-
     [Inject]
     private void Construct(SaveSystem saveSystem, Operator @operator)
     {
         _saveSystem = saveSystem;
         _operator = @operator;
     }
+
+    private void SyncProfiles(string searchText = "")
+    {
+        List<ChildProfile> profiles;
+        if (searchText == "")
+        {
+            _profiles = _saveSystem.GetProfiles();
+            profiles = _profiles;
+        }
+        else
+        {
+            profiles = _profiles.Where(c => c.Patronymic.Contains(searchText) ||
+                c.Name.Contains(searchText) ||
+                c.Surname.Contains(searchText)).ToList();
+        }
+
+        for (int pooledProfileIndex = 0; pooledProfileIndex < _profileBox.transform.childCount; ++pooledProfileIndex)
+        {
+            ProfileUI profUI = _profileBox.transform.GetChild(pooledProfileIndex).GetComponent<ProfileUI>();
+            if (pooledProfileIndex < profiles.Count)
+            {
+                ChildProfile prof = profiles[pooledProfileIndex];
+                profUI.InitProfile($"{prof.Surname} {prof.Name} {prof.Patronymic}", prof.Age.ToString());
+            }
+            else
+            {
+                profUI.gameObject.SetActive(false);
+            }
+
+        }
+    }
+
+    public void OnFioChanged(TMP_Text text)
+    {
+        SyncProfiles(text.text);
+    }
+
+    private void FixedUpdate()
+    {
+        SyncTimeAndLabel();
+    }    
 
     public void ShowPage2()
     {
@@ -109,14 +122,7 @@ class OperatorPanel : MonoBehaviour
         var minutes = math.floor(_operator.LostTime / 60);
         var seconds = math.floor(_operator.LostTime % 60);
         _timeLabel.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-    }
-
-    public void OnFIOChanged(TMP_Text fioText)
-    {
-        string fio = fioText.text;
-
-        // Todo выполнить поиск
-    }
+    }    
 
     public void OnProfileClick(GameObject sender)
     {
@@ -134,7 +140,7 @@ class OperatorPanel : MonoBehaviour
         _saveSystem.SaveProfile(surname, name, patronymic, age);
 
         setChosenProfile($"{surname} {name} {patronymic}", age);
-    }    
+    }
 
     public void setChosenProfile(string fio, string age)
     {
