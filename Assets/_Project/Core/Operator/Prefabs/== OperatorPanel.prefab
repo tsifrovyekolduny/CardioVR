@@ -1062,10 +1062,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _page1: {fileID: 115171005358607776}
   _page2: {fileID: 31727015118874034}
-  _surnameText: {fileID: 2399600396257331824}
-  _nameText: {fileID: 5273166531979093288}
-  _patronymicText: {fileID: 2254317559127241054}
-  _ageText: {fileID: 1064833713089410984}
+  _surnameText: {fileID: 2794097290186637494}
+  _nameText: {fileID: 6860657636732071604}
+  _patronymicText: {fileID: 5222393301941992244}
+  _ageText: {fileID: 7093977985371971491}
   _chosenProfile: {fileID: 2166031508764744783}
   _profileBox: {fileID: 1572728105237198596}
   _timeLabel: {fileID: 6314148451110678349}
@@ -1783,7 +1783,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!1 &3189351170277187837
 GameObject:
   m_ObjectHideFlags: 0

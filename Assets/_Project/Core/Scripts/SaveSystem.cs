@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 class SaveSystem
-{
-    private List<ChildProfile> _profiles = new List<ChildProfile>();
+{    
+    private ChildProfilesWrapper _profilesWrapper = new ChildProfilesWrapper();
     private string _saveLocation = Application.persistentDataPath + "/";
-    private string _saveFilename = "profiles.json";
+    private string _saveFilename = "profiles.dat";
     private string _path  { get => _saveLocation + _saveFilename; }
 
     ChildProfile _curentProfile;
@@ -15,31 +17,27 @@ class SaveSystem
     {
         _curentProfile.QuestNumber = questNumber;
         _curentProfile.State = state;
-        SaveCurrentJson();
+        SaveToFile();
         Debug.Log(_curentProfile);
-        Debug.Log(_profiles.Where(c => c == _curentProfile).First());
+        Debug.Log(_profilesWrapper.List.Where(c => c == _curentProfile).First());
     }    
 
     public List<ChildProfile> GetProfiles()
     {
         if (File.Exists(_path))
         {
-            using (var reader = new StreamReader(_path))
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (FileStream stream = new FileStream(_path, FileMode.Open))
             {
-                string unconvertedJson = reader.ReadToEnd();
-                var temp = JsonUtility.FromJson<List<ChildProfile>>(unconvertedJson);
-                if(temp != null)
-                {
-                    _profiles = temp;
-                }
-            }
+                _profilesWrapper = (ChildProfilesWrapper)formatter.Deserialize(stream);                
+            }            
         }
         else
         {
             File.Create(_path).Dispose();            
         }
 
-        return _profiles;
+        return _profilesWrapper.List;
     }
 
     public ChildProfile SaveProfile(string surname, string name, string patronymic, int age)
@@ -51,19 +49,24 @@ class SaveSystem
             Surname = surname,
             Age = age            
         };
-        
-        _profiles.Add(profile);
-        SaveCurrentJson();
+
+        if(_profilesWrapper.List.Where(c => c.Patronymic == profile.Patronymic && c.Name == profile.Name && c.Surname == profile.Surname && c.Age == age).Any())
+        {
+            throw new Exception("Нельзя добавить одного человека два раза");
+        }
+
+        _profilesWrapper.List.Add(profile);
+        SaveToFile();
 
         return profile;
     }
 
-    private void SaveCurrentJson()
-    {        
-        using(StreamWriter sw = (File.Exists(_path)) ? File.AppendText(_path) : File.CreateText(_path))
+    private void SaveToFile()
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        using (FileStream stream = new FileStream(_path, FileMode.Create))
         {
-            string json = JsonUtility.ToJson(_profiles, true);
-            sw.WriteLine(json);
+            formatter.Serialize(stream, _profilesWrapper);
         }
     }
 

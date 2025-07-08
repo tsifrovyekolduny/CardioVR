@@ -20,10 +20,10 @@ class OperatorPanel : MonoBehaviour
     [SerializeField] private GameObject _page2;
 
     [Header("ChooseProfile")]
-    [SerializeField] private TMP_Text _surnameText;
-    [SerializeField] private TMP_Text _nameText;
-    [SerializeField] private TMP_Text _patronymicText;
-    [SerializeField] private TMP_Text _ageText;
+    [SerializeField] private TMP_InputField _surnameText;
+    [SerializeField] private TMP_InputField _nameText;
+    [SerializeField] private TMP_InputField _patronymicText;
+    [SerializeField] private TMP_InputField _ageText;
     [SerializeField] private ProfileUI _chosenProfile;
     [SerializeField] private GameObject _profileBox;
 
@@ -83,6 +83,7 @@ class OperatorPanel : MonoBehaviour
                 ChildProfile prof = profiles[pooledProfileIndex];                
                 profUI.OnClick += () => { OnProfileClick(profUI.GetProfile()); };
                 profUI.InitProfile(prof);
+                profUI.gameObject.SetActive(true);
             }
             else
             {
@@ -136,9 +137,17 @@ class OperatorPanel : MonoBehaviour
         string patronymic = _patronymicText.text;        
         string age = _ageText.text.ToString();
 
-        var profile = _saveSystem.SaveProfile(surname, name, patronymic, Convert.ToInt32(age));
-        setChosenProfile(profile);
-        SyncProfiles();
+        try
+        {
+            var profile = _saveSystem.SaveProfile(surname, name, patronymic, Convert.ToInt32(age));
+            setChosenProfile(profile);
+            SyncProfiles();
+        }
+        catch(Exception e)
+        {
+            Debug.LogWarning(e.Message);
+        }
+        
     }
 
     public void setChosenProfile(ChildProfile profile)
