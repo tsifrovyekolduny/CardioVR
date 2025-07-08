@@ -6,7 +6,7 @@ class Operator : MonoBehaviour, IOperator
 {
     [SerializeField]
     // TODO время в зависимости от возраста ребенка
-    public long _lostTime = 20 * 60;
+    public long _lostTime = 20 * 60 * 60;
     public long LostTime { get { return _lostTime; } }
     private Coroutine _tickingTime;
 
