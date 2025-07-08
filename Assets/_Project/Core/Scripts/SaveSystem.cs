@@ -17,9 +17,7 @@ class SaveSystem
     {
         _curentProfile.QuestNumber = questNumber;
         _curentProfile.State = state;
-        SaveToFile();
-        Debug.Log(_curentProfile);
-        Debug.Log(_profilesWrapper.List.Where(c => c == _curentProfile).First());
+        SaveToFile();       
     }    
 
     public List<ChildProfile> GetProfiles()
