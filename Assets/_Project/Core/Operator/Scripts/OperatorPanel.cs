@@ -4,7 +4,6 @@ using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 // Линковка кнопок, переходы
@@ -25,14 +24,12 @@ class OperatorPanel : MonoBehaviour
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _patronymicText;
     [SerializeField] private TMP_Text _ageText;
-    [SerializeField] private TMP_Text _chosenFioText;
-    [SerializeField] private TMP_Text _chosenAgeText;
+    [SerializeField] private ProfileUI _chosenProfile;
     [SerializeField] private GameObject _profileBox;
 
     [Header("Session")]
     [SerializeField] private TMP_Text _timeLabel;
-    [SerializeField] private TMP_Text _chosedFioText;
-    [SerializeField] private TMP_Text _chosedAgeText;
+    [SerializeField] private ProfileUI _chosedProfile;
     [SerializeField] private GameObject hintBox;
 
     [Header("Prefabs")]
@@ -83,8 +80,9 @@ class OperatorPanel : MonoBehaviour
             ProfileUI profUI = _profileBox.transform.GetChild(pooledProfileIndex).GetComponent<ProfileUI>();
             if (pooledProfileIndex < profiles.Count)
             {
-                ChildProfile prof = profiles[pooledProfileIndex];
-                profUI.InitProfile($"{prof.Surname} {prof.Name} {prof.Patronymic}", prof.Age.ToString());
+                ChildProfile prof = profiles[pooledProfileIndex];                
+                profUI.OnClick += () => { OnProfileClick(profUI.GetProfile()); };
+                profUI.InitProfile(prof);
             }
             else
             {
@@ -102,13 +100,15 @@ class OperatorPanel : MonoBehaviour
     private void FixedUpdate()
     {
         SyncTimeAndLabel();
-    }    
+    }
 
     public void ShowPage2()
     {
         _page1.SetActive(false);
         _page2.SetActive(true);
         _operator.StartSession();
+
+        _saveSystem.SetProfile(_chosenProfile.GetProfile());        
     }
 
     public void EndSession()
@@ -122,32 +122,29 @@ class OperatorPanel : MonoBehaviour
         var minutes = math.floor(_operator.LostTime / 60);
         var seconds = math.floor(_operator.LostTime % 60);
         _timeLabel.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-    }    
+    }
 
-    public void OnProfileClick(GameObject sender)
-    {
-        TMP_Text[] texts = sender.GetComponentsInChildren<TMP_Text>();
-        setChosenProfile(texts[0].text, texts[1].text);
+    public void OnProfileClick(ChildProfile profile)
+    {        
+        setChosenProfile(profile);
     }
 
     public void OnProfileSaveClick()
     {
         string surname = _surnameText.text;
         string name = _nameText.text;
-        string patronymic = _patronymicText.text;
-        string age = _ageText.text;
+        string patronymic = _patronymicText.text;        
+        string age = _ageText.text.ToString();
 
-        _saveSystem.SaveProfile(surname, name, patronymic, age);
-
-        setChosenProfile($"{surname} {name} {patronymic}", age);
+        var profile = _saveSystem.SaveProfile(surname, name, patronymic, Convert.ToInt32(age));
+        setChosenProfile(profile);
+        SyncProfiles();
     }
 
-    public void setChosenProfile(string fio, string age)
+    public void setChosenProfile(ChildProfile profile)
     {
-        _chosenAgeText.text = fio;
-        _chosenFioText.text = age;
-        _chosedFioText.text = fio;
-        _chosedAgeText.text = age;
+        _chosedProfile.InitProfile(profile);
+        _chosenProfile.InitProfile(profile);
     }
 }
 

@@ -144,6 +144,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChosenProfile
       objectReference: {fileID: 0}
+    - target: {fileID: 6218156155377049076, guid: 1d0fd53cf6581d44791fe6d611f9ab33, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7987268128830887081, guid: 1d0fd53cf6581d44791fe6d611f9ab33, type: 3}
     m_RemovedGameObjects: []

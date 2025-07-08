@@ -5,7 +5,7 @@ using Zenject;
 [RequireComponent(typeof(BoxCollider))]
 public abstract class BaseQuest : MonoBehaviour, IQuest
 {
-    public int QuestNumber;
+    public int QuestNumber = 0;
     [SerializeField]
     private NarratorPhraseScriptable _phraseScriptable;
     private Narrator _narrator;
@@ -61,10 +61,10 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     public void FinishGame()
     {
-        _narrator.Play(_phraseScriptable.End[0]);
-        _saveSystem.Save(QuestNumber);
-        EnableChildGameObjects(false);
         _currentState = QuestStates.Finished;
+        _narrator.Play(_phraseScriptable.End[0]);        
+        EnableChildGameObjects(false);
+        _saveSystem.Save(QuestNumber, _currentState);
     }
 
     public virtual void GiveCongrats()
