@@ -44,7 +44,7 @@ public class Operator : IOperator, ITickable
         if (_sessionIsEnabled) {
             _lostTime -= Time.deltaTime;
 
-            if (_lostTime <= 0.0f)
+            if (_lostTime <= 0.1f)
             {
                 EndSession();
             }

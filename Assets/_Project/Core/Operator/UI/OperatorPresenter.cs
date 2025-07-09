@@ -64,7 +64,8 @@ public class OperatorPresenter
         var profile = _saveSystem.SaveProfile(surname, name, patronymic, age);
         _profiles.Add(profile);
         _view.ShowProfiles(_profiles);
-        _view.ClearInputFields();
+        _view.ClearInputFields();        
+        HandleProfileSelected(profile);
     }
 
     private void HandleSearchTextChanged(string text)
@@ -79,13 +80,13 @@ public class OperatorPresenter
     private void HandleProfileSelected(ChildProfile profile)
     {
         _saveSystem.SetProfile(profile);
-        _view.ShowChosenProfile(profile);
+        _view.ShowChosenProfile(profile);        
     }
 
     private void HandleSessionStart()
     {
         _operator.StartSession();
-        _view.ShowPage2();
+        _view.ShowPage2();        
     }
 
     public void Update()

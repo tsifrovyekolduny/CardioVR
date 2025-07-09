@@ -124,7 +124,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
             if (pooledProfileIndex < profiles.Count)
             {
                 ChildProfile prof = profiles[pooledProfileIndex];
-                profUI.OnClick += () => { ShowChosenProfile(profUI.GetProfile()); };                
+                profUI.OnClick += () => { ProfileSelected.Invoke(prof); };                
                 profUI.Init(prof);
                 profUI.gameObject.SetActive(true);
             }

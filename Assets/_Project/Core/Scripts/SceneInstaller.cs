@@ -17,8 +17,8 @@ public class SceneInstaller : MonoInstaller
 
     private void BindSystems()
     {
-        Container.Bind<Narrator>().AsSingle().NonLazy();
-        Container.Bind<SaveSystem>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<Narrator>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<SaveSystem>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<Operator>().AsSingle().NonLazy();
     }
 

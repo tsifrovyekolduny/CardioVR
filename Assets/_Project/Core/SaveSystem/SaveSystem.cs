@@ -71,5 +71,6 @@ public class SaveSystem
     public void SetProfile(ChildProfile profile)
     {
         _curentProfile = profile;
+        Debug.Log("Profile set");
     }
 }
