@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1490493639983091217}
   - component: {fileID: 4955637784251708902}
   - component: {fileID: 4707125330428214024}
+  - component: {fileID: 1752883969919106912}
   m_Layer: 5
   m_Name: Hint
   m_TagString: Untagged
@@ -160,6 +161,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1752883969919106912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468812687324726011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cafe37148f73c2941a2c3875113c1078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text1: {fileID: 6991378281417882716}
+  button: {fileID: 4707125330428214024}
 --- !u!1 &6065386573797523348
 GameObject:
   m_ObjectHideFlags: 0

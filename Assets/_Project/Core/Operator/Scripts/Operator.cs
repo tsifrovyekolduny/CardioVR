@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Zenject;
 
-class Operator : IOperator, ITickable
+public class Operator : IOperator, ITickable
 {
     [SerializeField]
     // TODO время в зависимости от возраста ребенка
@@ -12,37 +12,26 @@ class Operator : IOperator, ITickable
 
     public event Action OnProfileChose;
     public event Action OnSessionEnd;
-    public event Action OnGivingHint;
+    public event Action<string> OnGivingHint;
     public event Action OnGettingAnswer;
+    public event Action<string[]> OnQuestStarted;
+    public event Action OnQuestEnd;
 
     private bool _sessionIsEnabled = false;
 
     public void StartSession()
-    {
-        _sessionIsEnabled = true;
-        //_tickingTime = StartCoroutine(TickingTime());
+    {        
+        _sessionIsEnabled = true;        
     }
 
     public void EndSession()
     {
-        _sessionIsEnabled = false;
-        //StopCoroutine(_tickingTime);
+        _sessionIsEnabled = false;     
         OnSessionEnd?.Invoke();
-    }
-
-    //IEnumerator TickingTime()
-    //{
-    //    _lostTime -= 1;
-    //    if (_lostTime < 0)
-    //    {
-    //        EndSession();
-    //    }
-    //    yield return new WaitForSeconds(1);
-    //}
-
-    public void GiveHint()
+    }    
+    public void GiveHint(string hint)
     {
-        OnGivingHint?.Invoke();
+        OnGivingHint?.Invoke(hint);
     }
 
     public void GiveAnswer()
@@ -60,5 +49,10 @@ class Operator : IOperator, ITickable
                 EndSession();
             }
         }        
+    }
+
+    public void QuestStarted(string[] hints)
+    {
+        OnQuestStarted.Invoke(hints);
     }
 }

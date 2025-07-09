@@ -162,8 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cba406d41154d9d47982f418eaec77b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fioText: {fileID: 5660239707211174909}
-  ageText: {fileID: 6395797635608996977}
+  text1: {fileID: 5660239707211174909}
+  button: {fileID: 7987268128830887081}
+  text2: {fileID: 6395797635608996977}
   button: {fileID: 7987268128830887081}
 --- !u!1 &8583010569359472274
 GameObject:

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-class SaveSystem
+public class SaveSystem
 {    
     private ChildProfilesWrapper _profilesWrapper = new ChildProfilesWrapper();
     private string _saveLocation = Application.persistentDataPath + "/";
