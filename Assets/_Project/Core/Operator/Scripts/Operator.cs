@@ -1,49 +1,58 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
-abstract class Operator : MonoBehaviour, IOperator
+public class Operator : IOperator, ITickable
 {
     [SerializeField]
     // TODO время в зависимости от возраста ребенка
-    public long _lostTime = 20 * 60;
-    public long LostTime { get { return _lostTime; } }
-    private Coroutine _tickingTime;
+    public float _lostTime = 120f;
+    public float LostTime { get { return _lostTime; } }    
 
     public event Action OnProfileChose;
     public event Action OnSessionEnd;
-    public event Action OnGivingHint;
+    public event Action<string> OnGivingHint;
     public event Action OnGettingAnswer;
+    public event Action<string[]> OnQuestStarted;
+    public event Action OnQuestEnd;
+
+    private bool _sessionIsEnabled = false;
 
     public void StartSession()
-    {
-        _tickingTime = StartCoroutine(TickingTime());
+    {        
+        _sessionIsEnabled = true;        
     }
 
     public void EndSession()
     {
-        StopCoroutine(_tickingTime);
-        OnSessionEnd.Invoke();
-    }
-
-    IEnumerator TickingTime()
+        _sessionIsEnabled = false;     
+        OnSessionEnd?.Invoke();
+    }    
+    public void GiveHint(string hint)
     {
-        _lostTime -= 1;
-        if (_lostTime < 0)
-        {
-            EndSession();
-        }
-        yield return new WaitForSeconds(1);
-    }
-
-    public void GiveHint()
-    {
-        OnGivingHint.Invoke();
+        OnGivingHint?.Invoke(hint);
     }
 
     public void GiveAnswer()
     {
-        OnGettingAnswer.Invoke();
+        OnGettingAnswer?.Invoke();
     }
-    
+
+    public void Tick()
+    {
+        if (_sessionIsEnabled) {
+            _lostTime -= Time.deltaTime;
+
+            if (_lostTime <= 0.1f)
+            {
+                EndSession();
+            }
+        }        
+    }
+
+    public void QuestStarted(string[] hints)
+    {
+        OnQuestStarted.Invoke(hints);
+    }
 }

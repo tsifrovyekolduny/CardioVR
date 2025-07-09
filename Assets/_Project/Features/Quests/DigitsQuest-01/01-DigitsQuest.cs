@@ -22,7 +22,7 @@ public class DigitsQuest : BaseQuest
     public override bool IsFinished()
     {
         bool isEnd = _maxNumber == _currentNumber;
-        bool isAllFlipped = _cards.Where(card => card.IsOpened).Count() == _cards.Count();
+        bool isAllFlipped = _cards.Where(card => card.IsOpened).Count() == _cards.Count();        
         return isEnd && isAllFlipped;
     }
 

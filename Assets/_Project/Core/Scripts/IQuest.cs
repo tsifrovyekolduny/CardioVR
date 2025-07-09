@@ -5,6 +5,6 @@
     bool IsFinished();
 
     // todo не уверен
-    void GiveHint();
+    void GiveHint(string hint);
     void GiveCongrats();
 }
