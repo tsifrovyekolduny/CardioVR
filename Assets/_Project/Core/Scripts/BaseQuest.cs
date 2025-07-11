@@ -52,7 +52,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
         }
     }
 
-    protected void EnableChildGameObjects(bool status)
+    protected virtual void EnableChildGameObjects(bool status)
     {
         foreach(Transform child in transform)
         {

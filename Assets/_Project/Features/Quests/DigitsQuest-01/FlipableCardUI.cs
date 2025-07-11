@@ -35,7 +35,7 @@ public class FlipableCardUI : MonoBehaviour
         if (temporary)
         {
             Action action = () => Flip(!open);
-            animation.setDelay(_animationTime * 1.5f).setOnComplete(action);
+            animation.setDelay(_animationTime * 4f).setOnComplete(action);
         }
         // ѕроверка числа после открыти€ карточки
         else
