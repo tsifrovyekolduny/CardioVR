@@ -37,13 +37,7 @@ public class DigitsQuest : BaseQuest
         foreach (Transform child in transform)
         {
             if (child.tag != "Decor")
-            {
-                // включение перед анимацией
-                if (status)
-                {
-                    // child.gameObject.SetActive(true);
-                }
-
+            {               
                 // сама анимация
                 var animators = child.GetComponentsInChildren<VisibilityAnimator>();
                 if (animators.Length > 0)
@@ -59,12 +53,6 @@ public class DigitsQuest : BaseQuest
                             animator.Hide();
                         }
                     }
-                }
-
-                // выключение после анимации
-                if (!status)
-                {
-                    // child.gameObject.SetActive(false);
                 }
             }
         }
