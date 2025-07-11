@@ -15,9 +15,12 @@ public class SaveSystem
     ChildProfile _curentProfile;
     public void Save(int questNumber, QuestStates state)
     {
-        _curentProfile.QuestNumber = questNumber;
-        _curentProfile.State = state;
-        SaveToFile();       
+        if (_curentProfile != null)
+        {
+            _curentProfile.QuestNumber = questNumber;
+            _curentProfile.State = state;
+            SaveToFile();
+        }        
     }    
 
     public List<ChildProfile> GetProfiles()
@@ -27,7 +30,10 @@ public class SaveSystem
             BinaryFormatter formatter = new BinaryFormatter();
             using (FileStream stream = new FileStream(_path, FileMode.Open))
             {
-                _profilesWrapper = (ChildProfilesWrapper)formatter.Deserialize(stream);                
+                if(stream.Length != 0)
+                {
+                    _profilesWrapper = (ChildProfilesWrapper)formatter.Deserialize(stream);
+                }                
             }            
         }
         else

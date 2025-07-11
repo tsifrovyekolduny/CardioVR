@@ -14,7 +14,7 @@ public class DigitsQuest : BaseQuest
     private int _maxNumber = -1;
 
     public override void Start()
-    {        
+    {
         _cards = GetComponentsInChildren<FlipableCardUI>().ToList();
         base.Start();
     }
@@ -22,7 +22,7 @@ public class DigitsQuest : BaseQuest
     public override bool IsFinished()
     {
         bool isEnd = _maxNumber == _currentNumber;
-        bool isAllFlipped = _cards.Where(card => card.IsOpened).Count() == _cards.Count();        
+        bool isAllFlipped = _cards.Where(card => card.IsOpened).Count() == _cards.Count();
         return isEnd && isAllFlipped;
     }
 
@@ -30,6 +30,46 @@ public class DigitsQuest : BaseQuest
     {
         base.StartGame();
         InitAllCards();
+    }
+
+    protected override void EnableChildGameObjects(bool status)
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.tag != "Decor")
+            {
+                // включение перед анимацией
+                if (status)
+                {
+                    // child.gameObject.SetActive(true);
+                }
+
+                // сама анимация
+                var animators = child.GetComponentsInChildren<VisibilityAnimator>();
+                if (animators.Length > 0)
+                {
+                    foreach (var animator in animators)
+                    {
+                        if (status)
+                        {
+                            animator.Show();
+                        }
+                        else
+                        {
+                            animator.Hide();
+                        }
+                    }
+                }
+
+                // выключение после анимации
+                if (!status)
+                {
+                    // child.gameObject.SetActive(false);
+                }
+            }
+        }
+        string log = status? "showed" : "hided";
+        Debug.Log($"Childs are {log}");
     }
 
     private void TemporaryShowAllCards()
@@ -60,8 +100,8 @@ public class DigitsQuest : BaseQuest
 
 
             card.SetNumber(injectNumber);
-            card.Flip(open: true, temporary: true);            
-            card.OnCardOpen += () => CheckNumber(injectNumber);            
+            card.Flip(open: true, temporary: true);
+            card.OnCardOpen += () => CheckNumber(injectNumber);
         }
     }
 
