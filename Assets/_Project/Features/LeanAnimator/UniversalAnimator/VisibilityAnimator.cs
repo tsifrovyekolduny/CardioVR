@@ -5,6 +5,8 @@ using UnityEngine;
 public class VisibilityAnimator : MonoBehaviour
 {
     [SerializeField] private float fadeDuration = 0.5f;
+    [SerializeField, Tooltip("Глубина поиска: 1 - только прямые дети")]
+    private int _maxDepth = 1;
 
     [SerializeField]
     private List<VisualPair> _visualPairs = new List<VisualPair>();
@@ -12,7 +14,15 @@ public class VisibilityAnimator : MonoBehaviour
 
     private void Awake()
     {
-        foreach (Transform child in transform)
+        CollectVisualComponents(transform, 0);        
+    }
+
+    // Рекурсивный сбор всех компонентов
+    private void CollectVisualComponents(Transform currentTransform, int currentDepth)
+    {
+        if (currentDepth >= _maxDepth) return;
+
+        foreach (Transform child in currentTransform)
         {
             var visualComponent = factory.Create(child.gameObject);
             if (visualComponent != null)
@@ -23,6 +33,8 @@ public class VisibilityAnimator : MonoBehaviour
                     GameObject = child.gameObject
                 });
             }
+
+            CollectVisualComponents(child, currentDepth + 1); // рекурсия
         }
     }
 

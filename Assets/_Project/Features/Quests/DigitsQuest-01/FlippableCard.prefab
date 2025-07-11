@@ -695,3 +695,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDuration: 3
+  _maxDepth: 2
+  _visualPairs: []
