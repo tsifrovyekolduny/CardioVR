@@ -8,6 +8,7 @@ TagManager:
   - ship
   - asteroid
   - Decor
+  - UICamera
   layers:
   - Default
   - TransparentFX
