@@ -123,14 +123,34 @@ public class OperatorView : MonoBehaviour, IOperatorView
             ProfileUI profUI = _profileBox.transform.GetChild(pooledProfileIndex).GetComponent<ProfileUI>();
             if (pooledProfileIndex < profiles.Count)
             {
+                profUI.gameObject.SetActive(true);
                 ChildProfile prof = profiles[pooledProfileIndex];
                 profUI.OnClick += () => { ProfileSelected.Invoke(prof); };                
-                profUI.Init(prof);
-                profUI.gameObject.SetActive(true);
+                profUI.Init(prof);                
             }
             else
             {
                 profUI.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    // todo можно сделать в виде пула объектов, либо просто заранее запихать побольше подсказок
+    public void ShowHints(string[] obj)
+    {
+        for (int hintElementIndex = 0; hintElementIndex < _hintBox.transform.childCount; hintElementIndex++)
+        {
+            HintUI hintText = _hintBox.transform.GetChild(hintElementIndex).GetComponent<HintUI>();
+            if (hintElementIndex < obj.Length)
+            {
+                hintText.gameObject.SetActive(true);
+                string hint = obj[hintElementIndex];
+                hintText.OnClick += () => { SetChosenHint(hint); };
+                hintText.Init(hint);                
+            }
+            else
+            {
+                hintText.gameObject.SetActive(false);
             }
         }
     }
@@ -161,25 +181,5 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _nameText.text = "";
         _patronymicText.text = "";
         _ageText.text = "";
-    }
-
-    // todo можно сделать в виде пула объектов, либо просто заранее запихать побольше подсказок
-    public void ShowHints(string[] obj)
-    {
-        for (int hintElementIndex = 0; hintElementIndex < _hintBox.transform.childCount; hintElementIndex++)
-        {
-            HintUI hintText = _hintBox.transform.GetChild(hintElementIndex).GetComponent<HintUI>();
-            if (hintElementIndex < obj.Length)
-            {
-                string hint = obj[hintElementIndex];
-                hintText.OnClick += () => { SetChosenHint(hint); };
-                hintText.Init(hint);
-                hintText.gameObject.SetActive(true);
-            }
-            else
-            {
-                hintText.gameObject.SetActive(false);
-            }
-        }
-    }
+    }    
 }

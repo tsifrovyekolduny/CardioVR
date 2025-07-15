@@ -19,7 +19,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
     private QuestStates _currentState = QuestStates.NotStarted;    
 
     [Inject]
-    private void Construct(SaveSystem saveSystem, Narrator narrator, IOperator @operator)
+    private void Construct(SaveSystem saveSystem, INarrator narrator, IOperator @operator)
     {
         _operator = @operator;
         _saveSystem = saveSystem;
