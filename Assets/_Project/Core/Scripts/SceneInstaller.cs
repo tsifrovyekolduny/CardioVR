@@ -8,9 +8,11 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private BaseQuest[] _questThings;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Vector3 _offset = new Vector3(0f, 0f, 10f);
+    [SerializeField] private TileSettings _tileSettings;
     private Vector3 _tempOffset = Vector3.zero;
     public override void InstallBindings()
     {
+        Container.BindInstance(_tileSettings).AsSingle();
         BindSystems();
         BindQuests();
     }
@@ -20,6 +22,7 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<Narrator>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<SaveSystem>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<Operator>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<TileManager>().AsSingle().NonLazy();
     }
 
     private void BindQuests()
@@ -32,4 +35,5 @@ public class SceneInstaller : MonoInstaller
             _tempOffset += _offset;
         }
     }
+    
 }
