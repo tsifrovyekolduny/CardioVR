@@ -9,6 +9,8 @@ public class FlipableCardUI : MonoBehaviour
     private Button _button;
     [SerializeField]
     private float _animationTime = 3f;
+    [SerializeField]
+    private float _temporaryShowTime = 10f;
     private int _number;
     private bool _isOpened;
     public bool IsOpened { get { return _isOpened; } }
@@ -35,7 +37,7 @@ public class FlipableCardUI : MonoBehaviour
         if (temporary)
         {
             Action action = () => Flip(!open);
-            animation.setDelay(_animationTime * 4f).setOnComplete(action);
+            animation.setDelay(_animationTime * _temporaryShowTime).setOnComplete(action);
         }
         // ѕроверка числа после открыти€ карточки
         else

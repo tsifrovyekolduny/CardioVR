@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QuestNumber: 1
-  _phraseScriptable: {fileID: 11400000, guid: d4f4ae16f6718aa45aebf5c02b009103, type: 2}
+  _phraseScriptable: {fileID: 11400000, guid: 16db575cafd76b143bbc240c4bdf76d1, type: 2}
   _currentState: 0
   _cards: []
   _currentNumber: -1
