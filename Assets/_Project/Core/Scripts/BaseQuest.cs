@@ -10,7 +10,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
     public int QuestNumber = 0;
     [SerializeField]
     private NarratorPhraseScriptable _phraseScriptable;
-    private Narrator _narrator;
+    private INarrator _narrator;
     private IOperator _operator;
     private SaveSystem _saveSystem;
 
