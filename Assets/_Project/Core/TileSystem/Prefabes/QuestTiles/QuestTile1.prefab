@@ -1047,7 +1047,7 @@ MonoBehaviour:
   _length: 28
   _enterZone: {fileID: 982199188364680462}
   TileIndex: 0
-  _questPlace: {fileID: 4146840100552149252}
+  _questSpawnPoint: {fileID: 195181103785094296}
 --- !u!65 &982199188364680462
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1063,12 +1063,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.7979841, y: 4.147146, z: 3.5551357}
-  m_Center: {x: 2.6525984, y: 1.5735736, z: 14.113614}
+  m_Size: {x: 16.965412, y: 4.147146, z: 1.8576713}
+  m_Center: {x: 3.1025634, y: 1.5735736, z: -0.64306056}
 --- !u!1 &5805420210132634066
 GameObject:
   m_ObjectHideFlags: 0

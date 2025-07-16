@@ -34,10 +34,9 @@ public abstract class BaseTile : MonoBehaviour, ITile, ITileEvent
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
+        Debug.Log(this.name);
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Игрок епты");
             ExecuteTileBehavior();
         }
     }

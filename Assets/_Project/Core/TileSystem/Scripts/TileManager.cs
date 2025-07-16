@@ -9,16 +9,24 @@ public class TileManager : ITileManager, IInitializable, IDisposable
     private readonly TileSettings _settings;
     private Dictionary<TileType, List<GameObject>> _tilePrefabs = new Dictionary<TileType, List<GameObject>>();
     private int _currentTileIndex;
+    [Inject] protected IOperator _operator;
 
     public TileManager(DiContainer container, TileSettings settings)
     {
         _container = container;
         _settings = settings;
+        _operator.OnSessionEnd += AddSavePoint;
+    }
+
+    private void AddSavePoint()
+    {
+        SpawnNextTile(TileType.Save);
     }
 
     public void Initialize()
     {
         PreloadTiles();
+       
         SpawnNextTile(TileType.Road);
     }
 
@@ -42,19 +50,14 @@ public class TileManager : ITileManager, IInitializable, IDisposable
 
     public void ExecuteTileBehavior(ITile tile)
     {
-        Debug.Log(_currentTileIndex);
-        if (tile.tileType == TileType.Road && tile is ITileEvent tileEvent)
-        {
-            Debug.Log("Пытается создать тайл");
-            tileEvent.NextTileTrigger();
-        }
+        
     }
 
     public void SpawnNextTile(TileType tileType)
     {
         if (!_tilePrefabs.ContainsKey(tileType))
         {
-            Debug.LogError($"No prefabs found for tile type: {tileType}");
+            Debug.LogError($"Вы не добавили тайлов типа: {tileType}");
             return;
         }
 

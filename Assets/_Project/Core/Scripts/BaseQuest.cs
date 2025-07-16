@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.InputSystem.XR.Haptics;
 using UnityEngine.UIElements;
 using Zenject;
 
@@ -7,6 +9,7 @@ using Zenject;
 // todo фразы по умолчанию говорят первый элемент из списка
 public abstract class BaseQuest : MonoBehaviour, IQuest
 {
+    public event Action OnQuestFinished;
     public int QuestNumber = 0;
     [SerializeField]
     private NarratorPhraseScriptable _phraseScriptable;
@@ -16,8 +19,9 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     // для просмотра состояния квеста в инспекторе
     [SerializeField]
-    private QuestStates _currentState = QuestStates.NotStarted;    
+    private QuestStates _currentState = QuestStates.NotStarted;
 
+    public QuestStates CurrentState => _currentState;
     [Inject]
     private void Construct(SaveSystem saveSystem, Narrator narrator, IOperator @operator)
     {
@@ -31,14 +35,6 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
         EnableChildGameObjects(false);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // Нельзя начать игру, если она в процессе или завершена
-        if (_currentState == QuestStates.NotStarted)
-        {
-            StartGame();
-        }        
-    }
 
     private void Update()
     {
@@ -65,6 +61,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     public void FinishGame()
     {
+        OnQuestFinished?.Invoke();
         _operator.OnSessionEnd -= FinishGame;
         _operator.OnGivingHint -= GiveHint;
 

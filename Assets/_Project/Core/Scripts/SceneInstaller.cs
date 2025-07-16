@@ -5,15 +5,21 @@ using Zenject.Asteroids;
 public class SceneInstaller : MonoInstaller
 {
 
-    [SerializeField] private BaseQuest[] _questThings;
+    [SerializeField] private QuestSettings _questSettings;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Vector3 _offset = new Vector3(0f, 0f, 10f);
     [SerializeField] private TileSettings _tileSettings;
     private Vector3 _tempOffset = Vector3.zero;
     public override void InstallBindings()
     {
-        Container.BindInstance(_tileSettings).AsSingle();
+        BindSettings();
         BindSystems();
+    }
+
+    public void BindSettings()
+    {
+        Container.BindInstance(_tileSettings).AsSingle();
+        Container.BindInstance(_questSettings).AsSingle();
     }
 
     private void BindSystems()
@@ -22,9 +28,10 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<SaveSystem>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<Operator>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<TileManager>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<QuestManager>().AsSingle().NonLazy();
     }
 
-    private void BindQuests()
+    /***private void BindQuests()
     {
         foreach (var quest in _questThings)
         {
@@ -33,6 +40,6 @@ public class SceneInstaller : MonoInstaller
             Container.BindInterfacesAndSelfTo<BaseQuest>().FromInstance(baseQuest).AsTransient();
             _tempOffset += _offset;
         }
-    }
+    }***/
     
 }

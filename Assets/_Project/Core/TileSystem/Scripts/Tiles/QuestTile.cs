@@ -1,22 +1,61 @@
 using UnityEngine;
+using Zenject;
 
 public class QuestTile : BaseTile, IQuestTile
 {
     public override TileType tileType => TileType.Quest;
+    [SerializeField] private Transform _questSpawnPoint; // Точка спавна квеста на тайле
 
-    [SerializeField] private GameObject _questPlace;
-    public IQuest Quest { get; private set; }
-    public GameObject QuestPlace => _questPlace;
+    private IQuestManager _questManager;
+    private IQuest _currentQuest;
 
-    public void LoadQuest(IQuest quest)
+    public IQuest Quest => _currentQuest;
+    public GameObject QuestPlace => _questSpawnPoint.gameObject;
+
+    [Inject]
+    private void Construct(IQuestManager questManager)
     {
-        Quest = quest;
-        // Здесь можно добавить логику инициализации квеста
+        _questManager = questManager;
+    }
+
+    public override void Initialize(int index, int tileIndex)
+    {
+        base.Initialize(index, tileIndex);
+        SpawnQuest();
+    }
+
+
+    private void SpawnQuest()
+    {
+        _currentQuest = _questManager.GetNextQuest();
+
+        if (_currentQuest != null && _currentQuest is BaseQuest baseQuest)
+        {
+            baseQuest.OnQuestFinished += OnQuestCompleted;
+            baseQuest.transform.SetParent(_questSpawnPoint);
+            baseQuest.transform.localPosition = Vector3.zero;
+            baseQuest.transform.localRotation = Quaternion.identity;
+        }
+    }
+
+
+    private void OnQuestCompleted()
+    {
+        _tileManager.SpawnNextTile(TileType.Road);
     }
 
     public override void ExecuteTileBehavior()
     {
         base.ExecuteTileBehavior();
-        // Дополнительная логика при входе на тайл квеста
+
+        if (_currentQuest != null && _currentQuest is BaseQuest baseQuest)
+        {
+            if (baseQuest.CurrentState == QuestStates.NotStarted)
+            {
+                baseQuest.StartGame();
+            }
+        }
     }
+
+
 }
