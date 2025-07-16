@@ -14,7 +14,6 @@ public class SceneInstaller : MonoInstaller
     {
         Container.BindInstance(_tileSettings).AsSingle();
         BindSystems();
-        BindQuests();
     }
 
     private void BindSystems()

@@ -1,11 +1,4 @@
 using UnityEngine;
-
-public enum TileType
-{
-    Road,
-    Quest,
-    Save
-}
 public interface ITile
 {
     float Length { get; }
@@ -13,6 +6,7 @@ public interface ITile
     Collider PlayerEnterZone { get; }
     Vector3 Position { get; set; }
     bool IsActive { get; set; }
-    void Initialize(int index);
+    int thisTileIndex { get; }
+    void Initialize(int index, int tileIndex);
 }
 

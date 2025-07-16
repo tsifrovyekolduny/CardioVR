@@ -14,9 +14,9 @@ public class QuestTile : BaseTile, IQuestTile
         // Здесь можно добавить логику инициализации квеста
     }
 
-    public override void OnPlayerEnter()
+    public override void ExecuteTileBehavior()
     {
-        base.OnPlayerEnter();
+        base.ExecuteTileBehavior();
         // Дополнительная логика при входе на тайл квеста
     }
 }

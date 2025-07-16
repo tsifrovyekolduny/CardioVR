@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f42440272b2e34da530cf1ea1f89b0, type: 3}
   m_Name: TileSettingsObject
   m_EditorClassIdentifier: 
-  TilePrefabs: []
-  InitialTilesCount: 1
+  TilePrefabs:
+  - {fileID: 5795414333034988939, guid: 97b69124392cb0f4084fb1aee87bf864, type: 3}
+  - {fileID: 5795414333034988939, guid: 97b69124392cb0f4084fb1aee87bf864, type: 3}
+  - {fileID: 5795414333034988939, guid: 97b69124392cb0f4084fb1aee87bf864, type: 3}

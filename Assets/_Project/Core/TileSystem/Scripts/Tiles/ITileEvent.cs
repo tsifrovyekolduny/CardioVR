@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface ITileEvent
 {
-    void OnPlayerEnter();
+    void ExecuteTileBehavior();
     void OpenExit();
-    void OnExitOpen();
+    void NextTileTrigger();
 }

@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Zenject;
 
 public class TileManager : ITileManager, IInitializable, IDisposable
 {
     private readonly DiContainer _container;
     private readonly TileSettings _settings;
-    private Dictionary<TileType, List<ITile>> _tiles = new Dictionary<TileType, List<ITile>>();
+    private Dictionary<TileType, List<GameObject>> _tilePrefabs = new Dictionary<TileType, List<GameObject>>();
     private int _currentTileIndex;
 
     public TileManager(DiContainer container, TileSettings settings)
@@ -27,27 +28,41 @@ public class TileManager : ITileManager, IInitializable, IDisposable
         _currentTileIndex = 0;
         foreach (var prefab in _settings.TilePrefabs)
         {
-            var tile = _container.InstantiatePrefab(prefab).GetComponent<ITile>();
-            tile.IsActive = false;
+            var tile = prefab.GetComponent<ITile>();
+            if (tile == null) continue;
+
             var tileType = tile.tileType;
-            if (!_tiles.ContainsKey(tileType))
+            if (!_tilePrefabs.ContainsKey(tileType))
             {
-                _tiles[tileType] = new List<ITile>();
+                _tilePrefabs[tileType] = new List<GameObject>();
             }
-            _tiles[tileType].Add(tile);
+            _tilePrefabs[tileType].Add(prefab);
         }
     }
 
-    public void OnPlayerEnteredTile(ITile tile)
+    public void ExecuteTileBehavior(ITile tile)
     {
-        
+        Debug.Log(_currentTileIndex);
+        if (tile.tileType == TileType.Road && tile is ITileEvent tileEvent)
+        {
+            Debug.Log("Пытается создать тайл");
+            tileEvent.NextTileTrigger();
+        }
     }
 
     public void SpawnNextTile(TileType tileType)
     {
-        ++_currentTileIndex;
-        var tile = PickRandomTile(tileType);
-        tile.Initialize(_currentTileIndex);
+        if (!_tilePrefabs.ContainsKey(tileType))
+        {
+            Debug.LogError($"No prefabs found for tile type: {tileType}");
+            return;
+        }
+
+        _currentTileIndex++;
+        var randomPrefab = GetRandomPrefab(tileType);
+        var tileInstance = _container.InstantiatePrefab(randomPrefab).GetComponent<ITile>();
+        tileInstance.Initialize(_currentTileIndex, _currentTileIndex);
+        tileInstance.IsActive = true;
     }
 
     public void Dispose()
@@ -55,12 +70,14 @@ public class TileManager : ITileManager, IInitializable, IDisposable
         // Очистка ресурсов
     }
 
-
-    private ITile PickRandomTile(TileType tileType)
+    public bool CheckNextTileExistence(int tileIndex)
     {
-        var tileList = _tiles[tileType];
-        int randomTileNumber = UnityEngine.Random.Range(0, tileList.Count);
-        return tileList[randomTileNumber];
+        return _currentTileIndex <= tileIndex;
+    }
 
+    private GameObject GetRandomPrefab(TileType tileType)
+    {
+        var prefabs = _tilePrefabs[tileType];
+        return prefabs[UnityEngine.Random.Range(0, prefabs.Count)];
     }
 }

@@ -4,9 +4,9 @@ public class SavePointTile : BaseTile
 {
     public override TileType tileType => TileType.Save;
 
-    public override void OnPlayerEnter()
+    public override void ExecuteTileBehavior()
     {
-        base.OnPlayerEnter();
+        base.ExecuteTileBehavior();
         // Логика сохранения игры
     }
 }
