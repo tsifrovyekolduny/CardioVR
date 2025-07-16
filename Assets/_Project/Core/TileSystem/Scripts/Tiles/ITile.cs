@@ -13,6 +13,6 @@ public interface ITile
     Collider PlayerEnterZone { get; }
     Vector3 Position { get; set; }
     bool IsActive { get; set; }
-    void Initialize(int index, ITile previousTile);
+    void Initialize(int index);
 }
 

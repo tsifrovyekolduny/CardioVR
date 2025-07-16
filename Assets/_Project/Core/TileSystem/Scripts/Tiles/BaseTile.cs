@@ -14,7 +14,7 @@ public abstract class BaseTile : MonoBehaviour, ITile, ITileEvent
 
     [Inject] protected ITileManager _tileManager;
 
-    public virtual void Initialize(int index, ITile previousTile)
+    public virtual void Initialize(int index)
     {
         Position = new Vector3(0, 0, index * Length);
         IsActive = true;

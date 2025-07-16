@@ -4,5 +4,4 @@ using UnityEngine;
 public class TileSettings : ScriptableObject
 {
     public GameObject[] TilePrefabs;
-    public int InitialTilesCount = 1;
 }
