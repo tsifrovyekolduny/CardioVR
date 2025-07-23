@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -6,56 +7,30 @@ public class QuestTile : BaseTile, IQuestTile
     public override TileType tileType => TileType.Quest;
     [SerializeField] private Transform _questSpawnPoint; // Точка спавна квеста на тайле
 
-    private IQuestManager _questManager;
+    [Inject] protected IQuestManager _questManager;
     private IQuest _currentQuest;
 
     public IQuest Quest => _currentQuest;
     public GameObject QuestPlace => _questSpawnPoint.gameObject;
 
-    [Inject]
-    private void Construct(IQuestManager questManager)
+    public override void Initialize(int index)
     {
-        _questManager = questManager;
-    }
-
-    public override void Initialize(int index, int tileIndex)
-    {
-        base.Initialize(index, tileIndex);
-        SpawnQuest();
+        base.Initialize(index);
     }
 
 
-    private void SpawnQuest()
+    //TODO: Закончить работы по изменению логики спавна квеста
+    public event Action<ITile> RequestNextQuestSpawnAction;
+
+    public void RequestNextQuestSpawn(ITile requestingTile)
     {
-        _currentQuest = _questManager.GetNextQuest();
-
-        if (_currentQuest != null && _currentQuest is BaseQuest baseQuest)
-        {
-            baseQuest.OnQuestFinished += OnQuestCompleted;
-            baseQuest.transform.SetParent(_questSpawnPoint);
-            baseQuest.transform.localPosition = Vector3.zero;
-            baseQuest.transform.localRotation = Quaternion.identity;
-        }
+        Debug.Log("Делаю запрос на спавн квеста");
+        RequestNextQuestSpawnAction?.Invoke(this);
     }
-
 
     private void OnQuestCompleted()
     {
-        _tileManager.SpawnNextTile(TileType.Road);
+        RequestNextTile(this);
     }
-
-    public override void ExecuteTileBehavior()
-    {
-        base.ExecuteTileBehavior();
-
-        if (_currentQuest != null && _currentQuest is BaseQuest baseQuest)
-        {
-            if (baseQuest.CurrentState == QuestStates.NotStarted)
-            {
-                baseQuest.StartGame();
-            }
-        }
-    }
-
 
 }

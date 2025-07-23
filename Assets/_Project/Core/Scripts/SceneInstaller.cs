@@ -5,10 +5,10 @@ using Zenject.Asteroids;
 public class SceneInstaller : MonoInstaller
 {
 
-    [SerializeField] private QuestSettings _questSettings;
+    [SerializeField] private QuestPrefabsObject _questPrefabsObject;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Vector3 _offset = new Vector3(0f, 0f, 10f);
-    [SerializeField] private TileSettings _tileSettings;
+    [SerializeField] private TilePrefabsObject _tilePrefabsObject;
     private Vector3 _tempOffset = Vector3.zero;
     public override void InstallBindings()
     {
@@ -18,8 +18,8 @@ public class SceneInstaller : MonoInstaller
 
     public void BindSettings()
     {
-        Container.BindInstance(_tileSettings).AsSingle();
-        Container.BindInstance(_questSettings).AsSingle();
+        Container.BindInstance(_tilePrefabsObject).AsSingle();
+        Container.BindInstance(_questPrefabsObject).AsSingle();
     }
 
     private void BindSystems()

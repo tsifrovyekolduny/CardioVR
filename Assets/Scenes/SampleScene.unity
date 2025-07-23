@@ -92611,6 +92611,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1196709355}
     - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
+      propertyPath: _tileSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: dd294ec37fd85f048ac5d45e4b517a33, type: 2}
+    - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
+      propertyPath: _questSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 94121458800433e4ba4c50a703361c35, type: 2}
+    - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
       propertyPath: _questThings.Array.size
       value: 2
       objectReference: {fileID: 0}

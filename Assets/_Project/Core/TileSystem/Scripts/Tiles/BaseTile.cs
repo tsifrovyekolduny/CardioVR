@@ -1,43 +1,31 @@
 using System;
 using UnityEngine;
-using Zenject;
 
-public abstract class BaseTile : MonoBehaviour, ITile, ITileEvent
+public abstract class BaseTile : MonoBehaviour, ITile
 {
     [SerializeField] private float _length = 26f;
-    [SerializeField] private Collider _enterZone;
 
-    public int TileIndex;
+    private int thisTileIndex;
     public float Length => _length;
-    public int thisTileIndex => TileIndex;
-    public Collider PlayerEnterZone => _enterZone;
+    public int TileIndex => thisTileIndex;
     public abstract TileType tileType { get; }
     public Vector3 Position { get => transform.position; set => transform.position = value; }
     public bool IsActive { get => gameObject.activeSelf; set => gameObject.SetActive(value); }
 
-    [Inject] protected ITileManager _tileManager;
+    public GameObject TileGameObject => gameObject;
 
-    public virtual void Initialize(int index, int tileIndex)
+    public virtual void Initialize(int index)
     {
         Position = new Vector3(0, 0, index * Length);
         IsActive = true;
-        TileIndex = tileIndex;
+        thisTileIndex = index;
     }
 
-    public virtual void ExecuteTileBehavior()
-    {
-        _tileManager.ExecuteTileBehavior(this);
-    }
+    public event Action<ITile> RequestNextTileAction;
 
-    public virtual void OpenExit() { }
-    public virtual void NextTileTrigger() { }
-
-    private void OnTriggerEnter(Collider other)
+    public void RequestNextTile(ITile requestingTile)
     {
-        Debug.Log(this.name);
-        if (other.CompareTag("Player"))
-        {
-            ExecuteTileBehavior();
-        }
+        Debug.Log("Делаю запрос");
+        RequestNextTileAction?.Invoke(this);
     }
 }

@@ -5,21 +5,38 @@ using Zenject;
 public class QuestManager : IQuestManager, IInitializable
 {
     private readonly DiContainer _container;
-    private QuestSettings _settings;
-    private List<BaseQuest> _questPrefabs;
+
+    private QuestPrefabsObject _questPrefabsObject;
+    private List<GameObject> _questPrefabs = new List<GameObject>();
     private int _currentQuestIndex = 0;
     private IQuest _currentQuest;
 
     [Inject]
-    public QuestManager(DiContainer container, QuestSettings settings)
+    public QuestManager(DiContainer container, QuestPrefabsObject questPrefabsObject)
     {
         _container = container;
-        _settings = settings;
+        _questPrefabsObject = questPrefabsObject;
     }
 
     public void Initialize()
     {
-        _questPrefabs = new List<BaseQuest>(_settings.QuestPrefabs);
+        PreloadQuest();
+    }
+
+    private void PreloadQuest()
+    {
+        foreach (var prefab in _questPrefabsObject.QuestPrefabs)
+        {
+            var quest = prefab.GetComponent<IQuest>();
+
+            if (quest == null)
+            {
+                Debug.LogWarning("У квеста нет интерфейса!");
+                continue;
+            }
+
+            _questPrefabs.Add(prefab);
+        }
     }
 
     public IQuest GetNextQuest()
@@ -28,7 +45,7 @@ public class QuestManager : IQuestManager, IInitializable
             return null;
 
         var questPrefab = _questPrefabs[_currentQuestIndex];
-        _currentQuest = _container.InstantiatePrefabForComponent<BaseQuest>(questPrefab);
+        _currentQuest = _container.InstantiatePrefabForComponent<IQuest>(questPrefab);
         _currentQuestIndex++;
 
         return _currentQuest;

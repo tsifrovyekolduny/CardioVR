@@ -2,9 +2,8 @@ using System.Collections.Generic;
 
 public interface IQuestManager
 {
-    IQuest GetNextQuest();
     void ResetQuests();
-    IQuest GetCurrentQuest();
+    IQuest ChangeQuestToNext();
     bool AreAllQuestsCompleted();
 
 }

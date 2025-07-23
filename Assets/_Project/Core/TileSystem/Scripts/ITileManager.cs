@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public interface ITileManager
 {
     void Initialize();
-    void ExecuteTileBehavior(ITile tile);
+    void HandleTileSpawnRequest(ITile tile);
     void SpawnNextTile(TileType tileType);
     bool CheckNextTileExistence(int tileIndex);
 }

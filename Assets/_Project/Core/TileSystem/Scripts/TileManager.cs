@@ -6,27 +6,25 @@ using Zenject;
 public class TileManager : ITileManager, IInitializable, IDisposable
 {
     private readonly DiContainer _container;
-    private readonly TileSettings _settings;
-    private Dictionary<TileType, List<GameObject>> _tilePrefabs = new Dictionary<TileType, List<GameObject>>();
-    private int _currentTileIndex;
-    [Inject] protected IOperator _operator;
+    private readonly TilePrefabsObject _tilePrefabsObject;
 
-    public TileManager(DiContainer container, TileSettings settings)
+    private Dictionary<TileType, List<ITile>> _tilePrefabs = new Dictionary<TileType, List<ITile>>();
+    private int _currentTileIndex;
+    private ITile _currentTile;
+
+    [Inject] private IQuestManager _questManager;
+    [Inject] private IOperator _operator;
+    [Inject]
+    public TileManager(DiContainer container, TilePrefabsObject tilePrefabsObject)
     {
         _container = container;
-        _settings = settings;
-        _operator.OnSessionEnd += AddSavePoint;
-    }
-
-    private void AddSavePoint()
-    {
-        SpawnNextTile(TileType.Save);
+        _tilePrefabsObject = tilePrefabsObject;
     }
 
     public void Initialize()
     {
         PreloadTiles();
-       
+        _operator.OnSessionEnd += HandleSessionEnd;
         SpawnNextTile(TileType.Road);
     }
 
@@ -34,23 +32,22 @@ public class TileManager : ITileManager, IInitializable, IDisposable
     private void PreloadTiles()
     {
         _currentTileIndex = 0;
-        foreach (var prefab in _settings.TilePrefabs)
+        foreach (var prefab in _tilePrefabsObject.TilePrefabs)
         {
             var tile = prefab.GetComponent<ITile>();
-            if (tile == null) continue;
+
+            if (tile == null)
+            {
+                continue;
+            }
 
             var tileType = tile.tileType;
             if (!_tilePrefabs.ContainsKey(tileType))
             {
-                _tilePrefabs[tileType] = new List<GameObject>();
+                _tilePrefabs[tileType] = new List<ITile>();
             }
-            _tilePrefabs[tileType].Add(prefab);
+            _tilePrefabs[tileType].Add(tile);
         }
-    }
-
-    public void ExecuteTileBehavior(ITile tile)
-    {
-        
     }
 
     public void SpawnNextTile(TileType tileType)
@@ -62,25 +59,59 @@ public class TileManager : ITileManager, IInitializable, IDisposable
         }
 
         _currentTileIndex++;
-        var randomPrefab = GetRandomPrefab(tileType);
-        var tileInstance = _container.InstantiatePrefab(randomPrefab).GetComponent<ITile>();
-        tileInstance.Initialize(_currentTileIndex, _currentTileIndex);
+        var randomTile = GetRandomTile(tileType);
+        var tileInstance = _container.InstantiatePrefabForComponent<ITile>(randomTile.TileGameObject);
+        tileInstance.Initialize(_currentTileIndex);
         tileInstance.IsActive = true;
+        tileInstance.RequestNextTileAction += HandleTileSpawnRequest;
+        _currentTile = tileInstance;
     }
 
     public void Dispose()
     {
-        // Очистка ресурсов
+        // TODO: Добавить функциональность очистки лишних ресурсов
     }
 
     public bool CheckNextTileExistence(int tileIndex)
     {
-        return _currentTileIndex <= tileIndex;
+        return _currentTileIndex < tileIndex;
     }
 
-    private GameObject GetRandomPrefab(TileType tileType)
+    private ITile GetRandomTile(TileType tileType)
     {
         var prefabs = _tilePrefabs[tileType];
         return prefabs[UnityEngine.Random.Range(0, prefabs.Count)];
     }
+
+    private void HandleSessionEnd()
+    {
+        switch (_questManager.AreAllQuestsCompleted())
+        {
+            case false:
+                SpawnNextTile(TileType.Save);
+                break;
+        }
+
+    }
+
+    public void HandleTileSpawnRequest(ITile tile)
+    {
+        Debug.Log("Получил запрос, щас разберемся");
+        if (CheckNextTileExistence(tile.TileIndex))
+        {
+            Debug.LogWarning("Внимание! Следующий тайл уже существует");
+            return;
+        }
+        Debug.Log("Попытка спавна");
+        switch (tile.tileType)
+        {
+            case TileType.Road:
+
+                SpawnNextTile(TileType.Quest);
+                Debug.Log("Тайл квеста был заспавнен");
+                break;
+        }
+    }
+
+
 }

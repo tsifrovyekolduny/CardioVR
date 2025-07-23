@@ -1,22 +1,16 @@
 using UnityEngine;
-using Zenject;
 
 public class RoadTile : BaseTile
 {
     public override TileType tileType => TileType.Road;
 
-    [Inject] private IOperator _operator;
-
-    override public void  ExecuteTileBehavior()
+    private void OnTriggerEnter(Collider other)
     {
-
-        if (!_tileManager.CheckNextTileExistence(TileIndex))
+        Debug.Log(other.name);
+        if (other.CompareTag("Player"))
         {
-            return;
+            Debug.Log("Игрок коснулся зоны спавна");
+            RequestNextTile(this);
         }
-
-        base.ExecuteTileBehavior();
- 
-        _tileManager.SpawnNextTile(TileType.Quest);
     }
 }
