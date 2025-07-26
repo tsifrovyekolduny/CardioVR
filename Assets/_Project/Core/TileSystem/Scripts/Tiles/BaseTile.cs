@@ -9,8 +9,14 @@ public abstract class BaseTile : MonoBehaviour, ITile
     public float Length => _length;
     public int TileIndex => thisTileIndex;
     public abstract TileType tileType { get; }
-    public Vector3 Position { get => transform.position; set => transform.position = value; }
-    public bool IsActive { get => gameObject.activeSelf; set => gameObject.SetActive(value); }
+    public Vector3 Position { 
+        get => transform.position; 
+        set => transform.position = value; 
+    }
+    public bool IsActive { 
+        get => gameObject.activeSelf; 
+        set => gameObject.SetActive(value); 
+    } // TODO: Переделать систему спавна тайлов в Object Pooling
 
     public GameObject TileGameObject => gameObject;
 
@@ -23,7 +29,7 @@ public abstract class BaseTile : MonoBehaviour, ITile
 
     public event Action<ITile> RequestNextTileAction;
 
-    public void RequestNextTile(ITile requestingTile)
+    public void RequestNextTile()
     {
         Debug.Log("Делаю запрос");
         RequestNextTileAction?.Invoke(this);

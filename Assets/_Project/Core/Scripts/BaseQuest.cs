@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem.XR.Haptics;
 using UnityEngine.UIElements;
@@ -16,6 +17,21 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
     private Narrator _narrator;
     private IOperator _operator;
     private SaveSystem _saveSystem;
+    public Quaternion LocalRotation { 
+        get => transform.localRotation; 
+        set => transform.localRotation = value; 
+    }
+    public Vector3 LocalPosition
+    {
+        get => transform.localPosition;
+        set => transform.localPosition = value;
+    }
+
+    public Transform Parent
+    {
+        get => transform.parent;
+        set => transform.SetParent(value);
+    }
 
     // для просмотра состояния квеста в инспекторе
     [SerializeField]

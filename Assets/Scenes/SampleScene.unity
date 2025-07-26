@@ -92619,6 +92619,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 94121458800433e4ba4c50a703361c35, type: 2}
     - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
+      propertyPath: _tilePrefabsObject
+      value: 
+      objectReference: {fileID: 11400000, guid: f95f23d9864139f428f5399e50e60281, type: 2}
+    - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
+      propertyPath: _questPrefabsObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 627d50d6c88d0e2408002e46fd5edf55, type: 2}
+    - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
       propertyPath: _questThings.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -93243,6 +93251,10 @@ PrefabInstance:
     - target: {fileID: 8298045291338814966, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
       propertyPath: m_Name
       value: XR Origin (XR Rig)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8298045291338814966, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

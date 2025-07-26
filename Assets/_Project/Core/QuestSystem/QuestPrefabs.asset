@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328c7b2e26b5bd84caec82c41d028a4c, type: 3}
   m_Name: QuestPrefabs
   m_EditorClassIdentifier: 
-  QuestPrefabs: []
+  QuestPrefabs:
+  - {fileID: 930872684191871927, guid: 2a05f9e147d6e1440ad38772a74f8154, type: 3}

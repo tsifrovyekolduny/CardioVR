@@ -10,6 +10,6 @@ public interface ITile
     GameObject TileGameObject { get; }
     void Initialize(int index);
     event Action<ITile> RequestNextTileAction;
-    void RequestNextTile(ITile requestingTile);
+    void RequestNextTile();
 }
 

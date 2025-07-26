@@ -6,4 +6,5 @@ public interface IQuestManager
     IQuest ChangeQuestToNext();
     bool AreAllQuestsCompleted();
 
+    void SpawnQuest(ITile tile);
 }

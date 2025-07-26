@@ -19,18 +19,4 @@ public class QuestTile : BaseTile, IQuestTile
     }
 
 
-    //TODO: «акончить работы по изменению логики спавна квеста
-    public event Action<ITile> RequestNextQuestSpawnAction;
-
-    public void RequestNextQuestSpawn(ITile requestingTile)
-    {
-        Debug.Log("ƒелаю запрос на спавн квеста");
-        RequestNextQuestSpawnAction?.Invoke(this);
-    }
-
-    private void OnQuestCompleted()
-    {
-        RequestNextTile(this);
-    }
-
 }

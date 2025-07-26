@@ -93,7 +93,6 @@ public class TileManager : ITileManager, IInitializable, IDisposable
         }
 
     }
-
     public void HandleTileSpawnRequest(ITile tile)
     {
         Debug.Log("Получил запрос, щас разберемся");
@@ -108,10 +107,11 @@ public class TileManager : ITileManager, IInitializable, IDisposable
             case TileType.Road:
 
                 SpawnNextTile(TileType.Quest);
-                Debug.Log("Тайл квеста был заспавнен");
+                _questManager.SpawnQuest(_currentTile);
                 break;
         }
     }
+
 
 
 }

@@ -10,7 +10,7 @@ public class RoadTile : BaseTile
         if (other.CompareTag("Player"))
         {
             Debug.Log("Игрок коснулся зоны спавна");
-            RequestNextTile(this);
+            RequestNextTile();
         }
     }
 }

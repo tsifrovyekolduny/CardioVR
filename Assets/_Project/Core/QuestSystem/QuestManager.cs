@@ -39,14 +39,14 @@ public class QuestManager : IQuestManager, IInitializable
         }
     }
 
-    public IQuest GetNextQuest()
+    public IQuest ChangeQuestToNext()
     {
         if (_currentQuestIndex >= _questPrefabs.Count)
             return null;
 
         var questPrefab = _questPrefabs[_currentQuestIndex];
         _currentQuest = _container.InstantiatePrefabForComponent<IQuest>(questPrefab);
-        _currentQuestIndex++;
+        ++_currentQuestIndex;
 
         return _currentQuest;
     }
@@ -55,6 +55,22 @@ public class QuestManager : IQuestManager, IInitializable
     {
         _currentQuestIndex = 0;
         _currentQuest = null;
+    }
+
+    public void SpawnQuest(ITile tile)
+    {
+        Debug.Log("Запрашиваем квест у менеджера");
+        if (tile is IQuestTile questTile)
+        {
+            Debug.Log("Квест был получен");
+            var quest = ChangeQuestToNext();
+            _currentQuest.OnQuestFinished += tile.RequestNextTile;
+            _currentQuest.Parent = questTile.QuestPlace.transform;
+            _currentQuest.LocalPosition = Vector3.zero;
+            _currentQuest.LocalRotation = Quaternion.identity;
+            _currentQuest.StartGame(); //TODO: изменить логику начала игры
+            Debug.Log("Квест был заспавнен");
+        }
     }
 
     public IQuest GetCurrentQuest() => _currentQuest;
