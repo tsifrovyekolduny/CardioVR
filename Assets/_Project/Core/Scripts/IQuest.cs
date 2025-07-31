@@ -7,6 +7,7 @@ public interface IQuest
     void FinishGame();
     bool IsFinished();
 
+    GameObject QuestGameObject { get; }
     public event Action OnQuestFinished;
     public Vector3 LocalPosition { get; set; }
     public Quaternion LocalRotation { get; set; }

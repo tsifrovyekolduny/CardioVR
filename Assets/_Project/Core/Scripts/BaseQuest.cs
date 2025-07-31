@@ -17,6 +17,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
     private Narrator _narrator;
     private IOperator _operator;
     private SaveSystem _saveSystem;
+    public GameObject QuestGameObject => gameObject;
     public Quaternion LocalRotation { 
         get => transform.localRotation; 
         set => transform.localRotation = value; 

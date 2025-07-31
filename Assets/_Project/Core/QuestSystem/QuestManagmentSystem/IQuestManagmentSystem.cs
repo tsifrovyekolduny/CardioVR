@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 
-public interface IQuestManager
+public interface IQuestManagmentSystem
 {
-    void ResetQuests();
-    IQuest ChangeQuestToNext();
     bool AreAllQuestsCompleted();
 
     void SpawnQuest(ITile tile);
