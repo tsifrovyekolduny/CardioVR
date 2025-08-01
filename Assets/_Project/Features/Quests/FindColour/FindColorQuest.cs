@@ -8,7 +8,7 @@ using UnityEngine;
 public class FindColorQuest : BaseQuest
 {
     [SerializeField]
-    private List<IColorButton> _colorButtons;
+    private List<IColorButton> _colorButtons = new List<IColorButton>();
     [SerializeField]
     private IColorButton _currentColorButton;
     [SerializeField]
@@ -54,34 +54,72 @@ public class FindColorQuest : BaseQuest
 
     public override bool IsFinished()
     {
-        return _colorButtons.All(c => c.IsHidden.Equals(true));
+        if (_colorButtons.Count > 0)
+        {
+            return _colorButtons.All(c => c.IsClosed.Equals(true));
+        }
+        return false;
+    }
+
+    public override void StartGame()
+    {
+        base.StartGame();
+        _currentColorButton = _colorButtons[_currentColorButtonIndex];
+        _currentColorButton.Select();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Start()
     {
-        if (_colorButtons.IsEmpty())
+        if (_colorButtons.Count == 0)
         {
             _colorButtons = GetComponentsInChildren<IColorButton>().ToList();
         }
 
-        for(int indButton = 0; indButton < _colorButtons.Count; ++indButton)
+        for (int indButton = 0; indButton < _colorButtons.Count; ++indButton)
         {
             var button = _colorButtons[indButton];
             button.PressButton += CompareWithCurrentColor;
-            button.TextColor = _hardcodedColors[indButton].TextColor;
-            button.TargetColor = _hardcodedColors[indButton].TargetColor;
+            button.Init(_hardcodedColors[indButton].TextColor, _hardcodedColors[indButton].TargetColor);
         }
 
-        _currentColorButton = _colorButtons[_currentColorButtonIndex];
+        Debug.Log($"Count of CB: {_colorButtons.Count}");        
 
         base.Start();
+    }
+
+    protected override void EnableChildGameObjects(bool status)
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.tag != "Decor")
+            {
+                // сама анимация
+                var animators = child.GetComponentsInChildren<VisibilityAnimator>();
+                if (animators.Length > 0)
+                {
+                    foreach (var animator in animators)
+                    {
+                        if (status)
+                        {
+                            animator.Show();
+                        }
+                        else
+                        {
+                            animator.Hide();
+                        }
+                    }
+                }
+            }
+        }
+        string log = status ? "showed" : "hided";
+        Debug.Log($"Childs are {log}");
     }
 
     private void CompareWithCurrentColor(Color color)
     {
         if (_currentColorButton.TargetColor == color)
-        {
+        {            
             SetNextColor();
         }
     }
@@ -94,6 +132,7 @@ public class FindColorQuest : BaseQuest
 
             _currentColorButtonIndex++;
             _currentColorButton = _colorButtons[_currentColorButtonIndex];
+            _currentColorButton.Select();
         }
     }
 }

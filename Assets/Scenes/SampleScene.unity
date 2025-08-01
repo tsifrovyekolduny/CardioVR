@@ -52034,7 +52034,7 @@ Transform:
   m_GameObject: {fileID: 1196709354}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 16}
+  m_LocalPosition: {x: 0, y: 0, z: 28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -90494,6 +90494,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5963109700716488510, guid: 317a8a6dcc1c6a24b8f4fbadbf39100f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6182665856850483041, guid: 317a8a6dcc1c6a24b8f4fbadbf39100f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -90688,7 +90692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7253153266554218048, guid: 317a8a6dcc1c6a24b8f4fbadbf39100f, type: 3}
       propertyPath: m_TargetDisplay
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7295091975878092627, guid: 317a8a6dcc1c6a24b8f4fbadbf39100f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -92736,7 +92740,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
       propertyPath: _offset.z
-      value: 28
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
       propertyPath: _spawnPoint
@@ -92749,7 +92753,7 @@ PrefabInstance:
     - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
       propertyPath: '_questThings.Array.data[0]'
       value: 
-      objectReference: {fileID: 5654982318549202345, guid: 2a05f9e147d6e1440ad38772a74f8154, type: 3}
+      objectReference: {fileID: 1701192311148246402, guid: 58e4cf3377fe58d4090df92c85147a13, type: 3}
     - target: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
       propertyPath: '_questThings.Array.data[1]'
       value: 
@@ -93186,7 +93190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7277802327414017196, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
       propertyPath: m_TargetDisplay
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7434851320941268098, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
       propertyPath: m_AnchorMax.y

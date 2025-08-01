@@ -8,39 +8,43 @@ public class ColorButton : MonoBehaviour, IColorButton
 {
     private TMP_Text _text;
     private Button _button;
+    private bool _isClosed;
 
     [SerializeField]
-    private VisibilityAnimator _visibilityAnimator;    
+    private VisibilityAnimator _visibilityAnimator;
     public Color TextColor { get; set; }
     public Color TargetColor { get; set; }
     public Action<Color> PressButton { get; set; }
 
     // Проверка "спрятанности" по первому child, чтобы не проверять все childs
-    public bool IsHidden => transform.GetChild(0).gameObject.activeSelf;
+    public bool IsClosed { get { return _isClosed; } }
 
-    void OnEnable()
+    void Awake()
     {
+        _visibilityAnimator = GetComponent<VisibilityAnimator>();
+
         _text = GetComponentInChildren<TMP_Text>();
         _button = GetComponent<Button>();
         _button.onClick.AddListener(delegate { PressButton?.Invoke(TextColor); });
-
-        _text.color = TextColor;
-        _text.text = TargetColor.GetRuString();
     }
 
     public void Hide()
     {
         _visibilityAnimator.Hide();
-    }
-    
-    void Awake()
-    {
-        _visibilityAnimator = GetComponent<VisibilityAnimator>();
+        _isClosed = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Init(Color textColor, Color targetColor)
     {
-        
+        TextColor = textColor;
+        TargetColor = targetColor;
+
+        _text.color = TextColor;
+        _text.text = TargetColor.GetRuString();
+    }
+
+    public void Select()
+    {
+        _button.Select();
     }
 }

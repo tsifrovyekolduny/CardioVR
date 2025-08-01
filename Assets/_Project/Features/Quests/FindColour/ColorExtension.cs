@@ -22,7 +22,7 @@ namespace FindColorExtension
         {
             get
             {
-                return new Color(1f, 0.31f, 1f, 1f);
+                return new Color(0.5f, 0f, 1f, 1f);
             }
         }
 
@@ -30,7 +30,7 @@ namespace FindColorExtension
         {
             get
             {
-                return new Color(1f, 0.5f, 0f, 1f);
+                return new Color(1f, 0.31f, 1f, 1f);                
             }
         }
     }
