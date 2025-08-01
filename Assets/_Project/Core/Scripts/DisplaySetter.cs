@@ -26,6 +26,7 @@ public class DisplaySetter : MonoBehaviour
         if (Display.displays.Length > 1 && !_isAllSet)
         {
             Debug.Log($"VR found. Displays is setted");
+            Display.displays[0].Activate();
             Display.displays[1].Activate();
 
             _mainCamera.targetDisplay = 1;

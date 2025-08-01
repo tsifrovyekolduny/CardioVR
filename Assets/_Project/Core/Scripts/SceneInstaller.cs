@@ -1,6 +1,5 @@
 using UnityEngine;
 using Zenject;
-using Zenject.Asteroids;
 
 public class SceneInstaller : MonoInstaller
 {
@@ -8,7 +7,10 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private BaseQuest[] _questThings;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Vector3 _offset = new Vector3(0f, 0f, 10f);
+    [SerializeField] private Narrator _narratorPrefab;
+
     private Vector3 _tempOffset = Vector3.zero;
+
     public override void InstallBindings()
     {
         BindSystems();
@@ -17,9 +19,15 @@ public class SceneInstaller : MonoInstaller
 
     private void BindSystems()
     {
-        Container.BindInterfacesAndSelfTo<Narrator>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<SaveSystem>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<Operator>().AsSingle().NonLazy();
+
+        Narrator narratorInstance = Container.InstantiatePrefabForComponent<Narrator>(
+            _narratorPrefab,
+            Vector3.zero,
+            Quaternion.identity,
+            null);
+        Container.Bind<INarrator>().FromInstance(narratorInstance).AsSingle().NonLazy();
     }
 
     private void BindQuests()

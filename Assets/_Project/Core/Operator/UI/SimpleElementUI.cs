@@ -14,7 +14,7 @@ public abstract class SimpleElementUI : MonoBehaviour
 
     protected void InitButton()
     {
-        if (button)
+        if (button != null)
         {
             button.onClick.AddListener(OnClick.Invoke);
         }

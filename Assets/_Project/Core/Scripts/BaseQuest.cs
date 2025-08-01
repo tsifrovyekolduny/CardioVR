@@ -10,7 +10,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
     public int QuestNumber = 0;
     [SerializeField]
     private NarratorPhraseScriptable _phraseScriptable;
-    private Narrator _narrator;
+    private INarrator _narrator;
     private IOperator _operator;
     private SaveSystem _saveSystem;
 
@@ -19,7 +19,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
     private QuestStates _currentState = QuestStates.NotStarted;    
 
     [Inject]
-    private void Construct(SaveSystem saveSystem, Narrator narrator, IOperator @operator)
+    private void Construct(SaveSystem saveSystem, INarrator narrator, IOperator @operator)
     {
         _operator = @operator;
         _saveSystem = saveSystem;

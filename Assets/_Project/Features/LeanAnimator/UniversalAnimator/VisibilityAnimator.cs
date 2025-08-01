@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VisibilityAnimator : MonoBehaviour
 {
-    [SerializeField] private float fadeDuration = 0.5f;
+    [SerializeField] private float _fadeDuration = 0.5f;
     [SerializeField, Tooltip("Глубина поиска: 1 - только прямые дети")]
     private int _maxDepth = 1;
 
@@ -38,8 +38,10 @@ public class VisibilityAnimator : MonoBehaviour
         }
     }
 
-    public void Show()
-    {        
+    public void Show(bool instant = false)
+    {
+        float fadeDuration = instant ? 0f : _fadeDuration;
+
         foreach (VisualPair visualPair in _visualPairs)
         {
             visualPair.GameObject.SetActive(true);
@@ -48,8 +50,10 @@ public class VisibilityAnimator : MonoBehaviour
         
     }
 
-    public void Hide()
+    public void Hide(bool instant = false)
     {
+        float fadeDuration = instant ? 0f : _fadeDuration;
+
         foreach (VisualPair visualPair in _visualPairs)
         {
             visualPair.Component?.Hide(fadeDuration);            
