@@ -1,8 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class QuestManagmentSystem : IQuestManagmentSystem
+public class QuestManagmentSystem : IQuestManagmentSystem 
 {
     private int _currentQuestIndex = 0;
 
@@ -23,7 +24,6 @@ public class QuestManagmentSystem : IQuestManagmentSystem
         {
 
             IQuest quest = prefab.GetComponent<IQuest>();
-            Debug.Log(prefab.name);
             if (quest == null)
             {
                 Debug.LogError($"{prefab.name} не обладает необходимым интерфейсом");
@@ -32,21 +32,21 @@ public class QuestManagmentSystem : IQuestManagmentSystem
 
             temporaryQuestQueue.Enqueue(quest);
         }
-        Debug.Log(temporaryQuestQueue.ToArray().ToString());
         return temporaryQuestQueue;
     }
 
-    public IQuest CreateQuest()
+    public IQuest CreateQuest(IQuestTile questTile)
     {
         if (AreAllQuestsCompleted())
         {
             return null;
         }
-        Debug.Log(_questPrefabs.ToArray().ToString());
         IQuest questPrefab = _questPrefabs.Dequeue();
-        Debug.Log(questPrefab.QuestGameObject.name);
         IQuest questInctance = _container.InstantiatePrefabForComponent<IQuest>(questPrefab.QuestGameObject);
-
+        questInctance.QuestGameObject.tag = "Decor";
+        questInctance.Parent = questTile.QuestPlace.transform;
+        questInctance.LocalPosition = Vector3.zero;
+        questInctance.LocalRotation = Quaternion.identity;
         return questInctance;
     }
 
@@ -55,15 +55,22 @@ public class QuestManagmentSystem : IQuestManagmentSystem
         Debug.Log("Запрашиваем квест у менеджера");
         if (tile is IQuestTile questTile)
         {
-            IQuest quest = CreateQuest();
-            Debug.Log("Квест был получен");   
+            IQuest quest = CreateQuest(questTile);
+            Debug.Log("Квест был получен");
+            if (quest is MonoBehaviour monoBehaviour)
+            {
+                monoBehaviour.StartCoroutine(DelayedStart(quest));
+            }
+            
             quest.OnQuestFinished += tile.RequestNextTile;
-            quest.Parent = questTile.QuestPlace.transform;
-            quest.LocalPosition = Vector3.zero;
-            quest.LocalRotation = Quaternion.identity;
-            quest.StartGame(); //TODO: изменить логику начала игры
             Debug.Log("Квест был заспавнен");
         }
+    }
+
+    private IEnumerator DelayedStart(IQuest quest)
+    {
+        yield return null;
+        quest.StartGame();
     }
 
     public bool AreAllQuestsCompleted() => _currentQuestIndex >= _questPrefabs.Count;
