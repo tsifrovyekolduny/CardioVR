@@ -33,15 +33,16 @@ public class QuestManagmentSystem : IQuestManagmentSystem
         {
             return null;
         }
-        IQuest quest = _questPrefabs.Dequeue();
-        IQuestVisualController questVisualController = quest.GetQuestController<IQuestVisualController>();
+        IQuest quest = _questPrefabs.Dequeue();       
 
-        IQuest questInctance = _container.InstantiatePrefabForComponent<IQuest>(quest.GameObject);
-        questInctance.GameObject.tag = "Decor";
-        questVisualController.SetParent(questTile.QuestPlace.transform);
-        questVisualController.SetLocalPosition(Vector3.zero);
-        questVisualController.SetLocalRotation(Quaternion.identity);
-        return questInctance;
+        IQuest questInstance = _container.InstantiatePrefabForComponent<IQuest>(quest.GameObject);
+        IQuestVisualController visualsFromInstance = questInstance.GetQuestController<IQuestVisualController>();
+
+        questInstance.GameObject.tag = "Decor";
+        visualsFromInstance.SetParent(questTile.QuestPlace.transform);
+        visualsFromInstance.SetLocalPosition(Vector3.zero);
+        visualsFromInstance.SetLocalRotation(Quaternion.identity);
+        return questInstance;
     }
 
     public void SpawnQuest(ITile tile)
@@ -64,7 +65,7 @@ public class QuestManagmentSystem : IQuestManagmentSystem
     private IEnumerator DelayedStart(IQuest quest)
     {
         // TODO настраиваемое время, вызов из панели оператора
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         quest.GetQuestController<IQuestStateController>().StartGame();
     }
 

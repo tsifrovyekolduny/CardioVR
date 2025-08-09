@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DigitsQuest : BaseQuest
+public class DigitsQuest : MonoBehaviour, IQuestLogic
 {
     [SerializeField]
     private List<FlipableCardUI> _cards;
@@ -13,25 +13,22 @@ public class DigitsQuest : BaseQuest
     private int _currentNumber = -1;
     private int _maxNumber = -1;
 
-    public override void Start()
+    public void Start()
     {
-        _cards = GetComponentsInChildren<FlipableCardUI>().ToList();
-        base.Start();
+        _cards = GetComponentsInChildren<FlipableCardUI>().ToList();        
     }
 
-    public override bool IsFinished()
+    public void StartLogic()
+    {
+        InitAllCards();
+    }
+
+    public bool IsCompleted()
     {
         bool isEnd = _maxNumber == _currentNumber;
         bool isAllFlipped = _cards.Where(card => card.IsOpened).Count() == _cards.Count();
         return isEnd && isAllFlipped;
-    }
-
-    public override void StartGame()
-    {
-        base.StartGame();
-        InitAllCards();
-    }        
-
+    }      
     private void TemporaryShowAllCards()
     {
         foreach (var card in _cards)
@@ -80,8 +77,7 @@ public class DigitsQuest : BaseQuest
     }
 
     public void CheckNumber(int number)
-    {
-        Debug.Log($"{number} on check");
+    {        
         // проиграл, старое число больше нового
         if (_currentNumber > number)
         {

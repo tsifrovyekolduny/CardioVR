@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class QuestAudioController : MonoBehaviour, IQuestNarratorController
+public class QuestNarratorController : MonoBehaviour, IQuestNarratorController
 {
     [SerializeField] private NarratorPhraseScriptable _phrases;
 

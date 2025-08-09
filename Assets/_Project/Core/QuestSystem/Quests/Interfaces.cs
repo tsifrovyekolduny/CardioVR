@@ -2,8 +2,7 @@
 using UnityEngine;
 
 public interface IQuest
-{    
-    bool IsCompleted();
+{       
     GameObject GameObject { get; }    
     T GetQuestController<T>() where T : class, IQuestController;
 }
@@ -39,4 +38,5 @@ public interface IQuestNarratorController : IQuestController
 public interface IQuestLogic : IQuestController
 {
     bool IsCompleted();
+    void StartLogic();
 }

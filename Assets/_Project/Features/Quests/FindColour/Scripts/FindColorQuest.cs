@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FindColorQuest : BaseQuest
+public class FindColorQuest : MonoBehaviour, IQuestLogic
 {
     [SerializeField]
     private List<IColorButton> _colorButtons = new List<IColorButton>();
@@ -24,7 +24,6 @@ public class FindColorQuest : BaseQuest
             this.TargetColor = targetColor;
         }
     }
-
 
     // повтор порядка из примера
     List<TextTargetColors> _hardcodedColors = new List<TextTargetColors>()
@@ -52,7 +51,7 @@ public class FindColorQuest : BaseQuest
     };
 
 
-    public override bool IsFinished()
+    public bool IsCompleted()
     {
         if (_colorButtons.Count > 0)
         {
@@ -61,15 +60,14 @@ public class FindColorQuest : BaseQuest
         return false;
     }
 
-    public override void StartGame()
-    {
-        base.StartGame();
+    public void StartLogic()
+    {        
         _currentColorButton = _colorButtons[_currentColorButtonIndex];
         _currentColorButton.Select();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public override void Start()
+    public void Start()
     {
         if (_colorButtons.Count == 0)
         {
@@ -84,14 +82,12 @@ public class FindColorQuest : BaseQuest
         }
 
         Debug.Log($"Count of CB: {_colorButtons.Count}");        
-
-        base.Start();
-    }    
+    }
 
     private void CompareWithCurrentColor(Color color)
     {
         if (_currentColorButton.TargetColor == color)
-        {            
+        {
             SetNextColor();
         }
     }

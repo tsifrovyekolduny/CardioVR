@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// TODO не хватае Dispose
 
-[RequireComponent(typeof(IQuestStateController))]
-[RequireComponent(typeof(IQuestVisualController))]
-[RequireComponent(typeof(IQuestNarratorController))]
-public class BaseQuest : MonoBehaviour, IQuest
+// TODO можно так делать, пока не появятся иные QuestVisualController
+[RequireComponent(typeof(QuestStateController))]
+[RequireComponent(typeof(QuestVisualController))]
+[RequireComponent(typeof(QuestNarratorController))]
+
+// TODO не хватае Dispose
+public class QuestCore : MonoBehaviour, IQuest
 {
     private List<IQuestController> _listOfQuestControllers;
     private IQuestStateController _stateController;
@@ -46,19 +48,36 @@ public class BaseQuest : MonoBehaviour, IQuest
     public void StartGame()
     {
         _visualController.Show();
+        _logic.StartLogic();
     }
 
     public void Finish()
-    {
-        _stateController.CompleteGame();
+    {        
         _visualController.Hide();
         _narratorController.PlayEnd();
     }
 
-    public bool IsCompleted() => _stateController.CurrentState == QuestStates.Finished;
+    private void Update()
+    {
+        if (_logic.IsCompleted() && _stateController.CurrentState != QuestStates.Finished)
+        {
+            // TODO вызов завершения из панели оператора
+            Debug.Log("Task completed");
+            _stateController.CompleteGame();
+        }
+    }    
 
     T IQuest.GetQuestController<T>()
-    {
-        return _listOfQuestControllers.OfType<T>().First();
+    {        
+        if(_listOfQuestControllers == null)
+        {
+            return GetComponent<T>();
+        }
+
+        // Такая реализция выдачи более экономная
+        else
+        {
+            return _listOfQuestControllers.OfType<T>().First();
+        }            
     }
 }
