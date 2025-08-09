@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 7597362804773064306}
   - component: {fileID: 8212563266680143563}
   m_Layer: 5
-  m_Name: NarratorUI
+  m_Name: SimpleNarratorUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
