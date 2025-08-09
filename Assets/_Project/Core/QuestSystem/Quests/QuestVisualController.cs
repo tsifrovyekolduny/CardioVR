@@ -29,8 +29,7 @@ public class QuestVisualController : MonoBehaviour, IQuestVisualController
                 {
                     a.Hide(instant);
                 }
-
-                    ;
+            }
         }
     }
 }

@@ -2,22 +2,24 @@
 using UnityEngine;
 
 public interface IQuest
-{
-    void Start();
-    void Finish();
+{    
     bool IsCompleted();
-    GameObject GameObject { get; }
-    event Action OnCompleted;
+    GameObject GameObject { get; }    
+    T GetQuestController<T>() where T : class, IQuestController;
 }
 
-public interface IQuestStateController
+public interface IQuestController { };
+
+public interface IQuestStateController : IQuestController
 {
     QuestStates CurrentState { get; }
     void StartGame();
     void CompleteGame();
+    event Action OnStarted;
+    event Action OnCompleted;
 }
 
-public interface IQuestVisualController
+public interface IQuestVisualController : IQuestController
 {
     void Show(bool instant = false);
     void Hide(bool instant = false);
@@ -26,7 +28,7 @@ public interface IQuestVisualController
     void SetLocalRotation(Quaternion rotation);
 }
 
-public interface IQuestNarratorController
+public interface IQuestNarratorController : IQuestController
 {
     void PlayGreeting();
     void PlayHint(string hint);
@@ -34,7 +36,7 @@ public interface IQuestNarratorController
     void PlayEnd();
 }
 
-public interface IQuestLogic
+public interface IQuestLogic : IQuestController
 {
     bool IsCompleted();
 }

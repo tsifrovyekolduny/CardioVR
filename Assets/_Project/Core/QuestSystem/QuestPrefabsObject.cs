@@ -4,5 +4,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "QuestPrefabsObject", menuName = "Game/Quest Settings")]
 public class QuestPrefabsObject : ScriptableObject
 {
-    public GameObject[] QuestPrefabs;
+    public BaseQuest[] QuestPrefabs;
 }
