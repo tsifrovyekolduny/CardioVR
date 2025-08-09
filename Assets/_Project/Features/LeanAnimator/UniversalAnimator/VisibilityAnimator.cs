@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VisibilityAnimator : MonoBehaviour
 {
-    [SerializeField] private float _fadeDuration = 0.5f;
+    [SerializeField] private float _fadeDuration = 0.5f;    
     [SerializeField, Tooltip("Глубина поиска: 1 - только прямые дети")]
     private int _maxDepth = 1;
 

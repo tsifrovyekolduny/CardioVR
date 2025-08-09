@@ -49,7 +49,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     public virtual void Start()
     {
-        EnableChildGameObjects(false);
+        EnableChildGameObjects(false, true);
     }
 
 
@@ -65,15 +65,32 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
         }
     }
 
-    protected virtual void EnableChildGameObjects(bool status)
+    protected virtual void EnableChildGameObjects(bool status, bool instant = false)
     {
-        foreach(Transform child in transform)
+        foreach (Transform child in transform)
         {
-            if(child.tag != "Decor")
+            if (child.tag != "Decor")
             {
-                child.gameObject.SetActive(status);
-            }            
-        }        
+                // сама анимация
+                var animators = child.GetComponentsInChildren<VisibilityAnimator>();
+                if (animators.Length > 0)
+                {
+                    foreach (var animator in animators)
+                    {
+                        if (status)
+                        {
+                            animator.Show(instant);
+                        }
+                        else
+                        {
+                            animator.Hide(instant);
+                        }
+                    }
+                }
+            }
+        }
+        string log = status ? "showed" : "hided";
+        Debug.Log($"Childs are {log}");
     }
 
     public void FinishGame()

@@ -3,7 +3,7 @@ using Zenject;
 
 public class SceneInstaller : MonoInstaller
 {
-
+    [SerializeField] private Narrator _narratorPrefab;
     [SerializeField] private QuestPrefabsObject _questPrefabsObject;
     [SerializeField] private TilePrefabsObject _tilePrefabsObject;
     public override void InstallBindings()
@@ -20,6 +20,8 @@ public class SceneInstaller : MonoInstaller
 
     private void BindSystems()
     {
+        var nar = Container.InstantiatePrefabForComponent<INarrator>(_narratorPrefab);
+        Container.BindInterfacesAndSelfTo<Narrator>().FromInstance(nar).AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<SaveSystem>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<Operator>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<TileFactory>().AsSingle().NonLazy();
