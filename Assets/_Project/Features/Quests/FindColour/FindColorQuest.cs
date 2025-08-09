@@ -86,35 +86,7 @@ public class FindColorQuest : BaseQuest
         Debug.Log($"Count of CB: {_colorButtons.Count}");        
 
         base.Start();
-    }
-
-    protected override void EnableChildGameObjects(bool status)
-    {
-        foreach (Transform child in transform)
-        {
-            if (child.tag != "Decor")
-            {
-                // сама анимация
-                var animators = child.GetComponentsInChildren<VisibilityAnimator>();
-                if (animators.Length > 0)
-                {
-                    foreach (var animator in animators)
-                    {
-                        if (status)
-                        {
-                            animator.Show();
-                        }
-                        else
-                        {
-                            animator.Hide();
-                        }
-                    }
-                }
-            }
-        }
-        string log = status ? "showed" : "hided";
-        Debug.Log($"Childs are {log}");
-    }
+    }    
 
     private void CompareWithCurrentColor(Color color)
     {
