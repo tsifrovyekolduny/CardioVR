@@ -103,11 +103,11 @@ namespace Unity.VRTemplate
         bool m_ClampedMotion = true;
 
         [SerializeField]
-        [Tooltip("Rotation of the knob at value '1'")]
+        [Tooltip("LocalRotation of the knob at value '1'")]
         float m_MaxAngle = 90.0f;
 
         [SerializeField]
-        [Tooltip("Rotation of the knob at value '0'")]
+        [Tooltip("LocalRotation of the knob at value '0'")]
         float m_MinAngle = -90.0f;
 
         [SerializeField]

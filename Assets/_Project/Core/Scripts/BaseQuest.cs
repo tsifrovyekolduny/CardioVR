@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using UnityEngine.InputSystem.XR.Haptics;
 using UnityEngine.UIElements;
 using Zenject;
 
@@ -7,17 +10,35 @@ using Zenject;
 // todo фразы по умолчанию говорят первый элемент из списка
 public abstract class BaseQuest : MonoBehaviour, IQuest
 {
+    public event Action OnQuestFinished;
     public int QuestNumber = 0;
     [SerializeField]
     private NarratorPhraseScriptable _phraseScriptable;
     private INarrator _narrator;
     private IOperator _operator;
     private SaveSystem _saveSystem;
+    public GameObject QuestGameObject => gameObject;
+    public Quaternion LocalRotation { 
+        get => transform.localRotation; 
+        set => transform.localRotation = value; 
+    }
+    public Vector3 LocalPosition
+    {
+        get => transform.localPosition;
+        set => transform.localPosition = value;
+    }
+
+    public Transform Parent
+    {
+        get => transform.parent;
+        set => transform.SetParent(value);
+    }
 
     // для просмотра состояния квеста в инспекторе
     [SerializeField]
-    private QuestStates _currentState = QuestStates.NotStarted;    
+    private QuestStates _currentState = QuestStates.NotStarted;
 
+    public QuestStates CurrentState => _currentState;
     [Inject]
     private void Construct(SaveSystem saveSystem, INarrator narrator, IOperator @operator)
     {
@@ -31,14 +52,6 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
         EnableChildGameObjects(false);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // Нельзя начать игру, если она в процессе или завершена
-        if (_currentState == QuestStates.NotStarted)
-        {
-            StartGame();
-        }        
-    }
 
     private void Update()
     {
@@ -65,6 +78,7 @@ public abstract class BaseQuest : MonoBehaviour, IQuest
 
     public void FinishGame()
     {
+        OnQuestFinished?.Invoke();
         _operator.OnSessionEnd -= FinishGame;
         _operator.OnGivingHint -= GiveHint;
 
