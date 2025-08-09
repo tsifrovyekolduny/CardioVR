@@ -1,132 +1,41 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.InputSystem.XR.Haptics;
-using UnityEngine.UIElements;
 using Zenject;
 
-[RequireComponent(typeof(BoxCollider))]
-
-// todo фразы по умолчанию говорят первый элемент из списка
-public abstract class BaseQuest : MonoBehaviour, IQuest
+[RequireComponent(typeof(IQuestStateController))]
+public class BaseQuest : MonoBehaviour, IQuest
 {
-    public event Action OnQuestFinished;
-    public int QuestNumber = 0;
-    [SerializeField]
-    private NarratorPhraseScriptable _phraseScriptable;
-    private INarrator _narrator;
-    private IOperator _operator;
-    private SaveSystem _saveSystem;
-    public GameObject QuestGameObject => gameObject;
-    public Quaternion LocalRotation { 
-        get => transform.localRotation; 
-        set => transform.localRotation = value; 
-    }
-    public Vector3 LocalPosition
+    private IQuestStateController _stateController;
+    private IQuestVisualController _visualController;
+    private IQuestNarratorController _audioController;
+    private IQuestLogic _logic;
+
+    public event Action OnCompleted;
+
+    [SerializeField] private int _questId = 0;
+
+    public GameObject GameObject => gameObject;
+
+    private void Awake()
     {
-        get => transform.localPosition;
-        set => transform.localPosition = value;
+        // Инициализируем зависимости
+        _stateController = GetComponent<IQuestStateController>();
+        _visualController = GetComponent<IQuestVisualController>();
+        _audioController = GetComponent<IQuestNarratorController>();
+        _logic = GetComponent<IQuestLogic>();
     }
 
-    public Transform Parent
+    public void Start()
     {
-        get => transform.parent;
-        set => transform.SetParent(value);
+        _visualController.Hide(instant: true);        
     }
 
-    // для просмотра состояния квеста в инспекторе
-    [SerializeField]
-    private QuestStates _currentState = QuestStates.NotStarted;
-
-    public QuestStates CurrentState => _currentState;
-    [Inject]
-    private void Construct(SaveSystem saveSystem, INarrator narrator, IOperator @operator)
+    public void Finish()
     {
-        _operator = @operator;
-        _saveSystem = saveSystem;
-        _narrator = narrator;
+        _stateController.Complete();
+        _audioController.PlayEnd();        
+        OnCompleted?.Invoke();
     }
 
-    public virtual void Start()
-    {
-        EnableChildGameObjects(false, true);
-    }
-
-
-    private void Update()
-    {
-        // Проверка условия только, когда игра началась
-        if (_currentState == QuestStates.Started)
-        {
-            if (IsFinished() && _currentState != QuestStates.Finished)
-            {
-                FinishGame();
-            }
-        }
-    }
-
-    protected virtual void EnableChildGameObjects(bool status, bool instant = false)
-    {
-        foreach (Transform child in transform)
-        {
-            if (child.tag != "Decor")
-            {
-                // сама анимация
-                var animators = child.GetComponentsInChildren<VisibilityAnimator>();
-                if (animators.Length > 0)
-                {
-                    foreach (var animator in animators)
-                    {
-                        if (status)
-                        {
-                            animator.Show(instant);
-                        }
-                        else
-                        {
-                            animator.Hide(instant);
-                        }
-                    }
-                }
-            }
-        }
-        string log = status ? "showed" : "hided";
-        Debug.Log($"Childs are {log}");
-    }
-
-    public void FinishGame()
-    {
-        OnQuestFinished?.Invoke();
-        _operator.OnSessionEnd -= FinishGame;
-        _operator.OnGivingHint -= GiveHint;
-
-        _currentState = QuestStates.Finished;
-        _narrator.Play(_phraseScriptable.End[0]);        
-        EnableChildGameObjects(false);
-        _saveSystem.Save(QuestNumber, _currentState);
-    }
-
-    public virtual void GiveCongrats()
-    {
-        _narrator.Play(_phraseScriptable.Congrats[0]);
-    }
-
-    public void GiveHint(string hint)
-    {
-        _narrator.Play(hint);
-    }
-
-    abstract public bool IsFinished();
-
-    public virtual void StartGame()
-    {
-        // Подписка на события от оператора
-        _operator.OnSessionEnd += FinishGame;
-        _operator.OnGivingHint += GiveHint;
-        _operator.QuestStarted(_phraseScriptable.Hints);
-
-        _narrator.Play(_phraseScriptable.Greetings[0]);
-        EnableChildGameObjects(true);
-        _currentState = QuestStates.Started;
-    }
+    public bool IsCompleted() => _stateController.CurrentState == QuestStates.Finished;
 }
-
