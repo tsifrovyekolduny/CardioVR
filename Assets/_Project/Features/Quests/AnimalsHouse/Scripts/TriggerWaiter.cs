@@ -41,4 +41,12 @@ public class TriggerWaiter : MonoBehaviour
             ChangeTriggerMode(false);
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.name == _expectedVisitorGameObjectName)
+        {
+            ChangeTriggerMode(false);
+        }        
+    }
 }

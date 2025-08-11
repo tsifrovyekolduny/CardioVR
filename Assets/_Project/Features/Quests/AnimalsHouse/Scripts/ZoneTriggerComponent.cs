@@ -7,7 +7,7 @@ public class ZoneTriggerComponent : MonoBehaviour
     [Header("Настройки")]
     public float returnDelay = 0f; // задержка перед возвратом (если нужно)
     [SerializeField] string _interactiveTag;
-    private List<GameObject> activeCubes = new List<GameObject>();
+    private List<ReturnToBaseComponent> activeCubes = new List<ReturnToBaseComponent>();
 
     private void Start()
     {
@@ -18,11 +18,13 @@ public class ZoneTriggerComponent : MonoBehaviour
     {        
         if (other.CompareTag(_interactiveTag))
         {
+            var returnBaseComponent = other.GetComponent<ReturnToBaseComponent>();
+            returnBaseComponent.NeedToReturn = false;
             // Добавляем куб в список активных
-            if (!activeCubes.Contains(other.gameObject))
+            if (!activeCubes.Contains(returnBaseComponent))
             {
-                activeCubes.Add(other.gameObject);
-                Debug.Log($"Куб {other.name} вошёл в зону.");
+                activeCubes.Add(returnBaseComponent);
+                Debug.Log($"Куб {returnBaseComponent.name} вошёл в зону.");
             }
         }
     }
@@ -31,37 +33,36 @@ public class ZoneTriggerComponent : MonoBehaviour
     {
         if (other.CompareTag(_interactiveTag))
         {
-            GameObject cube = other.gameObject;
+            var returnBaseComponent = other.GetComponent<ReturnToBaseComponent>();
+            // Удаляем из списка            
 
-            // Удаляем из списка
-            if (activeCubes.Remove(cube))
+            Debug.Log($"Куб {returnBaseComponent.name} вышел из зоны. Ставим на возврат");
+
+            // Задержка (опционально) — например, чтобы не мигать при быстром выходе
+            if (returnDelay > 0f)
             {
-                Debug.Log($"Куб {cube.name} вышел из зоны. Возвращаем...");
+                Invoke(nameof(ReturnCube), returnDelay);
+            }
+            else
+            {
+                ReturnCube(returnBaseComponent);
+            }            
+        }
+    }
 
-                // Задержка (опционально) — например, чтобы не мигать при быстром выходе
-                if (returnDelay > 0f)
-                {
-                    Invoke(nameof(ReturnCube), returnDelay);
-                }
-                else
-                {
-                    ReturnCube();
-                }
+    private void Update()
+    {
+        foreach(var cub in activeCubes)
+        {
+            if (cub.NeedToReturn)
+            {
+                cub.ReturnToBase();
             }
         }
     }
 
-    void ReturnCube()
+    void ReturnCube(ReturnToBaseComponent returnScript)
     {
-        // Ищем компонент ReturnToBaseComponent на кубе
-        ReturnToBaseComponent returnScript = GetComponent<ReturnToBaseComponent>();
-        if (returnScript != null)
-        {
-            returnScript.ReturnToBase();
-        }
-        else
-        {
-            Debug.LogError("Куб не имеет скрипта ReturnToBaseComponent!");
-        }
+        returnScript.NeedToReturn = true;
     }
 }

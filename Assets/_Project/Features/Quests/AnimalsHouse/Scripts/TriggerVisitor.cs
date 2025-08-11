@@ -16,10 +16,11 @@ public class TriggerVisitor : MonoBehaviour
     [SerializeField] private string _visitorName;
     private XRGrabInteractable _xrGrab;
 
-    private void Start()
+    private void Awake()
     {
         gameObject.name = _visitorName;
         _xrGrab = GetComponent<XRGrabInteractable>();
+        _xrGrab.farAttachMode = UnityEngine.XR.Interaction.Toolkit.Attachment.InteractableFarAttachMode.Near;
         ChangeInteractiveStats(false);
     }
 
