@@ -1,0 +1,42 @@
+﻿using System;
+using UnityEngine;
+
+public interface IQuest
+{       
+    GameObject GameObject { get; }    
+    T GetQuestController<T>() where T : class, IQuestController;
+}
+
+public interface IQuestController { };
+
+public interface IQuestStateController : IQuestController
+{
+    QuestStates CurrentState { get; }
+    void StartGame();
+    void CompleteGame();
+    event Action OnStarted;
+    event Action OnCompleted;
+}
+
+public interface IQuestVisualController : IQuestController
+{
+    void Show(bool instant = false);
+    void Hide(bool instant = false);
+    void SetParent(Transform parent);
+    void SetLocalPosition(Vector3 position);
+    void SetLocalRotation(Quaternion rotation);
+}
+
+public interface IQuestNarratorController : IQuestController
+{
+    void PlayGreeting();
+    void PlayHint(string hint);
+    void PlayCongrats();
+    void PlayEnd();
+}
+
+public interface IQuestLogic : IQuestController
+{
+    bool IsCompleted();
+    void StartLogic();
+}

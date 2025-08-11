@@ -20,16 +20,8 @@ public class QuestManagmentSystem : IQuestManagmentSystem
     private Queue<IQuest> PreloadQuest(QuestPrefabsObject questPrefabsObject)
     {
         var temporaryQuestQueue = new Queue<IQuest>();
-        foreach (GameObject prefab in questPrefabsObject.QuestPrefabs)
+        foreach (IQuest quest in questPrefabsObject.QuestPrefabs)
         {
-
-            IQuest quest = prefab.GetComponent<IQuest>();
-            if (quest == null)
-            {
-                Debug.LogError($"{prefab.name} не обладает необходимым интерфейсом");
-                continue;
-            }
-
             temporaryQuestQueue.Enqueue(quest);
         }
         return temporaryQuestQueue;
@@ -41,13 +33,16 @@ public class QuestManagmentSystem : IQuestManagmentSystem
         {
             return null;
         }
-        IQuest questPrefab = _questPrefabs.Dequeue();
-        IQuest questInctance = _container.InstantiatePrefabForComponent<IQuest>(questPrefab.QuestGameObject);
-        questInctance.QuestGameObject.tag = "Decor";
-        questInctance.Parent = questTile.QuestPlace.transform;
-        questInctance.LocalPosition = Vector3.zero;
-        questInctance.LocalRotation = Quaternion.identity;
-        return questInctance;
+        IQuest quest = _questPrefabs.Dequeue();       
+
+        IQuest questInstance = _container.InstantiatePrefabForComponent<IQuest>(quest.GameObject);
+        IQuestVisualController visualsFromInstance = questInstance.GetQuestController<IQuestVisualController>();
+
+        questInstance.GameObject.tag = "Decor";
+        visualsFromInstance.SetParent(questTile.QuestPlace.transform);
+        visualsFromInstance.SetLocalPosition(Vector3.zero);
+        visualsFromInstance.SetLocalRotation(Quaternion.identity);
+        return questInstance;
     }
 
     public void SpawnQuest(ITile tile)
@@ -62,7 +57,7 @@ public class QuestManagmentSystem : IQuestManagmentSystem
                 monoBehaviour.StartCoroutine(DelayedStart(quest));
             }
             
-            quest.OnQuestFinished += tile.RequestNextTile;
+            quest.GetQuestController<IQuestStateController>().OnCompleted += tile.RequestNextTile;
             Debug.Log(" вест был заспавнен");
         }
     }
@@ -70,8 +65,8 @@ public class QuestManagmentSystem : IQuestManagmentSystem
     private IEnumerator DelayedStart(IQuest quest)
     {
         // TODO настраиваемое врем€, вызов из панели оператора
-        yield return new WaitForSeconds(3f);
-        quest.StartGame();
+        yield return new WaitForSeconds(5f);
+        quest.GetQuestController<IQuestStateController>().StartGame();
     }
 
     public bool AreAllQuestsCompleted() => _currentQuestIndex >= _questPrefabs.Count;
