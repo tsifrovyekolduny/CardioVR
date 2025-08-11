@@ -1,26 +1,19 @@
+using System.Linq;
 using UnityEngine;
 
 public class AnimalsHouseQuest : MonoBehaviour, IQuestLogic
 {
+    [SerializeField] private TriggerWaiter[] _waiters;
+    [SerializeField] private TriggerVisitor[] _visitors;
     public bool IsCompleted()
     {
-        throw new System.NotImplementedException();
+        return _waiters.All(g => g.IsRightEntrance);
     }
 
     public void StartLogic()
     {
-        throw new System.NotImplementedException();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        foreach (var item in _visitors) { 
+            item.ChangeInteractiveStats(true);
+        }
+    }           
 }
