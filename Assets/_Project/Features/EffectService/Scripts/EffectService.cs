@@ -39,6 +39,7 @@ public class EffectService : IInitializable, IEffectService
             return;
         }
 
-        GameObject instance = _container.InstantiatePrefabForComponent<GameObject>(prefab, transform);
+        Effect instance = _container.InstantiatePrefabForComponent<Effect>(prefab, transform);
+        instance.transform.localPosition = Vector3.zero;
     }    
 }

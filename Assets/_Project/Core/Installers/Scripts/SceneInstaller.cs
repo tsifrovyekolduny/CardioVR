@@ -23,6 +23,7 @@ public class SceneInstaller : MonoInstaller
     private void BindSystems()
     {
         Container.BindInterfacesAndSelfTo<EffectService>().AsSingle().NonLazy();
+        Container.Bind<VisualComponentFactory>().AsSingle().NonLazy();
         var nar = Container.InstantiatePrefabForComponent<INarrator>(_narratorPrefab);
         Container.BindInterfacesAndSelfTo<Narrator>().FromInstance(nar).AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<SaveSystem>().AsSingle().NonLazy();

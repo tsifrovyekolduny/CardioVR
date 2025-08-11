@@ -18,8 +18,11 @@ public class MeshVisual : IVisualComponent
     }
 
     public void Hide(float duration)
-    {     
-        _effectService.PlayEffect(VisualEffectType.ShowHideCloud, _renderer.transform);
+    {
+        if (duration > 0f) {
+            _effectService.PlayEffect(VisualEffectType.ShowHideCloud, _renderer.transform);
+        }
+        
         _renderer.enabled = false;
     }
 }
