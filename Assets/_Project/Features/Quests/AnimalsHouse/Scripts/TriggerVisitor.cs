@@ -20,7 +20,7 @@ public class TriggerVisitor : MonoBehaviour
     {
         gameObject.name = _visitorName;
         _xrGrab = GetComponent<XRGrabInteractable>();
-        _xrGrab.farAttachMode = UnityEngine.XR.Interaction.Toolkit.Attachment.InteractableFarAttachMode.Near;
+        _xrGrab.farAttachMode = UnityEngine.XR.Interaction.Toolkit.Attachment.InteractableFarAttachMode.DeferToInteractor;
         ChangeInteractiveStats(false);
     }
 
