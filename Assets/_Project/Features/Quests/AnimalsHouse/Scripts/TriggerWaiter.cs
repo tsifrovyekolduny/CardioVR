@@ -13,8 +13,7 @@ public class TriggerWaiter : MonoBehaviour
     [SerializeField] Color _wrongEntranceColor = Color.red;
     private MeshRenderer _triggerModel;
     private BoxCollider _boxCollider;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Start()
     {
         _triggerModel = GetComponent<MeshRenderer>();
@@ -41,7 +40,6 @@ public class TriggerWaiter : MonoBehaviour
             ChangeTriggerMode(false);
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.name == _expectedVisitorGameObjectName)

@@ -8,8 +8,7 @@ public class ReturnToBaseComponent : MonoBehaviour
     [SerializeField] string _interactiveTag;
 
     void Start()
-    {
-        // Сохраняем исходную позицию при старте
+    {        
         initialPosition = transform.position;
         gameObject.tag = _interactiveTag;
     }
@@ -19,9 +18,5 @@ public class ReturnToBaseComponent : MonoBehaviour
     {
         transform.position = initialPosition;
         transform.rotation = Quaternion.identity;
-
-        Debug.Log($"Куб {name} возвращён на место.");
-
-        // Можно добавить звук, эффект, сброс физики и т.д.
     }
 }

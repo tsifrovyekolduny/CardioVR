@@ -11,10 +11,8 @@ public class AnimalsHouseQuest : MonoBehaviour, IQuestLogic
     }
 
     public void StartLogic()
-    {
-        Debug.Log("Игра началась");
-        foreach (var item in _visitors) {
-            Debug.Log("Делаем активными");
+    {        
+        foreach (var item in _visitors) {            
             item.ChangeInteractiveStats(true);
         }
     }           
