@@ -80,3 +80,4 @@ MonoBehaviour:
   _narratorPrefab: {fileID: 7597362804773064306, guid: a727629d0949d704cbc9b4ee7b7a53c8, type: 3}
   _questPrefabsObject: {fileID: 11400000, guid: 627d50d6c88d0e2408002e46fd5edf55, type: 2}
   _tilePrefabsObject: {fileID: 11400000, guid: f95f23d9864139f428f5399e50e60281, type: 2}
+  _effectsConfig: {fileID: 11400000, guid: 260b85b93e3961545bf5cb54e3ddcd3c, type: 2}
