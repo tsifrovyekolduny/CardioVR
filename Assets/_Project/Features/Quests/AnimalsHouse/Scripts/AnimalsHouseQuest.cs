@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AnimalsHouseQuest : MonoBehaviour, IQuestLogic
 {
-    [SerializeField] private TriggerWaiter[] _waiters;
+    [SerializeField] private ITriggerWaiter[] _waiters;
     [SerializeField] private TriggerVisitor[] _visitors;
     public bool IsCompleted()
     {        

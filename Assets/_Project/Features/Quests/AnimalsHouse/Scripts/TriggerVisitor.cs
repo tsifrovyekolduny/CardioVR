@@ -4,8 +4,6 @@ using UnityEngine.XR.Interaction.Toolkit.Transformers;
 
 
 [RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(XRGrabInteractable))]
 [RequireComponent(typeof(XRGeneralGrabTransformer))]
@@ -13,10 +11,10 @@ using UnityEngine.XR.Interaction.Toolkit.Transformers;
 [RequireComponent(typeof(VisibilityAnimator))]
 public class TriggerVisitor : MonoBehaviour
 {
-    [SerializeField] private string _visitorName;
+    [SerializeField] protected string _visitorName;
     private XRGrabInteractable _xrGrab;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         gameObject.name = _visitorName;
         _xrGrab = GetComponent<XRGrabInteractable>();
