@@ -1,134 +1,152 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+
+enum MagneticEntranceState
+{
+    FirstEntrance, Repulse, FinalAccept
+}
 
 [RequireComponent(typeof(BoxCollider))]
 public class MagneticTriggerWaiter : MonoBehaviour, ITriggerWaiter
 {
-    [Header("Настройки магнетизма")]
-    [Tooltip("Сила притяжения к центру зоны")]
-    public float magneticForce = 10f;
-    [Tooltip("Расстояние, на котором начинается притяжение")]
-    public float attractionRadius = 2f;
-    [Tooltip("Расстояние, на котором начинается отталкивание (если неправильно)")]
-    public float repulsionRadius = 0.8f;
-    [Tooltip("Сила отталкивания (если неправильно)")]
-    public float repulsionForce = 5f;
-    [Tooltip("Насколько сильно объект будет отодвинут (расстояние от центра)")]
-    public float repulsionDistance = 0.5f;
-    [Tooltip("Скорость, с которой объект возвращается к центру после отталкивания")]
-    public float returnSpeed = 2f;
+    [Header("Настройки анимации")]
+    [Tooltip("Время анимации притяжения")]
+    public float attractDuration = 0.5f;
+
+    [Tooltip("Смещение вперёд при полном принятии")]
+    public Vector3 _finalOffset;
+
+    [Tooltip("Время отталкивания (выплевывания)")]
+    public float repulseDuration = 0.3f;
+    [Tooltip("Расстояние, на которое отталкиваем вниз")]
+    public float repulseDistance = 0.2f;
+    [Tooltip("Задержка перед анимацией")]
+    public float delayDuration = 2f;
+
+    [Tooltip("Максимальная глубина поиска для подключения")]
+    public int maxDepth = 1;
 
     [Header("Ожидаемый гость")]
     [SerializeField] private string _expectedVisitorGameObjectName;
 
-    private bool _isRightEntrance = false;
+    [SerializeField] private bool _isRightEntrance = false;
     public bool IsRightEntrance => _isRightEntrance;
     public string ExpectedVisitorGameObjectName => _expectedVisitorGameObjectName;
-
-    private BoxCollider _collider;
-    private Vector3 _center;
-    private bool _isGrabbed = false;
-    private Rigidbody _grabbedRigidbody;
-    private Vector3 _initialPosition;
-    private Vector3 _repulseDirection;
-    
+    private XRGrabInteractable _grabbedXR;
 
     void Awake()
     {
-        _collider = GetComponent<BoxCollider>();
         gameObject.name = _expectedVisitorGameObjectName;
-        _center = transform.position + _collider.center;
     }
 
-    void Update()
+    private bool IsXRExistOrNotSelected(Collider other, out XRGrabInteractable xRGrab, string whom)
     {
-        if (!_isGrabbed || _grabbedRigidbody == null) return;
-
-        Vector3 toCenter = _center - _grabbedRigidbody.position;
-        float distance = toCenter.magnitude;
-
-        // Если слишком далеко — возвращаемся
-        if (distance > attractionRadius)
-        {
-            _grabbedRigidbody.linearVelocity = Vector3.zero;
-            return;
-        }
-
-        // Притягиваем к центру
-        if (distance < repulsionRadius)
-        {
-            Vector3 force = toCenter.normalized * magneticForce * Time.deltaTime;
-            _grabbedRigidbody.AddForce(force, ForceMode.VelocityChange);
-        }
-
-        // Если неправильная зона — отталкиваем
-        if (!IsCorrectZone(_grabbedRigidbody.gameObject.name)
-            && distance < repulsionRadius)
-        {
-            Vector3 repulseDir = (transform.position - _grabbedRigidbody.position).normalized;
-            _repulseDirection = repulseDir;
-            _grabbedRigidbody.AddForce(repulseDir * repulsionForce, ForceMode.Impulse);
-
-            // Запоминаем направление, чтобы потом вернуть
-            _initialPosition = _grabbedRigidbody.position;
-        }
-
-        // После отталкивания — медленно возвращаем обратно
-        if (!IsCorrectZone(_grabbedRigidbody.gameObject.name)
-            && distance > repulsionRadius)
-        {
-            Vector3 returnDir = (_center - _grabbedRigidbody.position).normalized;
-            _grabbedRigidbody.linearVelocity = returnDir * returnSpeed;
-        }
-    }
-
-    public bool IsCorrectZone(string visitorName)
-    {
-        return visitorName == ExpectedVisitorGameObjectName;
+        xRGrab = other.GetComponent<XRGrabInteractable>();
+        if (xRGrab == null) return false;        
+        return !xRGrab.isSelected;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        var triggerVisitor = other.GetComponent<TriggerVisitor>();
-        OnEnter(triggerVisitor);
+        if (!IsXRExistOrNotSelected(other, out _grabbedXR, "enter")) { return; }
+
+        Debug.Log($"{other.name} вошла в зону магнита");
+
+        // Проверяем, правильная ли зона
+        bool isCorrect = _grabbedXR.gameObject.name == ExpectedVisitorGameObjectName;
+
+        StartCoroutine(DelayedLaunch(MagneticEntranceState.FirstEntrance, isCorrect));
+    }
+
+    IEnumerator DelayedLaunch(MagneticEntranceState state, bool isCorrect = false)
+    {
+        yield return new WaitForSeconds(delayDuration);
+        if (state == MagneticEntranceState.FirstEntrance)
+        {
+            Debug.Log("First Entrance");
+            AttractToCenter(isCorrect);
+        }
+        else if (state == MagneticEntranceState.Repulse)
+        {
+            Debug.Log("Repulse");
+            Repulse();
+        }
+        else
+        {
+            Debug.Log("Accept");
+            Acccept();
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        var triggerVisitor = other.GetComponent<TriggerVisitor>();
-        OnExit(triggerVisitor);
+        if (!IsXRExistOrNotSelected(other, out _grabbedXR, "exit")) { return; }
+
+        Debug.Log($"{other.name} вышел из зоны магнита");        
+
+        // _grabbedXR = null;
     }
 
-    public void OnEnter(TriggerVisitor visitor)
+    private void AttractToCenter(bool isCorrect)
     {
-        if (visitor == null) return;
+        if (_grabbedXR == null) { return; }
+        // Смещаем вперёд относительно цели        
+        Vector3 targetPos = transform.localPosition;
 
-        var rigidbody = visitor.GetComponent<Rigidbody>();
-        if (rigidbody == null) return;
+        LeanTween.moveLocal(_grabbedXR.gameObject, targetPos, attractDuration)
+            .setEase(LeanTweenType.easeOutQuad)
+            .setOnComplete(() =>
+            {
+                if (isCorrect)
+                {
+                    StartCoroutine(DelayedLaunch(MagneticEntranceState.FinalAccept));
+                }
+                else
+                {
+                    StartCoroutine(DelayedLaunch(MagneticEntranceState.Repulse));
+                }
 
-        _grabbedRigidbody = rigidbody;
-        _isGrabbed = true;
-
-        // Сохраняем начальную позицию
-        _initialPosition = rigidbody.position;
+            });
     }
 
-    public void OnExit(TriggerVisitor visitor)
+    private void Acccept()
     {
-        if (visitor == null) return;
+        OnCorrectEntrance();
+    }
 
-        _isGrabbed = false;
-        _grabbedRigidbody = null;
+    private void Repulse()
+    {
+        if (_grabbedXR == null) { return; }
+
+        // Теперь толкаем вниз
+        Vector3 repulseDir = transform.localPosition + (Vector3.down * repulseDistance);
+        LeanTween.moveLocal(_grabbedXR.gameObject, repulseDir, repulseDuration)
+            .setEase(LeanTweenType.easeInCirc)
+            .setOnComplete(() =>
+            {
+                OnWrongEntrance();
+            });
+
     }
 
     public void OnCorrectEntrance()
     {
+        if (_grabbedXR == null) { return; }
+
+        _grabbedXR.interactionLayers = LayerMask.GetMask("Default");
+        _grabbedXR.transform.parent = transform;
+        _grabbedXR.enabled = false;
+        LeanTween.moveLocal(_grabbedXR.gameObject, _finalOffset, attractDuration)
+            .setEase(LeanTweenType.easeInCirc);
         _isRightEntrance = true;
-        Debug.Log($"Правильное попадание в зону: {name}");
+        Debug.Log($"✅ Правильное попадание в зону: {name}");
     }
 
     public void OnWrongEntrance()
     {
         _isRightEntrance = false;
-        Debug.Log($"Неправильное попадание в зону: {name}");
+        Debug.Log($"❌ Неправильное попадание в зону: {name}");
     }
 }

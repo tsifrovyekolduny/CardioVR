@@ -10,5 +10,6 @@ public class TriggerVisitorWithTextLabel : TriggerVisitor
     {
         _text.text = _visitorName;
         base.Awake();
+        ChangeInteractiveStats(true);
     }
 }

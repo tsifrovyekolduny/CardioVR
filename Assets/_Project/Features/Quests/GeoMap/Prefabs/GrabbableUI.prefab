@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3650350373900763489}
   - component: {fileID: 3550833623351811188}
   - component: {fileID: 9189728174760699212}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Spatial Panel Scroll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 4995879743877583190}
   - component: {fileID: 2137755453206250513}
   - component: {fileID: 5135452912225094824}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: PanelOutline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7320761431284546853}
   - component: {fileID: 6180677475452146760}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: BlendShape Affordance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 1241790556436981281}
   - component: {fileID: 3590923055449906355}
   - component: {fileID: 279830587972631388}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 1600585250742199008}
   - component: {fileID: 5682644077797459764}
   - component: {fileID: 8022386081383969354}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,7 +610,7 @@ GameObject:
   - component: {fileID: -3597143744589856075}
   m_Layer: 0
   m_Name: GrabbableUI
-  m_TagString: Untagged
+  m_TagString: Interactive
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -752,7 +752,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 3
   m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_FocusMode: 1
@@ -811,7 +811,7 @@ MonoBehaviour:
   m_StartingInteractionStrengthFilters: []
   m_AttachTransform: {fileID: 0}
   m_SecondaryAttachTransform: {fileID: 0}
-  m_UseDynamicAttach: 1
+  m_UseDynamicAttach: 0
   m_MatchAttachPosition: 1
   m_MatchAttachRotation: 1
   m_SnapToColliderVolume: 1
@@ -923,7 +923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NeedToReturn: 0
   initialPosition: {x: 0, y: 0, z: 0}
-  _interactiveTag: 
+  _interactiveTag: Interactive
 --- !u!114 &-2029603859790666778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -936,8 +936,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2035b8bbd80587b4aaa97723adfcf076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeDuration: 0.5
-  _maxDepth: 1
+  _fadeDuration: 2
+  _maxDepth: 3
   _visualPairs: []
 --- !u!114 &-3597143744589856075
 MonoBehaviour:
@@ -964,7 +964,7 @@ GameObject:
   - component: {fileID: 5961706308690090954}
   - component: {fileID: 6116615728304186463}
   - component: {fileID: 3660984918561898554}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Color Affordance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1082,7 +1082,7 @@ GameObject:
   - component: {fileID: 4670026469286706961}
   - component: {fileID: 4795361928305970254}
   - component: {fileID: 7515117709139418194}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Audio Affordance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1247,7 +1247,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8725007977300266914}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Undocked Only
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1283,7 +1283,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5416170406923343370}
   - component: {fileID: 1088970102651698718}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Interaction Affordance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1368,7 +1368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9115867131232018773}
   - component: {fileID: 1901529689127457504}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Outline Affordance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
