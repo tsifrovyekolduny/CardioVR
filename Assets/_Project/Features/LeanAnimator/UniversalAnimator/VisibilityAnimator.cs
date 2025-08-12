@@ -1,20 +1,28 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class VisibilityAnimator : MonoBehaviour
 {
-    [SerializeField] private float _fadeDuration = 0.5f;    
+    [SerializeField] private float _fadeDuration = 0.5f;
     [SerializeField, Tooltip("Глубина поиска: 1 - только прямые дети")]
     private int _maxDepth = 1;
 
     [SerializeField]
     private List<VisualPair> _visualPairs = new List<VisualPair>();
-    private VisualComponentFactory factory = new();
+    private VisualComponentFactory factory;
+
+    [Inject]
+    void Construct(VisualComponentFactory visualComponentFactory)
+    {
+        factory = visualComponentFactory;
+    }
 
     private void Awake()
     {
-        CollectVisualComponents(transform, 0);        
+        CollectVisualComponents(transform, 0);
     }
 
     // Рекурсивный сбор всех компонентов
@@ -47,18 +55,17 @@ public class VisibilityAnimator : MonoBehaviour
             visualPair.GameObject.SetActive(true);
             visualPair.Component?.Show(fadeDuration);
         }
-        
     }
 
     public void Hide(bool instant = false)
     {
-        float fadeDuration = instant ? 0f : _fadeDuration;
+        float fadeDuration = instant ? 0f : _fadeDuration;        
 
         foreach (VisualPair visualPair in _visualPairs)
         {
-            visualPair.Component?.Hide(fadeDuration);            
+            visualPair.Component?.Hide(fadeDuration);
             LeanTween.delayedCall(fadeDuration, () => visualPair.GameObject.SetActive(false));
-        }        
+        }
     }
 }
 
