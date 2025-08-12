@@ -19196,17 +19196,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1533437182}
   m_CullTransparentMesh: 1
---- !u!114 &1533828978 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 709427283754487288, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
-  m_PrefabInstance: {fileID: 1512199508689647655}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57096dacb390b0f449e0b088973080e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1533900678
 GameObject:
   m_ObjectHideFlags: 0
@@ -28895,10 +28884,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneContext
       objectReference: {fileID: 0}
-    - target: {fileID: 8993217537297002402, guid: ccac0f2f4ff1e0d4d90e540eb962e60a, type: 3}
-      propertyPath: '_monoInstallers.Array.data[0]'
-      value: 
-      objectReference: {fileID: 1533828978}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

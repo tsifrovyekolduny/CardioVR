@@ -35,6 +35,7 @@ public class MagneticTriggerWaiter : MonoBehaviour, ITriggerWaiter
     void Awake()
     {
         _collider = GetComponent<BoxCollider>();
+        gameObject.name = _expectedVisitorGameObjectName;
         _center = transform.position + _collider.center;
     }
 
