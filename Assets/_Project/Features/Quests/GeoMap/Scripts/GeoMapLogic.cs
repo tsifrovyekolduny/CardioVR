@@ -1,26 +1,16 @@
+using System.Linq;
 using UnityEngine;
 
 public class GeoMapLogic : MonoBehaviour, IQuestLogic
 {
+    [SerializeField] private MagneticTriggerWaiter[] _triggerWaiters;
     public bool IsCompleted()
     {
-        return false;
+        return _triggerWaiters.All(g => g.IsRightEntrance);
     }
 
     public void StartLogic()
     {
         
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    }    
 }

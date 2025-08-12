@@ -34,6 +34,7 @@ public class MagneticTriggerWaiter : MonoBehaviour, ITriggerWaiter
     public bool IsRightEntrance => _isRightEntrance;
     public string ExpectedVisitorGameObjectName => _expectedVisitorGameObjectName;
     private XRGrabInteractable _grabbedXR;
+    private bool _isFull = false;
 
     void Awake()
     {
@@ -43,7 +44,8 @@ public class MagneticTriggerWaiter : MonoBehaviour, ITriggerWaiter
     private bool IsXRExistOrNotSelected(Collider other, out XRGrabInteractable xRGrab, string whom)
     {
         xRGrab = other.GetComponent<XRGrabInteractable>();
-        if (xRGrab == null) return false;        
+        if (_isFull) { return false; }
+        if (xRGrab == null) return false;
         return !xRGrab.isSelected;
     }
 
@@ -84,7 +86,7 @@ public class MagneticTriggerWaiter : MonoBehaviour, ITriggerWaiter
     {
         if (!IsXRExistOrNotSelected(other, out _grabbedXR, "exit")) { return; }
 
-        Debug.Log($"{other.name} вышел из зоны магнита");        
+        Debug.Log($"{other.name} вышел из зоны магнита");
 
         // _grabbedXR = null;
     }
@@ -135,12 +137,13 @@ public class MagneticTriggerWaiter : MonoBehaviour, ITriggerWaiter
     {
         if (_grabbedXR == null) { return; }
 
-        _grabbedXR.interactionLayers = LayerMask.GetMask("Default");
+        _grabbedXR.interactionLayers = LayerMask.GetMask("Interactable");
         _grabbedXR.transform.parent = transform;
         _grabbedXR.enabled = false;
         LeanTween.moveLocal(_grabbedXR.gameObject, _finalOffset, attractDuration)
             .setEase(LeanTweenType.easeInCirc);
         _isRightEntrance = true;
+        _isFull = true;
         Debug.Log($"✅ Правильное попадание в зону: {name}");
     }
 

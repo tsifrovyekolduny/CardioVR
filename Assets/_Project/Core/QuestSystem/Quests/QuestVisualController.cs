@@ -35,7 +35,7 @@ public class QuestVisualController : MonoBehaviour, IQuestVisualController
     {
         foreach (Transform child in transform)
         {
-            if (child.tag != "Decor") continue;
+            if (child.tag == "Decor") continue;
             var animators = child.GetComponentsInChildren<VisibilityAnimator>();
             foreach (var a in _animators)
             {
