@@ -36,7 +36,7 @@ public class QuestCore : MonoBehaviour, IQuest
         };
 
         _stateController.OnStarted += StartGame;
-        _stateController.OnCompleted += Finish;
+        _stateController.OnCompleted += Finish;        
     }
 
     public void Start()
@@ -47,6 +47,7 @@ public class QuestCore : MonoBehaviour, IQuest
 
     public void StartGame()
     {
+        Debug.Log("VisualController start showing");
         _visualController.Show();
         _logic.StartLogic();
     }

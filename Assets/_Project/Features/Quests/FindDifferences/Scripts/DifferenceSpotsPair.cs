@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class DifferenceSpotsPair : MonoBehaviour
 {
+    [SerializeField] Color _whenFoundedColor = Color.red;
     private bool _isFounded;
     public bool Founded => _isFounded;
     private Button[] _spots;
@@ -26,7 +27,7 @@ public class DifferenceSpotsPair : MonoBehaviour
         colors.selectedColor = Color.clear;        
         colors.pressedColor = Color.clear;
         colors.selectedColor = Color.clear;
-        colors.disabledColor = Color.red;
+        colors.disabledColor = _whenFoundedColor;
         spot.colors = colors;      
     }
 

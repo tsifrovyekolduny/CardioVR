@@ -65,7 +65,7 @@ public class QuestManagmentSystem : IQuestManagmentSystem
     private IEnumerator DelayedStart(IQuest quest)
     {
         // TODO настраиваемое время, вызов из панели оператора
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2.5f);
         quest.GetQuestController<IQuestStateController>().StartGame();
     }
 
