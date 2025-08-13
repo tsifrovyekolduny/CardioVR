@@ -7,6 +7,7 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private QuestPrefabsObject _questPrefabsObject;
     [SerializeField] private TilePrefabsObject _tilePrefabsObject;
     [SerializeField] private EffectsScriptable _effectsConfig;
+    [SerializeField] private OperatorView _operatorPanel;
     public override void InstallBindings()
     {
         BindSettings();
@@ -30,6 +31,8 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<Operator>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<TileFactory>().AsSingle().NonLazy();        
         Container.BindInterfacesAndSelfTo<TileManagmentSystem>().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<QuestManagmentSystem>().AsSingle().NonLazy();        
+        Container.BindInterfacesAndSelfTo<QuestManagmentSystem>().AsSingle().NonLazy();
+        var opPanel = Container.InstantiatePrefabForComponent<OperatorView>(_operatorPanel);
+        opPanel.transform.position = Vector3.down * 1000f;
     } 
 }

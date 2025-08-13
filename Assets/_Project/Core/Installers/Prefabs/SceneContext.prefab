@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2306531185037083523}
   - component: {fileID: 8993217537297002402}
   - component: {fileID: 709427283754487288}
+  - component: {fileID: 89031422548073932}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
+  - {fileID: 89031422548073932}
   - {fileID: 709427283754487288}
   _installerPrefabs: []
   _autoRun: 1
@@ -81,3 +83,21 @@ MonoBehaviour:
   _questPrefabsObject: {fileID: 11400000, guid: 627d50d6c88d0e2408002e46fd5edf55, type: 2}
   _tilePrefabsObject: {fileID: 11400000, guid: f95f23d9864139f428f5399e50e60281, type: 2}
   _effectsConfig: {fileID: 11400000, guid: 260b85b93e3961545bf5cb54e3ddcd3c, type: 2}
+  _operatorPanel: {fileID: 6588103436699537240, guid: 317a8a6dcc1c6a24b8f4fbadbf39100f, type: 3}
+--- !u!114 &89031422548073932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7926154080844653957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c39cbf3315eb84c9cd23ac60952d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _XROrigin: {fileID: 7553939862642056842, guid: c88cf2f6ec2e6b5418ae7dab0651cf76, type: 3}
+  _XREventSystem: {fileID: 5026429328015358540, guid: ad8e8c1f54a20cd4aab1a7d8e02a3aaa, type: 3}
+  _XRInterManager: {fileID: 6523398927718458830, guid: d90fd0dcb5653d34bb07993ecd2b3f57, type: 3}
+  _spawnPointPosition: {x: -3.27, y: 0, z: -4.55}
+  _rotation: {x: 0, y: 0.14228342, z: 0, w: 0.98982596}
