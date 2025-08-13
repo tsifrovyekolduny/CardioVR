@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -51,9 +52,8 @@ public class VisibilityAnimator : MonoBehaviour
         float fadeDuration = instant ? 0f : _fadeDuration;
 
         foreach (VisualPair visualPair in _visualPairs)
-        {            
-            visualPair.GameObject.SetActive(true);
-            visualPair.Component?.Show(fadeDuration);
+        {
+            SetVisible(visualPair, true, fadeDuration);            
         }
     }
 
@@ -63,9 +63,28 @@ public class VisibilityAnimator : MonoBehaviour
 
         foreach (VisualPair visualPair in _visualPairs)
         {
+            SetVisible(visualPair, false, fadeDuration);             
+        }
+    }
+
+    private void SetVisible(VisualPair visualPair, bool isVisible, float fadeDuration)
+    {
+        if (isVisible)
+        {
+            visualPair.GameObject.SetActive(true);
+            visualPair.Component?.Show(fadeDuration);
+        }
+        else
+        {
             visualPair.Component?.Hide(fadeDuration);
             LeanTween.delayedCall(fadeDuration, () => visualPair.GameObject.SetActive(false));
         }
+    }
+
+    public void SetVisibleConcrete(string name, bool isVisible, float fadeDuration)
+    {
+        VisualPair visualPair = _visualPairs.First(v => v.GameObject.name == name);
+        SetVisible(visualPair, isVisible, fadeDuration);
     }
 }
 

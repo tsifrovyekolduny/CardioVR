@@ -4,9 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
-public class TriggerWaiter : MonoBehaviour
+public class TriggerWaiter : MonoBehaviour, ITriggerWaiter
 {
     public bool IsRightEntrance { get => _isRightEntrance; }
+
+    public string ExpectedVisitorGameObjectName => _expectedVisitorGameObjectName;
+
     private bool _isRightEntrance = false;
     [SerializeField] string _expectedVisitorGameObjectName;
     [SerializeField] Color _rightEntranceColor = Color.green;
