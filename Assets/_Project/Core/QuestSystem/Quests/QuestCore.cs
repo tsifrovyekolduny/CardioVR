@@ -46,8 +46,7 @@ public class QuestCore : MonoBehaviour, IQuest
     }
 
     public void StartGame()
-    {
-        Debug.Log("VisualController start showing");
+    {        
         _visualController.Show();
         _logic.StartLogic();
     }

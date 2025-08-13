@@ -10,8 +10,7 @@ public abstract class AbstractVisualWithColor : IVisualComponent
 
     public void Hide(float duration)
     {
-        if (!_coloredOnce) {
-            Debug.Log($"Setting {GetColor()} to  VC");
+        if (!_coloredOnce) {            
             _defaultColor = GetColor();
             _coloredOnce = true;
         }        
@@ -19,8 +18,7 @@ public abstract class AbstractVisualWithColor : IVisualComponent
     }
 
     public void Show(float duration)
-    {
-        Debug.Log($"DefaultColor of VC is {_defaultColor}");
+    {        
         LeanTween.value(GetGameObject(), UpdateColor, Color.clear, _defaultColor, duration);
     }
 
