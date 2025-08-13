@@ -47,11 +47,11 @@ public class VisibilityAnimator : MonoBehaviour
     }
 
     public void Show(bool instant = false)
-    {
+    {        
         float fadeDuration = instant ? 0f : _fadeDuration;
 
         foreach (VisualPair visualPair in _visualPairs)
-        {
+        {            
             visualPair.GameObject.SetActive(true);
             visualPair.Component?.Show(fadeDuration);
         }
