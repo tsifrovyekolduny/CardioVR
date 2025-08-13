@@ -34,20 +34,20 @@ public class FindColorQuest : MonoBehaviour, IQuestLogic
         new(Color.red, Color.red),
         new(Color.black, Color.cyan),
         new(Color.cyan, NewColor.violet),
-        new(Color.black, Color.white),
+        new(Color.black, Color.cyan),
         new(Color.green, Color.black),
         new(Color.green, Color.red),
         new(NewColor.orange, NewColor.orange),
         new(Color.red, Color.blue),
         new(NewColor.violet, Color.yellow),
         new(Color.blue, Color.green),
-        new(Color.green, NewColor.purple),
-        new(Color.cyan, Color.red),
+        new(Color.green, Color.black),
+        new(Color.cyan, Color.yellow),
         new(Color.yellow, Color.green),
-        new(NewColor.orange, Color.black),
-        new(Color.black, Color.blue),
-        new(Color.blue, Color.white),
-        new(NewColor.purple, NewColor.violet)
+        new(Color.blue, Color.black),
+        new(Color.black, Color.green),
+        new(Color.green, NewColor.purple),
+        new(NewColor.purple, NewColor.purple)
     };
 
 
@@ -55,7 +55,7 @@ public class FindColorQuest : MonoBehaviour, IQuestLogic
     {
         if (_colorButtons.Count > 0)
         {
-            return _colorButtons.All(c => c.IsClosed.Equals(true));
+            return _colorButtons.All(c => c.IsClosed);
         }
         return false;
     }
@@ -94,13 +94,13 @@ public class FindColorQuest : MonoBehaviour, IQuestLogic
 
     private void SetNextColor()
     {
+        _currentColorButton.Hide();
+
+        _currentColorButtonIndex++;
         if (_currentColorButtonIndex < _colorButtons.Count)
         {
-            _currentColorButton.Hide();
-
-            _currentColorButtonIndex++;
             _currentColorButton = _colorButtons[_currentColorButtonIndex];
             _currentColorButton.Select();
-        }
+        }       
     }
 }
