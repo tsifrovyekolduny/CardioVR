@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,17 +12,36 @@ public class DifferenceSpotsPair : MonoBehaviour
     void Start()
     {
         _spots = GetComponentsInChildren<Button>();
-        foreach (var spot in _spots) {            
-            spot.onClick.AddListener(() => OnButtonClick());
+        foreach (Button spot in _spots) {            
+            InitSpot(spot);            
         }
     }
-    
+
+    private void InitSpot(Button spot)
+    {
+        spot.onClick.AddListener(() => OnButtonClick());
+        var colors = spot.colors;
+        colors.normalColor = Color.clear;
+        colors.highlightedColor = Color.clear;
+        colors.selectedColor = Color.clear;        
+        colors.pressedColor = Color.clear;
+        colors.selectedColor = Color.clear;
+        colors.disabledColor = Color.red;
+        spot.colors = colors;      
+    }
+
     void OnButtonClick()
     {
-        foreach (var spot in _spots)
+        foreach (Button spot in _spots)
         {
-            spot.interactable = false;
-            spot.onClick.RemoveAllListeners();
+            MakeFounded(spot);            
         }
+    }
+
+    void MakeFounded(Button spot)
+    {
+        _isFounded = true;
+        spot.interactable = false;
+        spot.onClick.RemoveAllListeners();
     }
 }

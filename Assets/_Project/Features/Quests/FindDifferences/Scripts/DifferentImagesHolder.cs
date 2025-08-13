@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(Canvas))]
 [RequireComponent(typeof(RectTransform))]
-[RequireComponent(typeof(TMP_Text))]
-[RequireComponent(typeof(Image))]
 public class DifferentImagesHolder : MonoBehaviour
 {
     [SerializeField] string _remainedText = "Осталось {0} отличий";
@@ -21,7 +19,7 @@ public class DifferentImagesHolder : MonoBehaviour
     private void Start()
     {
         _spotsPairs = GetComponentsInChildren<DifferenceSpotsPair>();
-        _diffRemainedLabel = GetComponent<TMP_Text>();
+        _diffRemainedLabel = GetComponentInChildren<TMP_Text>();
     }
 
     private void Update()
