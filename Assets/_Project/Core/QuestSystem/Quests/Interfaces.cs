@@ -41,7 +41,7 @@ public interface IQuestLogic : IQuestController
     bool IsCompleted();
     void StartLogic();
 }
-public interface IQuestPhasable
+public interface IQuestPhasable : IQuestController
 {
     List<Phase> Phases { get; }
     void Initialize(List<Phase> phases);

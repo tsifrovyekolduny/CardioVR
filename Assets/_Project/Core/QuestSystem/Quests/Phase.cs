@@ -1,4 +1,5 @@
-﻿using UnityEngine.Events;
+﻿using System;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class Phase
@@ -6,8 +7,8 @@ public class Phase
     private bool _isGone;
 
     public string Name;
-    public string Description;
-    public UnityAction SomeAction;
+    public string Description;    
+    public UnityEvent SomeAction;
     public bool IsGone => _isGone;
 
     public void Complete()
@@ -15,7 +16,7 @@ public class Phase
         _isGone = true;
     }
 
-    public Phase(string name, string description, UnityAction action)
+    public Phase(string name, string description, UnityEvent action)
     {
         Name = name;
         Description = description;

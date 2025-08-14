@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 2475343445496670284}
   - component: {fileID: 1175204228953601871}
   - component: {fileID: 9140149500438350365}
+  - component: {fileID: 5913332499542060345}
   m_Layer: 0
   m_Name: GeoMapQuest
   m_TagString: Untagged
@@ -310,6 +311,7 @@ MonoBehaviour:
   - {fileID: 7509829934986999169}
   - {fileID: 9212015263678573858}
   - {fileID: 8633892766566250120}
+  _triggerVisitors: []
 --- !u!65 &1175204228953601871
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -345,6 +347,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   returnDelay: 0
   _interactiveTag: Interactive
+--- !u!114 &5913332499542060345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6845321223178183123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d736d27e7da1f4284c7dde9dbe675e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _phases:
+  - Name: "\u041D\u0430\u0447\u0430\u043B\u043E \u0438\u0433\u0440\u044B"
+    Description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u044F \u043A\u043E\u043D\u0442\u0438\u043D\u0435\u043D\u0442\u043E\u0432
+      \u0438\u0441\u0447\u0435\u0437\u043D\u0443\u0442, \u043F\u043E\u044F\u0432\u044F\u0442\u0441\u044F
+      \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0431\u043E\u043A\u0443"
+    SomeAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2475343445496670284}
+          m_TargetAssemblyTypeName: GeoMapLogic, Assembly-CSharp
+          m_MethodName: HideWaiters
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2475343445496670284}
+          m_TargetAssemblyTypeName: GeoMapLogic, Assembly-CSharp
+          m_MethodName: SetVisibleToVisitors
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
 --- !u!1 &6889364822047180403
 GameObject:
   m_ObjectHideFlags: 0

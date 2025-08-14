@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(QuestStateController))]
 [RequireComponent(typeof(QuestVisualController))]
 [RequireComponent(typeof(QuestNarratorController))]
+[RequireComponent(typeof(QuestPhaseController))]
 
 // TODO не хватае Dispose
 public class QuestCore : MonoBehaviour, IQuest

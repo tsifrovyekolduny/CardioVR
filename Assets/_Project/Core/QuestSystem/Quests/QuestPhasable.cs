@@ -46,4 +46,13 @@ public class QuestPhaseController : MonoBehaviour, IQuestPhasable
             currentPhase.SomeAction?.Invoke();
         }
     }
+
+    [ExecuteInEditMode]
+    private void Start()
+    {
+        if(_phases.Count == 0)
+        {
+            Debug.LogWarning($"Не объявлены фазы для квеста {gameObject.name}");
+        }
+    }
 }
