@@ -12,40 +12,50 @@ public class OperatorView : MonoBehaviour, IOperatorView
     public event Action<string> SearchTextChanged;
     public event Action<ChildProfile> ProfileSelected;
     public event Action SessionStart;
-    public event Action<string> HintGived;
-    public event Action<int> AnswerGived;
     public event Action SessionEnd;
-
+    public event Action<string> AnswerGived;
+    #region == UI поля ==
+    [Header("Создать профиль")]
     [SerializeField] private TMP_InputField _surnameText;
     [SerializeField] private TMP_InputField _nameText;
     [SerializeField] private TMP_InputField _patronymicText;
     [SerializeField] private TMP_InputField _ageText;
+    [SerializeField] private Button _saveProfile;
+
+    [Header("Сохранить ответ игрока")]
     [SerializeField] private TMP_InputField _answerText;
+    [SerializeField] private Button _giveAnswer;
 
+    [Header("Выбор профиля")]
     [SerializeField] private GameObject _profileBox;
-    [SerializeField] private GameObject _hintBox;
-
     [SerializeField] private ProfileUI _profilePrefab;
     [SerializeField] private ProfileUI _chosenProfile;
     [SerializeField] private ProfileUI _chosedProfile;
 
+    [Header("Таймер")]
     [SerializeField] private TMP_Text _timeLabel;
-    [SerializeField] private HintUI _chosedHint;
 
+    [Header("Страницы")]
     [SerializeField] private GameObject _page1;
     [SerializeField] private GameObject _page2;
 
-    [SerializeField] private Button _saveProfile;
+    [Header("Кнопки управления сессией")]
     [SerializeField] private Button _startSession;
     [SerializeField] private Button _endSession;
-    [SerializeField] private Button _giveHint;
-    [SerializeField] private Button _giveAnswer;
-    [SerializeField] private Button _clearChosedHint;
 
+    [Header("Фазы квеста")]
+    [SerializeField] private Button _nextPhaseButton;
+    [SerializeField] private TMP_Text _phaseDescription;
+    [SerializeField] private TMP_Text _phaseName;
+    [SerializeField] private TMP_Text _phaseCount;
+
+    #endregion
     private OperatorPresenter _presenter;
+    private List<Phase> _phases;
+    private int _currentPhaseIndex;
 
     [Inject]
-    void Construct(SaveSystem saveSystem, Operator @operator)
+    void Construct(SaveSystem saveSystem, IOperator @operator)
     {
         _presenter = new OperatorPresenter(saveSystem, @operator, this);
     }
@@ -63,41 +73,15 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _saveProfile.onClick.AddListener(OnProfileSaveClick);
         _startSession.onClick.AddListener(SessionStart.Invoke);
         _endSession.onClick.AddListener(SessionEnd.Invoke);
-        _giveAnswer.onClick.AddListener(() => { AnswerGived.Invoke(int.Parse(_answerText.text)); });
-        _giveHint.onClick.AddListener(() => { HintGived.Invoke(_chosedHint.GetHint()); });
-        _endSession.onClick.AddListener(SessionEnd.Invoke);
-
-        // Прочие кнопки
-        _clearChosedHint.onClick.AddListener(ClearChosenHint);
+        InitPhaseButtons();
 
         // Инициализация доступности и видимости
         _page1.SetActive(true);
         _page2.SetActive(false);
 
         _startSession.interactable = false;
-        _giveHint.interactable = false;
         _giveAnswer.interactable = false;
-
-        // Прячем запуленные объекты
-        // TODO чтоб такого не было, лучше пул делать отдельно       
-        foreach (Transform child in _hintBox.transform)
-        {
-            child.gameObject.SetActive(false);
-        }
     }
-
-    private void ClearChosenHint()
-    {
-        _chosedHint.Init("Подсказка не выбрана");
-        _giveHint.interactable = false;
-    }
-
-    private void SetChosenHint(string text)
-    {
-        _chosedHint.Init(text);
-        _giveHint.interactable = true;
-    }
-
     private void Update()
     {
         _presenter.Update();
@@ -125,32 +109,12 @@ public class OperatorView : MonoBehaviour, IOperatorView
             {
                 profUI.gameObject.SetActive(true);
                 ChildProfile prof = profiles[pooledProfileIndex];
-                profUI.OnClick += () => { ProfileSelected.Invoke(prof); };                
-                profUI.Init(prof);                
+                profUI.OnClick += () => { ProfileSelected.Invoke(prof); };
+                profUI.Init(prof);
             }
             else
             {
                 profUI.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    // todo можно сделать в виде пула объектов, либо просто заранее запихать побольше подсказок
-    public void ShowHints(string[] obj)
-    {
-        for (int hintElementIndex = 0; hintElementIndex < _hintBox.transform.childCount; hintElementIndex++)
-        {
-            HintUI hintText = _hintBox.transform.GetChild(hintElementIndex).GetComponent<HintUI>();
-            if (hintElementIndex < obj.Length)
-            {
-                hintText.gameObject.SetActive(true);
-                string hint = obj[hintElementIndex];
-                hintText.OnClick += () => { SetChosenHint(hint); };
-                hintText.Init(hint);                
-            }
-            else
-            {
-                hintText.gameObject.SetActive(false);
             }
         }
     }
@@ -181,5 +145,48 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _nameText.text = "";
         _patronymicText.text = "";
         _ageText.text = "";
-    }    
+    }
+
+    public void SetPhases(List<Phase> phases)
+    {
+        _currentPhaseIndex = 0;
+        _phases = phases;
+        if (phases.Count > 0) { 
+            SetNextPhase();
+        }
+    }
+
+    #region == Работа с фазами квеста ==
+    private void InitPhaseButtons()
+    {
+        _nextPhaseButton.onClick.AddListener(SetNextPhase);
+    }
+
+    private void SetNextPhase()
+    {
+        if(_currentPhaseIndex < _phases.Count)
+        {
+            _nextPhaseButton.GetComponent<TMP_Text>().text = "Начать фазу";
+            var phase = _phases[_currentPhaseIndex];
+            phase.SomeAction.Invoke();
+            _phaseDescription.text = phase.Description;
+            _phaseName.text = $"Следующая фаза: {phase.Name}";
+
+            ++_currentPhaseIndex;
+        }
+        // фаз больше не осталось
+        else
+        {
+            ClearPhaseFields();
+            _nextPhaseButton.GetComponent<TMP_Text>().text = "Завершить игру";
+        }
+    }
+
+    private void ClearPhaseFields()
+    {
+        _phaseDescription.text = "Описание фазы";
+        _phaseName.text = "Название фазы";
+    }
+
+    #endregion
 }

@@ -9,13 +9,11 @@ public class Operator : IOperator, ITickable
     // TODO время в зависимости от возраста ребенка
     public float _lostTime = 120f;
     public float LostTime { get { return _lostTime; } }    
-
-    public event Action OnProfileChose;
-    public event Action OnSessionEnd;
-    public event Action<string> OnGivingHint;
-    public event Action OnGettingAnswer;
-    public event Action<string[]> OnQuestStarted;
+    
+    public event Action OnSessionEnd;        
+    public event Action<IQuest> OnQuestStarted;
     public event Action OnQuestEnd;
+    public event Action<string> OnGettingAnswer;
 
     private bool _sessionIsEnabled = false;
 
@@ -28,15 +26,6 @@ public class Operator : IOperator, ITickable
     {
         _sessionIsEnabled = false;     
         OnSessionEnd?.Invoke();
-    }    
-    public void GiveHint(string hint)
-    {
-        OnGivingHint?.Invoke(hint);
-    }
-
-    public void GiveAnswer()
-    {
-        OnGettingAnswer?.Invoke();
     }
 
     public void Tick()
@@ -51,8 +40,8 @@ public class Operator : IOperator, ITickable
         }        
     }
 
-    public void QuestStarted(string[] hints)
+    public void QuestStarted(IQuest quest)
     {
-        OnQuestStarted.Invoke(hints);
+        OnQuestStarted.Invoke(quest);
     }
 }
