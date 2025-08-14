@@ -5,6 +5,7 @@ public interface IOperator
 {
     float LostTime { get; }
 
+    public event Action OnSessionStart;
     public event Action OnSessionEnd;    
     public event Action<string> OnGettingAnswer;    
     public event Action<IQuest> OnQuestStarted;
