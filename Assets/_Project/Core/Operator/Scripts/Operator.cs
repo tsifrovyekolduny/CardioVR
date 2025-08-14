@@ -7,7 +7,7 @@ public class Operator : IOperator, ITickable
 {
     [SerializeField]
     // TODO время в зависимости от возраста ребенка
-    public float _lostTime = 120f;
+    public float _lostTime = 60f * 15;
     public float LostTime { get { return _lostTime; } }    
     
     public event Action OnSessionEnd;        
@@ -15,29 +15,34 @@ public class Operator : IOperator, ITickable
     public event Action OnQuestEnd;
     public event Action<string> OnGettingAnswer;
 
-    private bool _sessionIsEnabled = false;
+    private bool _sessionTimerIsEnabled = false;
 
     public void StartSession()
     {        
-        _sessionIsEnabled = true;        
+        _sessionTimerIsEnabled = true;        
     }
 
     public void EndSession()
     {
-        _sessionIsEnabled = false;     
+        _sessionTimerIsEnabled = false;     
         OnSessionEnd?.Invoke();
     }
 
     public void Tick()
     {
-        if (_sessionIsEnabled) {
+        if (_sessionTimerIsEnabled) {
             _lostTime -= Time.deltaTime;
 
             if (_lostTime <= 0.1f)
             {
-                EndSession();
+                _sessionTimerIsEnabled = false;
             }
         }        
+    }
+
+    public void QuestEnded()
+    {
+        OnQuestEnd?.Invoke();
     }
 
     public void QuestStarted(IQuest quest)

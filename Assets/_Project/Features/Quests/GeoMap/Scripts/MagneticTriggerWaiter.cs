@@ -71,12 +71,10 @@ public class MagneticTriggerWaiter : MonoBehaviour, ITriggerWaiter
         }
         else if (state == MagneticEntranceState.Repulse)
         {
-            Debug.Log("Repulse");
             Repulse();
         }
         else
         {
-            Debug.Log("Accept");
             Acccept();
         }
 
@@ -84,11 +82,7 @@ public class MagneticTriggerWaiter : MonoBehaviour, ITriggerWaiter
 
     private void OnTriggerExit(Collider other)
     {
-        if (!IsXRExistOrNotSelected(other, out _grabbedXR, "exit")) { return; }
-
-        Debug.Log($"{other.name} вышел из зоны магнита");
-
-        // _grabbedXR = null;
+        if (!IsXRExistOrNotSelected(other, out _grabbedXR, "exit")) { return; } // _grabbedXR = null;
     }
 
     private void AttractToCenter(bool isCorrect)

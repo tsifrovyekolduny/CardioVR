@@ -5,7 +5,8 @@ public class TileManagmentSystem : ITileManagmentSystem, IInitializable
 {
     private int _currentTileIndex;
     private ITile _currentTile;
-    
+    private bool _isSessionEnded = false;
+
     [Inject] private readonly IQuestManagmentSystem _questManager;
     [Inject] private readonly ITileFactory _tileFactory;
     [Inject] private readonly IOperator _operator;
@@ -37,6 +38,7 @@ public class TileManagmentSystem : ITileManagmentSystem, IInitializable
 
     private void HandleSessionEnd()
     {
+        _isSessionEnded = true;
         if (!_questManager.AreAllQuestsCompleted())
         {
             SpawnNextTile(TileType.Save);
@@ -46,13 +48,18 @@ public class TileManagmentSystem : ITileManagmentSystem, IInitializable
 
     public void HandleTileSpawnRequest(ITile tile) //TODO: В будущем изменить данный код на паттерн Стратегия, чтобы улучшить читаемость
     {
-        Debug.Log("Получил запрос, щас разберемся");
+        Debug.Log("Tiler получил запрос на спавн");
+        if (_isSessionEnded)
+        {
+            Debug.LogWarning("Сеанс закончен. Спавн отклонен");
+            return;
+        }
         if (CheckNextTileExistence(tile.TileIndex))
         {
             Debug.LogWarning("Внимание! Следующий тайл уже существует");
             return;
         }
-        Debug.Log("Попытка спавна");
+        Debug.Log("Успешный спавн!");
         switch (tile.tileType)
         {
             case TileType.Road:
@@ -68,8 +75,8 @@ public class TileManagmentSystem : ITileManagmentSystem, IInitializable
             case TileType.Start:
                 SpawnNextTile(TileType.Road);
                 break;
-            //TODO: Добавить разную функциональность при получении сигнала от тайлов типов Save и Start
+                //TODO: Добавить разную функциональность при получении сигнала от тайлов типов Save и Start
         }
-        tile.RequestNextTileAction -= HandleTileSpawnRequest; 
+        tile.RequestNextTileAction -= HandleTileSpawnRequest;
     }
 }

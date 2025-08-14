@@ -48,6 +48,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
     [SerializeField] private TMP_Text _phaseDescription;
     [SerializeField] private TMP_Text _phaseName;
     [SerializeField] private TMP_Text _phaseCount;
+    [SerializeField] private GameObject _phaseBox;
 
     #endregion
     private OperatorPresenter _presenter;
@@ -154,8 +155,20 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _phases = phases;
         if (phases.Count > 0)
         {
+            _phaseBox.gameObject.SetActive(true);
             InitPhase(_phases[0]);
         }
+        else
+        {
+            _phaseBox.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetVisibleQuestUI(bool visible)
+    {
+        _phaseBox.SetActive(visible);
+        _giveAnswer.gameObject.SetActive(visible);
+        _answerText.gameObject.SetActive(visible);
     }
 
     #region == Работа с фазами квеста ==
@@ -191,8 +204,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
             {
                 phase = _phases[_currentPhaseIndex];
                 InitPhase(phase);
-            }
-            
+            }            
         }
     }
 
@@ -207,9 +219,9 @@ public class OperatorView : MonoBehaviour, IOperatorView
             _phaseCount.text = $"Фазы квеста:";
         }
 
-        _phaseDescription.text = "Описание фазы";
-        _phaseName.text = "Название фазы";
-    }
+        _phaseDescription.text = "Игра завершится автоматически при соблюдении условий";
+        _phaseName.text = "Фаз не осталось";
+    }   
 
     #endregion
 }

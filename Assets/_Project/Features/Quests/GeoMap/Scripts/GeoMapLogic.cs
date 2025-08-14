@@ -17,7 +17,7 @@ public class GeoMapLogic : MonoBehaviour, IQuestLogic
 
     public void SetVisibleToVisitors(bool visible)
     {
-        foreach (var trigger in _triggerWaiters)
+        foreach (var trigger in _triggerVisitors)
         {
             trigger.gameObject.SetActive(visible);
         }

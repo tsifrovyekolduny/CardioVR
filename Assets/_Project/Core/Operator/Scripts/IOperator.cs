@@ -8,8 +8,11 @@ public interface IOperator
     public event Action OnSessionEnd;    
     public event Action<string> OnGettingAnswer;    
     public event Action<IQuest> OnQuestStarted;
+    public event Action OnQuestEnd;
 
     void EndSession();
-    public void QuestStarted(IQuest quest);
+    void QuestStarted(IQuest quest);
+    void QuestEnded();
+    
     void StartSession();
 }

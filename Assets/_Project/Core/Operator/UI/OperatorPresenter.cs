@@ -25,6 +25,12 @@ public class OperatorPresenter
         _view.SessionEnd += HandleSessionEnd;        
         _view.AnswerGived += HandleGivedAnswer;
         _operator.OnQuestStarted += HandleQuestStart;
+        _operator.OnQuestEnd += HandleQuestEnd;
+    }
+
+    private void HandleQuestEnd()
+    {
+        _view.SetVisibleQuestUI(false);
     }
 
     private void HandleGivedAnswer(string obj)
@@ -35,6 +41,7 @@ public class OperatorPresenter
     private void HandleSessionEnd()
     {
         _operator.EndSession();
+        _view.SetVisibleQuestUI(false);
     }
 
     public void Initialize()
@@ -47,6 +54,7 @@ public class OperatorPresenter
     private void HandleQuestStart(IQuest quest)
     {
         var phases = quest.GetQuestController<IQuestPhasable>().Phases;
+        _view.SetVisibleQuestUI(true);
         _view.SetPhases(phases);
     }
 
