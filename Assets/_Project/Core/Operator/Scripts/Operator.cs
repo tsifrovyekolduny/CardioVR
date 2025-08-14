@@ -42,6 +42,6 @@ public class Operator : IOperator, ITickable
 
     public void QuestStarted(IQuest quest)
     {
-        OnQuestStarted.Invoke(quest);
+        OnQuestStarted?.Invoke(quest);
     }
 }

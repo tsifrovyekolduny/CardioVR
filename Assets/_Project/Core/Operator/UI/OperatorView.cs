@@ -78,6 +78,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
         // Инициализация доступности и видимости
         _page1.SetActive(true);
         _page2.SetActive(false);
+        ClearPhaseFields();
 
         _startSession.interactable = false;
         _giveAnswer.interactable = false;
@@ -151,8 +152,9 @@ public class OperatorView : MonoBehaviour, IOperatorView
     {
         _currentPhaseIndex = 0;
         _phases = phases;
-        if (phases.Count > 0) { 
-            SetNextPhase();
+        if (phases.Count > 0)
+        {
+            InitPhase(_phases[0]);
         }
     }
 
@@ -162,28 +164,49 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _nextPhaseButton.onClick.AddListener(SetNextPhase);
     }
 
+    private void InitPhase(Phase phase)
+    {
+        _nextPhaseButton.GetComponentInChildren<TMP_Text>().text = "Начать фазу";
+        _phaseDescription.text = phase.Description;
+        _phaseName.text = $"Следующая фаза: {phase.Name}";
+        _phaseCount.text = $"Фазы квеста ({_currentPhaseIndex}-{_phases.Count}):";
+    }
+
     private void SetNextPhase()
     {
-        if(_currentPhaseIndex < _phases.Count)
+        if (_currentPhaseIndex < _phases.Count)
         {
-            _nextPhaseButton.GetComponent<TMP_Text>().text = "Начать фазу";
             var phase = _phases[_currentPhaseIndex];
             phase.SomeAction.Invoke();
-            _phaseDescription.text = phase.Description;
-            _phaseName.text = $"Следующая фаза: {phase.Name}";
-
             ++_currentPhaseIndex;
-        }
-        // фаз больше не осталось
-        else
-        {
-            ClearPhaseFields();
-            _nextPhaseButton.GetComponent<TMP_Text>().text = "Завершить игру";
+
+            // фаз больше не осталось
+            if (_currentPhaseIndex >= _phases.Count)
+            {
+                ClearPhaseFields();
+                _nextPhaseButton.GetComponentInChildren<TMP_Text>().text = "Завершить игру";
+            }
+            // если все ок, ставим следующую фазу
+            else
+            {
+                phase = _phases[_currentPhaseIndex];
+                InitPhase(phase);
+            }
+            
         }
     }
 
     private void ClearPhaseFields()
     {
+        if (_phases != null)
+        {
+            _phaseCount.text = $"Фазы квеста ({_currentPhaseIndex}-{_phases.Count}):";
+        }
+        else
+        {
+            _phaseCount.text = $"Фазы квеста:";
+        }
+
         _phaseDescription.text = "Описание фазы";
         _phaseName.text = "Название фазы";
     }

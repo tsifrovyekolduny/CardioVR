@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class QuestManagmentSystem : IQuestManagmentSystem 
+public class QuestManagmentSystem : IQuestManagmentSystem
 {
     private int _currentQuestIndex = 0;
 
     private readonly DiContainer _container;
     private readonly Queue<IQuest> _questPrefabs;
+    private IOperator _operator;
 
     [Inject]
-    public QuestManagmentSystem(DiContainer container, QuestPrefabsObject questPrefabsObject)
+    public QuestManagmentSystem(DiContainer container, QuestPrefabsObject questPrefabsObject,
+        IOperator @operator)
     {
         _container = container;
         _questPrefabs = PreloadQuest(questPrefabsObject);
+        _operator = @operator;
     }
 
     private Queue<IQuest> PreloadQuest(QuestPrefabsObject questPrefabsObject)
@@ -33,7 +36,7 @@ public class QuestManagmentSystem : IQuestManagmentSystem
         {
             return null;
         }
-        IQuest quest = _questPrefabs.Dequeue();       
+        IQuest quest = _questPrefabs.Dequeue();
 
         IQuest questInstance = _container.InstantiatePrefabForComponent<IQuest>(quest.GameObject);
         IQuestVisualController visualsFromInstance = questInstance.GetQuestController<IQuestVisualController>();
@@ -56,7 +59,7 @@ public class QuestManagmentSystem : IQuestManagmentSystem
             {
                 monoBehaviour.StartCoroutine(DelayedStart(quest));
             }
-            
+
             quest.GetQuestController<IQuestStateController>().OnCompleted += tile.RequestNextTile;
             Debug.Log(" вест был заспавнен");
         }
@@ -66,6 +69,7 @@ public class QuestManagmentSystem : IQuestManagmentSystem
     {
         // TODO настраиваемое врем€, вызов из панели оператора
         yield return new WaitForSeconds(2.5f);
+        _operator.QuestStarted(quest);
         quest.GetQuestController<IQuestStateController>().StartGame();
     }
 
