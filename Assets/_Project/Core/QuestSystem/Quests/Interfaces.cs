@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IQuest
@@ -39,4 +40,11 @@ public interface IQuestLogic : IQuestController
 {
     bool IsCompleted();
     void StartLogic();
+}
+public interface IQuestPhasable
+{
+    List<Phase> Phases { get; }
+    void Initialize(List<Phase> phases);
+    void NextPhase();
+    bool IsPhasesGone();
 }
