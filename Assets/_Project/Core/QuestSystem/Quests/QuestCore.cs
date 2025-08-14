@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(QuestStateController))]
 [RequireComponent(typeof(QuestVisualController))]
 [RequireComponent(typeof(QuestNarratorController))]
+[RequireComponent(typeof(QuestPhaseController))]
 
 // TODO не хватае Dispose
 public class QuestCore : MonoBehaviour, IQuest
@@ -19,6 +20,7 @@ public class QuestCore : MonoBehaviour, IQuest
     private IQuestLogic _logic;
 
     [SerializeField] private int _questId = 0;
+    private IQuestController _phasable;
 
     public GameObject GameObject => gameObject;
 
@@ -29,14 +31,15 @@ public class QuestCore : MonoBehaviour, IQuest
         _visualController = GetComponent<IQuestVisualController>();
         _narratorController = GetComponent<IQuestNarratorController>();
         _logic = GetComponent<IQuestLogic>();
+        _phasable = GetComponent<IQuestPhasable>();
 
         _listOfQuestControllers = new List<IQuestController>()
         {
-            _stateController, _visualController, _narratorController, _logic
+            _stateController, _visualController, _narratorController, _logic, _phasable
         };
 
         _stateController.OnStarted += StartGame;
-        _stateController.OnCompleted += Finish;        
+        _stateController.OnCompleted += Finish;
     }
 
     public void Start()
@@ -46,13 +49,13 @@ public class QuestCore : MonoBehaviour, IQuest
     }
 
     public void StartGame()
-    {        
+    {
         _visualController.Show();
         _logic.StartLogic();
     }
 
     public void Finish()
-    {        
+    {
         _visualController.Hide();
         _narratorController.PlayEnd();
     }
@@ -65,11 +68,11 @@ public class QuestCore : MonoBehaviour, IQuest
             Debug.Log("Task completed");
             _stateController.CompleteGame();
         }
-    }    
+    }
 
     T IQuest.GetQuestController<T>()
-    {        
-        if(_listOfQuestControllers == null)
+    {
+        if (_listOfQuestControllers == null)
         {
             return GetComponent<T>();
         }
@@ -78,6 +81,6 @@ public class QuestCore : MonoBehaviour, IQuest
         else
         {
             return _listOfQuestControllers.OfType<T>().First();
-        }            
+        }
     }
 }

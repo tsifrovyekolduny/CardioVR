@@ -48,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
-  - {fileID: 89031422548073932}
   - {fileID: 709427283754487288}
+  - {fileID: 89031422548073932}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -97,7 +97,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _XROrigin: {fileID: 7553939862642056842, guid: c88cf2f6ec2e6b5418ae7dab0651cf76, type: 3}
-  _XREventSystem: {fileID: 5026429328015358540, guid: ad8e8c1f54a20cd4aab1a7d8e02a3aaa, type: 3}
-  _XRInterManager: {fileID: 6523398927718458830, guid: d90fd0dcb5653d34bb07993ecd2b3f57, type: 3}
   _spawnPointPosition: {x: -3.27, y: 0, z: -4.55}
   _rotation: {x: 0, y: 0.14228342, z: 0, w: 0.98982596}
+  _hiderUI: {fileID: 1293286194961436544, guid: 0a8052335aba69b4c9d714e8a1584518, type: 3}

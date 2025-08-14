@@ -47,4 +47,10 @@ public class ColorButton : MonoBehaviour, IColorButton
     {
         _button.Select();
     }
+
+    public void SetActive(bool active)
+    {
+        Debug.Log($"Set ColorButton to {active}");
+        _button.interactable = active;
+    }
 }

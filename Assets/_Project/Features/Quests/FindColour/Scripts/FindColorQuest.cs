@@ -60,10 +60,23 @@ public class FindColorQuest : MonoBehaviour, IQuestLogic
         return false;
     }
 
+    public void SetActiveToButtons(bool active)
+    {
+        foreach (var button in _colorButtons)
+        {
+            button.SetActive(active);
+        }
+
+        if (active)
+        {
+            _currentColorButton = _colorButtons[_currentColorButtonIndex];
+            _currentColorButton.Select();
+        }
+    }
+
     public void StartLogic()
-    {        
-        _currentColorButton = _colorButtons[_currentColorButtonIndex];
-        _currentColorButton.Select();
+    {
+        SetActiveToButtons(false);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -81,7 +94,7 @@ public class FindColorQuest : MonoBehaviour, IQuestLogic
             button.Init(_hardcodedColors[indButton].TextColor, _hardcodedColors[indButton].TargetColor);
         }
 
-        Debug.Log($"Count of CB: {_colorButtons.Count}");        
+        Debug.Log($"Count of CB: {_colorButtons.Count}");
     }
 
     private void CompareWithCurrentColor(Color color)
@@ -101,6 +114,6 @@ public class FindColorQuest : MonoBehaviour, IQuestLogic
         {
             _currentColorButton = _colorButtons[_currentColorButtonIndex];
             _currentColorButton.Select();
-        }       
+        }
     }
 }

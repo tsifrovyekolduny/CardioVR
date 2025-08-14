@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3490370942484872594}
   - component: {fileID: -1839456643236120071}
   - component: {fileID: 7179526134822054580}
+  - component: {fileID: 8865195825989259325}
   m_Layer: 0
   m_Name: FindColorGame
   m_TagString: Untagged
@@ -127,6 +128,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _questId: 0
+--- !u!114 &8865195825989259325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930872684191871927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d736d27e7da1f4284c7dde9dbe675e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _phases:
+  - Name: "\u041D\u0430\u0447\u0430\u0442\u044C \u0438\u0433\u0440\u0443"
+    Description: "\u0418\u0433\u0440\u043E\u043A \u0434\u043E\u043B\u0436\u0435\u043D
+      \u043E\u0437\u043D\u0430\u043A\u043E\u043C\u0438\u0442\u044C\u0441\u044F \u0441
+      \u043F\u0440\u0430\u0432\u0438\u043B\u0430\u043C\u0438"
+    SomeAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1701192311148246402}
+          m_TargetAssemblyTypeName: FindColorQuest, Assembly-CSharp
+          m_MethodName: SetActiveToButtons
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
 --- !u!1 &1128700623584161373
 GameObject:
   m_ObjectHideFlags: 0

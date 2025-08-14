@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 
 public class OperatorPresenter
 {
     private readonly SaveSystem _saveSystem;
-    private readonly Operator _operator;
+    private readonly IOperator _operator;
     private readonly IOperatorView _view;
 
     private List<ChildProfile> _profiles;
 
-    public OperatorPresenter(SaveSystem saveSystem, Operator @operator, IOperatorView view)
+    public OperatorPresenter(SaveSystem saveSystem, IOperator @operator, IOperatorView view)
     {
         _saveSystem = saveSystem;
         _operator = @operator;
@@ -25,31 +22,26 @@ public class OperatorPresenter
         _view.SearchTextChanged += HandleSearchTextChanged;
         _view.ProfileSelected += HandleProfileSelected;
         _view.SessionStart += HandleSessionStart;
-        _view.SessionEnd += HandleSessionEnd;
-        _view.HintGived += HandleGivedHit;
+        _view.SessionEnd += HandleSessionEnd;        
         _view.AnswerGived += HandleGivedAnswer;
-        _operator.OnQuestStarted += InitHints;
+        _operator.OnQuestStarted += HandleQuestStart;
+        _operator.OnQuestEnd += HandleQuestEnd;
     }
 
-    private void InitHints(string[] obj)
+    private void HandleQuestEnd()
     {
-        _view.ShowHints(obj);
+        _view.SetVisibleQuestUI(false);
     }
 
-    private void HandleGivedAnswer(int obj)
+    private void HandleGivedAnswer(string obj)
     {
-        // todo
-    }
-
-    private void HandleGivedHit(string obj)
-    {
-        _operator.GiveHint(obj);        
-        
-    }
+        // todo работать с SaveSystem для записи ответа        
+    }    
 
     private void HandleSessionEnd()
     {
         _operator.EndSession();
+        _view.SetVisibleQuestUI(false);
     }
 
     public void Initialize()
@@ -57,6 +49,13 @@ public class OperatorPresenter
         _profiles = _saveSystem.GetProfiles();
         Debug.Log($"Profiles set: {_profiles.Count}");
         _view.ShowProfiles(_profiles);
+    }
+
+    private void HandleQuestStart(IQuest quest)
+    {
+        var phases = quest.GetQuestController<IQuestPhasable>().Phases;
+        _view.SetVisibleQuestUI(true);
+        _view.SetPhases(phases);
     }
 
     private void HandleSaveProfile(string surname, string name, string patronymic, int age)

@@ -7,16 +7,14 @@ public interface IOperatorView
     event Action<string> SearchTextChanged;
     event Action<ChildProfile> ProfileSelected;
     event Action SessionStart;
-    event Action<string> HintGived;
-    event Action SessionEnd;    
-
-    // todo передавать как объект
-    event Action<int> AnswerGived;
+    event Action SessionEnd;
+    event Action<string> AnswerGived;
 
     void ShowProfiles(List<ChildProfile> profiles);
     void ShowChosenProfile(ChildProfile profile);
     void UpdateTimer(float time);
     void ShowPage2();
     void ClearInputFields();
-    void ShowHints(string[] obj);
+    void SetPhases(List<Phase> phases);
+    void SetVisibleQuestUI(bool v);
 }

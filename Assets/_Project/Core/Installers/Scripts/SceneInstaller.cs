@@ -7,7 +7,7 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private QuestPrefabsObject _questPrefabsObject;
     [SerializeField] private TilePrefabsObject _tilePrefabsObject;
     [SerializeField] private EffectsScriptable _effectsConfig;
-    [SerializeField] private OperatorView _operatorPanel;
+    [SerializeField] private OperatorView _operatorPanel;    
     public override void InstallBindings()
     {
         BindSettings();

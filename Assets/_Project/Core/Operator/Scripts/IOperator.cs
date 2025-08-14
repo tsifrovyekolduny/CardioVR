@@ -3,12 +3,17 @@ using UnityEngine;
 
 public interface IOperator
 {
-    public event Action OnProfileChose;
-    public event Action OnSessionEnd;
-    public event Action<string> OnGivingHint;
-    public event Action OnGettingAnswer;
+    float LostTime { get; }
 
-    // Таким макаром квест узнает подсказки и раздает их в панели оператора
-    public event Action<string[]> OnQuestStarted;    
-    public void QuestStarted(string[] hints);
+    public event Action OnSessionStart;
+    public event Action OnSessionEnd;    
+    public event Action<string> OnGettingAnswer;    
+    public event Action<IQuest> OnQuestStarted;
+    public event Action OnQuestEnd;
+
+    void EndSession();
+    void QuestStarted(IQuest quest);
+    void QuestEnded();
+    
+    void StartSession();
 }

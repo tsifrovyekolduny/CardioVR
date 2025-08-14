@@ -7,52 +7,50 @@ public class Operator : IOperator, ITickable
 {
     [SerializeField]
     // TODO время в зависимости от возраста ребенка
-    public float _lostTime = 120f;
-    public float LostTime { get { return _lostTime; } }    
+    public float _lostTime = 60f * 15;
+    public float LostTime { get { return _lostTime; } }
 
-    public event Action OnProfileChose;
+    public event Action OnSessionStart;
+
     public event Action OnSessionEnd;
-    public event Action<string> OnGivingHint;
-    public event Action OnGettingAnswer;
-    public event Action<string[]> OnQuestStarted;
+    public event Action<IQuest> OnQuestStarted;
     public event Action OnQuestEnd;
+    public event Action<string> OnGettingAnswer;
 
-    private bool _sessionIsEnabled = false;
+    private bool _sessionTimerIsEnabled = false;
 
     public void StartSession()
-    {        
-        _sessionIsEnabled = true;        
+    {
+        _sessionTimerIsEnabled = true;
+        OnSessionStart?.Invoke();
     }
 
     public void EndSession()
     {
-        _sessionIsEnabled = false;     
+        _sessionTimerIsEnabled = false;
         OnSessionEnd?.Invoke();
-    }    
-    public void GiveHint(string hint)
-    {
-        OnGivingHint?.Invoke(hint);
-    }
-
-    public void GiveAnswer()
-    {
-        OnGettingAnswer?.Invoke();
     }
 
     public void Tick()
     {
-        if (_sessionIsEnabled) {
+        if (_sessionTimerIsEnabled)
+        {
             _lostTime -= Time.deltaTime;
 
             if (_lostTime <= 0.1f)
             {
-                EndSession();
+                _sessionTimerIsEnabled = false;
             }
-        }        
+        }
     }
 
-    public void QuestStarted(string[] hints)
+    public void QuestEnded()
     {
-        OnQuestStarted.Invoke(hints);
+        OnQuestEnd?.Invoke();
+    }
+
+    public void QuestStarted(IQuest quest)
+    {
+        OnQuestStarted?.Invoke(quest);
     }
 }
