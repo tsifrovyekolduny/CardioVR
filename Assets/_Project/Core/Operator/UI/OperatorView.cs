@@ -168,7 +168,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
     {
         _phaseBox.SetActive(visible);
         _giveAnswer.gameObject.SetActive(visible);
-        _answerText.gameObject.SetActive(visible);
+        _answerText.gameObject.SetActive(visible);       
     }
 
     #region == Работа с фазами квеста ==
@@ -179,7 +179,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
 
     private void InitPhase(Phase phase)
     {
-        _nextPhaseButton.GetComponentInChildren<TMP_Text>().text = "Начать фазу";
+        _nextPhaseButton.gameObject.SetActive(true);        
         _phaseDescription.text = phase.Description;
         _phaseName.text = $"Следующая фаза: {phase.Name}";
         _phaseCount.text = $"Фазы квеста ({_currentPhaseIndex}-{_phases.Count}):";
@@ -196,8 +196,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
             // фаз больше не осталось
             if (_currentPhaseIndex >= _phases.Count)
             {
-                ClearPhaseFields();
-                _nextPhaseButton.GetComponentInChildren<TMP_Text>().text = "Завершить игру";
+                ClearPhaseFields();                
             }
             // если все ок, ставим следующую фазу
             else
@@ -210,6 +209,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
 
     private void ClearPhaseFields()
     {
+        _nextPhaseButton.gameObject.SetActive(false);
         if (_phases != null)
         {
             _phaseCount.text = $"Фазы квеста ({_currentPhaseIndex}-{_phases.Count}):";
