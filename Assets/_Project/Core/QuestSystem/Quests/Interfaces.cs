@@ -21,8 +21,8 @@ public interface IQuestStateController : IQuestController
 
 public interface IQuestVisualController : IQuestController
 {
-    void Show(bool instant = false);
-    void Hide(bool instant = false);
+    void Show(bool instant = false, bool firstTime = false);
+    void Hide(bool instant = false, bool firstTime = false);
     void SetParent(Transform parent);
     void SetLocalPosition(Vector3 position);
     void SetLocalRotation(Quaternion rotation);

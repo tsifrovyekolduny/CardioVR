@@ -44,13 +44,13 @@ public class QuestCore : MonoBehaviour, IQuest
 
     public void Start()
     {
-        _visualController.Hide(instant: true);
+        _visualController.Hide(instant: true, firstTime: true);
         _narratorController.PlayGreeting();
     }
 
     public void StartGame()
     {
-        _visualController.Show();
+        _visualController.Show(instant: false, firstTime: true);
         _logic.StartLogic();
     }
 

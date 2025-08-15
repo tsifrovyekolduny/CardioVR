@@ -60,7 +60,14 @@ public class QuestManagmentSystem : IQuestManagmentSystem
                 monoBehaviour.StartCoroutine(DelayedStart(quest));
             }
 
-            quest.GetQuestController<IQuestStateController>().OnCompleted += tile.RequestNextTile;
+            var currentStateController = quest.GetQuestController<IQuestStateController>();
+            currentStateController.OnCompleted += tile.RequestNextTile;
+
+            // убрать препятствие по прохождению игры
+            if(tile is IQuestTile)
+            {
+                currentStateController.OnCompleted += (tile as IQuestTile).OpenGate;
+            }
             Debug.Log("Квест был заспавнен");
         }
     }

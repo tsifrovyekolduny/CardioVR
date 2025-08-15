@@ -47,22 +47,30 @@ public class VisibilityAnimator : MonoBehaviour
         }
     }
 
-    public void Show(bool instant = false)
+    public void Show(bool instant = false, string[] tagsToIgnore = null)
     {        
         float fadeDuration = instant ? 0f : _fadeDuration;
 
         foreach (VisualPair visualPair in _visualPairs)
         {
+            if(tagsToIgnore != null)
+            {
+                if(tagsToIgnore.Contains(visualPair.GameObject.tag)) { continue; }
+            }
             SetVisible(visualPair, true, fadeDuration);            
         }
     }
 
-    public void Hide(bool instant = false)
+    public void Hide(bool instant = false, string[] tagsToIgnore = null)
     {
         float fadeDuration = instant ? 0f : _fadeDuration;        
 
         foreach (VisualPair visualPair in _visualPairs)
         {
+            if (tagsToIgnore != null)
+            {
+                if (tagsToIgnore.Contains(visualPair.GameObject.tag)) { continue; }
+            }
             SetVisible(visualPair, false, fadeDuration);             
         }
     }

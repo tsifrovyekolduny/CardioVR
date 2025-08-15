@@ -13,6 +13,7 @@ public class Phase
 
     public void Complete()
     {
+        SomeAction?.Invoke();
         _isGone = true;
     }
 
