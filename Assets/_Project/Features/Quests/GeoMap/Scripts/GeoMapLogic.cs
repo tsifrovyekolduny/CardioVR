@@ -4,22 +4,32 @@ using UnityEngine;
 public class GeoMapLogic : MonoBehaviour, IQuestLogic
 {
     [SerializeField] private MagneticTriggerWaiter[] _triggerWaiters;
-    [SerializeField] private TriggerVisitor[] _triggerVisitors;
+    [SerializeField] private VisibilityAnimator[] _triggerVisitorsVisChangers;
     public bool IsCompleted()
     {
         return _triggerWaiters.All(g => g.IsRightEntrance);
     }
 
     public void StartLogic()
-    {
+    {        
         SetVisibleToVisitors(false);
     }
 
     public void SetVisibleToVisitors(bool visible)
     {
-        foreach (var trigger in _triggerVisitors)
+        foreach (var triggerVisChanger in _triggerVisitorsVisChangers)
         {
-            trigger.gameObject.SetActive(visible);
+            if (visible)
+            {
+                triggerVisChanger.gameObject.SetActive(true);
+                triggerVisChanger.Show();
+            }
+            else
+            {                
+                triggerVisChanger.Hide(instant: true);
+                triggerVisChanger.gameObject.SetActive(false);
+            }
+            
         }
     }
 

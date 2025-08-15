@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
-using Unity.XR.CoreUtils;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 public class QuestVisualController : MonoBehaviour, IQuestVisualController
@@ -9,6 +9,8 @@ public class QuestVisualController : MonoBehaviour, IQuestVisualController
     [SerializeField] private Vector3 _localPosition;
     [SerializeField] private Quaternion _localRotation;
     [SerializeField] private List<VisibilityAnimator> _animators;
+    [TagMaskField]
+    [SerializeField] private string[] _hidedObjectsOnStart;
 
     private void Awake()
     {
@@ -28,10 +30,10 @@ public class QuestVisualController : MonoBehaviour, IQuestVisualController
     public void SetLocalPosition(Vector3 pos) => transform.localPosition = pos;
     public void SetLocalRotation(Quaternion rot) => transform.localRotation = rot;
 
-    public void Show(bool instant = false) => EnableChildren(true, instant);
-    public void Hide(bool instant = false) => EnableChildren(false, instant);
+    public void Show(bool instant = false, bool firstTime = false) => EnableChildren(true, instant, firstTime);
+    public void Hide(bool instant = false, bool firstTime = false) => EnableChildren(false, instant, firstTime);
 
-    private void EnableChildren(bool show, bool instant)
+    private void EnableChildren(bool show, bool instant, bool firstTime)
     {
         foreach (Transform child in transform)
         {
@@ -39,13 +41,14 @@ public class QuestVisualController : MonoBehaviour, IQuestVisualController
             var animators = child.GetComponentsInChildren<VisibilityAnimator>();
             foreach (var a in _animators)
             {
+                string[] tags = show && firstTime ? _hidedObjectsOnStart : null;
                 if (show)
                 {
-                    a.Show(instant);
+                    a.Show(instant, tags);
                 }
                 else
                 {
-                    a.Hide(instant);
+                    a.Hide(instant, tags);
                 }
             }
         }

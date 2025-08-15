@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8030417918367176132}
   m_Layer: 5
   m_Name: WordLabel
-  m_TagString: Untagged
+  m_TagString: HideOnStart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 8734273441694505499}
   m_Layer: 5
   m_Name: Image
-  m_TagString: Untagged
+  m_TagString: HideOnStart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -438,6 +438,8 @@ MonoBehaviour:
   _localPosition: {x: 0, y: 0, z: 0}
   _localRotation: {x: 0, y: 0, z: 0, w: 0}
   _animators: []
+  _hidedObjectsOnStart:
+  - HideOnStart
 --- !u!114 &7537844242904877848
 MonoBehaviour:
   m_ObjectHideFlags: 0

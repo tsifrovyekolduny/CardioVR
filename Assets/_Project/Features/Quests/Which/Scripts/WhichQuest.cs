@@ -31,8 +31,7 @@ public class WhichQuest : MonoBehaviour, IQuestLogic
     }
 
     public void StartLogic()
-    {
-        SetActiveWord(false);
+    {        
     }
 
     public void NextWord()
