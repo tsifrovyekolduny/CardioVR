@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WhichQuest : MonoBehaviour, IQuestLogic
 {
@@ -12,13 +13,15 @@ public class WhichQuest : MonoBehaviour, IQuestLogic
 
     private int _currentWordIndex = 0;
     private TMP_Text _wordLabel;
-    private TextVisibilityChanger _wordVisChanger;
+    private Image _wordBG;
+    private ConcreteVisibilityChanger _wordVisChanger;
     private IQuestPhasable _phasable;
 
     private void Start()
     {
-        _wordVisChanger = GetComponentInChildren<TextVisibilityChanger>();
+        _wordVisChanger = GetComponentInChildren<ConcreteVisibilityChanger>();
         _wordLabel = _wordVisChanger.GetComponentInChildren<TMP_Text>();
+        _wordBG = _wordVisChanger.GetComponentInChildren<Image>();
         _phasable = GetComponent<IQuestPhasable>();
     }
 
@@ -29,7 +32,7 @@ public class WhichQuest : MonoBehaviour, IQuestLogic
 
     public void StartLogic()
     {
-        throw new System.NotImplementedException();
+        SetActiveWord(false);
     }
 
     public void NextWord()
@@ -43,18 +46,31 @@ public class WhichQuest : MonoBehaviour, IQuestLogic
     private void SetNextWord()
     {
         string word = _words[_currentWordIndex];
-        _wordLabel.text = word.ToUpper();
+        _wordLabel.text = word[0].ToString().ToUpper() + word.Substring(1);
         ++_currentWordIndex;
     }
 
     private IEnumerator ShowWordAfterTime()
     {
         // время между словами должно быть выше, чем анимация затухания
-        _wordVisChanger.ChangeVisibility(_wordLabel.gameObject.name, false);
+        SetActiveWord(false);
         yield return new WaitForSeconds(_timeBetweenWords);
 
         SetNextWord();
+        SetActiveWord(true);        
+    }
 
-        _wordVisChanger.ChangeVisibility(_wordLabel.gameObject.name, true);
+    private void SetActiveWord(bool active, bool instant = false)
+    {
+        if(!active && instant)
+        {
+            _wordLabel.gameObject.SetActive(active);
+            _wordBG.gameObject.SetActive(active);
+        }
+        _wordLabel.gameObject.SetActive(true);
+        _wordBG.gameObject.SetActive(true);
+
+        _wordVisChanger.ChangeVisibility(_wordLabel.gameObject.name, active);
+        _wordVisChanger.ChangeVisibility(_wordBG.gameObject.name, active);
     }
 }

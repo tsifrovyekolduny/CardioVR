@@ -190,7 +190,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
         if (_currentPhaseIndex < _phases.Count)
         {
             var phase = _phases[_currentPhaseIndex];
-            phase.SomeAction.Invoke();
+            phase.Complete();
             ++_currentPhaseIndex;
 
             // фаз больше не осталось
