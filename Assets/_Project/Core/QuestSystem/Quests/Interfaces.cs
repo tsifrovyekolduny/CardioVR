@@ -4,6 +4,10 @@ using UnityEngine;
 
 public interface IQuest
 {       
+    string Name { get; }
+    bool IsDesignedForPlayerAnswers { get; }
+    // по какому критерию оператор будет оценивать действия игрока
+    string CriterionForGraduation { get; }
     GameObject GameObject { get; }    
     T GetQuestController<T>() where T : class, IQuestController;
 }

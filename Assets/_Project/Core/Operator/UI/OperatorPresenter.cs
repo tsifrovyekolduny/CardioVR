@@ -54,7 +54,7 @@ public class OperatorPresenter
     private void HandleQuestStart(IQuest quest)
     {
         var phases = quest.GetQuestController<IQuestPhasable>().Phases;
-        _view.SetVisibleQuestUI(true);
+        _view.SetVisibleQuestUI(true, quest);
         _view.SetPhases(phases);
     }
 

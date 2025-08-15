@@ -13,16 +13,22 @@ using UnityEngine;
 // TODO не хватае Dispose
 public class QuestCore : MonoBehaviour, IQuest
 {
+    [SerializeField] private string _name = "[Не обозначено]";
+    [SerializeField] private string _criterionForGraduation = "[Не обозначено]";
+    [SerializeField] private bool _isDesignedForPlayerAnswers;
+
     private List<IQuestController> _listOfQuestControllers;
     private IQuestStateController _stateController;
     private IQuestVisualController _visualController;
     private IQuestNarratorController _narratorController;
-    private IQuestLogic _logic;
-
-    [SerializeField] private int _questId = 0;
-    private IQuestController _phasable;
+    private IQuestLogic _logic;    
+    private IQuestController _phasable;    
 
     public GameObject GameObject => gameObject;
+
+    public string Name => _name;
+    public string CriterionForGraduation => _criterionForGraduation;
+    public bool IsDesignedForPlayerAnswers => _isDesignedForPlayerAnswers;
 
     private void Awake()
     {

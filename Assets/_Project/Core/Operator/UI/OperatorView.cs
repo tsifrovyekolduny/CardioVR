@@ -53,6 +53,8 @@ public class OperatorView : MonoBehaviour, IOperatorView
     #endregion
     private OperatorPresenter _presenter;
     private List<Phase> _phases;
+    private string _currentQuest;
+    private string _currentCriterion;
     private int _currentPhaseIndex;
 
     [Inject]
@@ -81,8 +83,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _page2.SetActive(false);
         ClearPhaseFields();
 
-        _startSession.interactable = false;
-        _giveAnswer.interactable = false;
+        _startSession.interactable = false;        
     }
     private void Update()
     {
@@ -168,7 +169,22 @@ public class OperatorView : MonoBehaviour, IOperatorView
     {
         _phaseBox.SetActive(visible);
         _giveAnswer.gameObject.SetActive(visible);
-        _answerText.gameObject.SetActive(visible);       
+        _answerText.gameObject.SetActive(visible);
+    }
+
+    public void SetVisibleQuestUI(bool visible, IQuest quest)
+    {
+        if (quest.IsDesignedForPlayerAnswers)
+        {
+            _giveAnswer.gameObject.SetActive(visible);
+            _answerText.gameObject.SetActive(visible);
+            _giveAnswer.interactable = visible;
+            _answerText.interactable = visible;
+        }
+        _currentQuest = quest.Name;
+        _currentCriterion = quest.CriterionForGraduation;
+
+        _phaseBox.SetActive(visible);               
     }
 
     #region == Работа с фазами квеста ==
@@ -182,7 +198,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _nextPhaseButton.gameObject.SetActive(true);        
         _phaseDescription.text = phase.Description;
         _phaseName.text = $"Следующая фаза: {phase.Name}";
-        _phaseCount.text = $"Фазы квеста ({_currentPhaseIndex}-{_phases.Count}):";
+        _phaseCount.text = $"Фазы ''{_currentQuest}'' ({_currentPhaseIndex}-{_phases.Count}):";
     }
 
     private void SetNextPhase()
