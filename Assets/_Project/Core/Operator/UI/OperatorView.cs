@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
+// TODO Класс разросся! Нужен рефакторинг!
 public class OperatorView : MonoBehaviour, IOperatorView
 {
     public event Action<string, string, string, int> ProfileSaveRequested;
@@ -43,6 +44,11 @@ public class OperatorView : MonoBehaviour, IOperatorView
     [SerializeField] private Button _startSession;
     [SerializeField] private Button _endSession;
 
+    [Header("Шкала для оценки действий игрока")]
+    [SerializeField] private TMP_Text _criterionText;
+    [SerializeField] private Slider _criterionValue;
+    [SerializeField] private TMP_Text _warningCriteriaText;
+
     [Header("Фазы квеста")]
     [SerializeField] private Button _nextPhaseButton;
     [SerializeField] private TMP_Text _phaseDescription;
@@ -55,10 +61,10 @@ public class OperatorView : MonoBehaviour, IOperatorView
     private List<Phase> _phases;
     private string _currentQuest;
     private string _currentCriterion;
-    private int _currentPhaseIndex;
+    private int _currentPhaseIndex;    
 
     [Inject]
-    void Construct(SaveSystem saveSystem, IOperator @operator)
+    void Construct(ISaveSystem saveSystem, IOperator @operator)
     {
         _presenter = new OperatorPresenter(saveSystem, @operator, this);
     }
@@ -82,6 +88,7 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _page1.SetActive(true);
         _page2.SetActive(false);
         ClearPhaseFields();
+        _criterionValue.onValueChanged.AddListener(CriteriaChange);
 
         _startSession.interactable = false;        
     }
@@ -119,6 +126,18 @@ public class OperatorView : MonoBehaviour, IOperatorView
             {
                 profUI.gameObject.SetActive(false);
             }
+        }
+    }
+
+    private void CriteriaChange(float value)
+    {
+        if(value < 1f)
+        {
+            _warningCriteriaText.gameObject.SetActive(true);
+        }
+        else
+        {
+            _warningCriteriaText.gameObject.SetActive(false);
         }
     }
 
@@ -170,6 +189,9 @@ public class OperatorView : MonoBehaviour, IOperatorView
         _phaseBox.SetActive(visible);
         _giveAnswer.gameObject.SetActive(visible);
         _answerText.gameObject.SetActive(visible);
+        _criterionText.gameObject.SetActive(visible);
+        _warningCriteriaText.gameObject.SetActive(visible);
+        _criterionValue.gameObject.SetActive(visible);
     }
 
     public void SetVisibleQuestUI(bool visible, IQuest quest)
@@ -183,8 +205,22 @@ public class OperatorView : MonoBehaviour, IOperatorView
         }
         _currentQuest = quest.Name;
         _currentCriterion = quest.CriterionForGraduation;
+        _criterionText.gameObject.SetActive(visible);
+        _criterionText.text = _currentCriterion;
+        _criterionValue.gameObject.SetActive(visible);
+        _criterionValue.value = 0f;
 
         _phaseBox.SetActive(visible);               
+    }
+
+    public QuestEntity GetMark()
+    {
+        return new QuestEntity()
+        {
+            QuestName = _currentQuest,
+            Criterion = _currentCriterion,
+            Grade = Convert.ToInt32(_criterionValue.value)
+        };
     }
 
     #region == Работа с фазами квеста ==
@@ -237,7 +273,6 @@ public class OperatorView : MonoBehaviour, IOperatorView
 
         _phaseDescription.text = "Игра завершится автоматически при соблюдении условий";
         _phaseName.text = "Фаз не осталось";
-    }   
-
+    }
     #endregion
 }

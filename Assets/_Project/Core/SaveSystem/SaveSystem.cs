@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public class SaveSystem
+public class SaveSystem : ISaveSystem
 {    
     private ChildProfilesWrapper _profilesWrapper = new ChildProfilesWrapper();
     private string _saveLocation = Application.persistentDataPath + "/";
@@ -78,5 +78,10 @@ public class SaveSystem
     {
         _curentProfile = profile;
         Debug.Log("Profile set");
+    }
+
+    public void WriteQuestToCurrentProfile(QuestEntity quest)
+    {
+        Debug.LogWarning("Нереализованное сохранение прохождения игрока");
     }
 }

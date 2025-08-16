@@ -62,6 +62,7 @@ public class QuestManagmentSystem : IQuestManagmentSystem
 
             var currentStateController = quest.GetQuestController<IQuestStateController>();
             currentStateController.OnCompleted += tile.RequestNextTile;
+            currentStateController.OnCompleted += _operator.QuestEnded;
 
             // убрать препятствие по прохождению игры
             if(tile is IQuestTile)

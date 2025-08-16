@@ -16,5 +16,8 @@ public interface IOperatorView
     void ShowPage2();
     void ClearInputFields();
     void SetPhases(List<Phase> phases);
+    void SetVisibleQuestUI(bool v);
     void SetVisibleQuestUI(bool v, IQuest quest);
+
+    QuestEntity GetMark();
 }

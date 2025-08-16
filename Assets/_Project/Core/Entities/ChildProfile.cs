@@ -13,7 +13,6 @@ public class ChildProfile
     public QuestStates? State { get; set; }
 }
 
-
 [Serializable]
 public class ChildProfilesWrapper
 {

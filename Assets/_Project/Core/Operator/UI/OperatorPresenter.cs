@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class OperatorPresenter
 {
-    private readonly SaveSystem _saveSystem;
+    private readonly ISaveSystem _saveSystem;
     private readonly IOperator _operator;
     private readonly IOperatorView _view;
 
     private List<ChildProfile> _profiles;
 
-    public OperatorPresenter(SaveSystem saveSystem, IOperator @operator, IOperatorView view)
+    public OperatorPresenter(ISaveSystem saveSystem, IOperator @operator, IOperatorView view)
     {
         _saveSystem = saveSystem;
         _operator = @operator;
@@ -31,6 +31,10 @@ public class OperatorPresenter
     private void HandleQuestEnd()
     {
         _view.SetVisibleQuestUI(false);
+        QuestEntity quest = _view.GetMark();
+
+        // TODO передаем QuestEntity в SaveSystem
+        _saveSystem.WriteQuestToCurrentProfile(quest);
     }
 
     private void HandleGivedAnswer(string obj)
