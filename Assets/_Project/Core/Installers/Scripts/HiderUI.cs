@@ -24,6 +24,9 @@ public class HiderUI : MonoBehaviour
 
         _operator.OnSessionStart += OnSessionStart;
 
+        // TODO для билда под андроид
+        OnSessionStart();
+
         // TODO есть два конца сеанса - конец для игрока и для оператора, когда игрок уходит
         // вызывать hider нужно после полного конца сеанса
         // _operator.OnSessionEnd += OnSessionEnd;

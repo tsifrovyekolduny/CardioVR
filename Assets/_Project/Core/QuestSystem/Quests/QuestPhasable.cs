@@ -26,13 +26,14 @@ public class QuestPhaseController : MonoBehaviour, IQuestPhasable
 
     public void NextPhase()
     {
+        // Старая фаза завершается тогда, когда начинается новая
+        if (_currentPhaseIndex > -1)
+        {
+            _phases[_currentPhaseIndex].Complete();
+        }
+
         if (_currentPhaseIndex < _phases.Count - 1)
         {
-            // Старая фаза завершается тогда, когда начинается новая
-            if (_currentPhaseIndex > -1)
-            {
-                _phases[_currentPhaseIndex].Complete();
-            }
             _currentPhaseIndex++;
             ExecuteCurrentPhase();
         }
@@ -50,7 +51,7 @@ public class QuestPhaseController : MonoBehaviour, IQuestPhasable
     [ExecuteInEditMode]
     private void Start()
     {
-        if(_phases.Count == 0)
+        if (_phases.Count == 0)
         {
             Debug.LogWarning($"Не объявлены фазы для квеста {gameObject.name}");
         }
