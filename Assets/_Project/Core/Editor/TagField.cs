@@ -1,8 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public sealed class TagMaskFieldAttribute : PropertyAttribute { }
-
 [CustomPropertyDrawer(typeof(TagMaskFieldAttribute))]
 public class TagMaskFieldAttributeEditor : PropertyDrawer
 {
@@ -11,3 +9,4 @@ public class TagMaskFieldAttributeEditor : PropertyDrawer
         property.stringValue = EditorGUI.TagField(position, label, property.stringValue);
     }
 }
+
