@@ -7,15 +7,15 @@ using UnityEngine.UI;
 public class WhichQuest : MonoBehaviour, IQuestLogic
 {
     [SerializeField]
-    private string[] _words = new string[5] { "настроение",
+    protected string[] _words = new string[5] { "настроение",
         "радость", "погода", "дорога", "страна" };
     [SerializeField] private float _timeBetweenWords;
 
-    private int _currentWordIndex = 0;
-    private TMP_Text _wordLabel;
-    private Image _wordBG;
-    private ConcreteVisibilityChanger _wordVisChanger;
-    private IQuestPhasable _phasable;
+    protected int _currentWordIndex = 0;
+    protected TMP_Text _wordLabel;
+    protected Image _wordBG;
+    protected ConcreteVisibilityChanger _wordVisChanger;
+    protected IQuestPhasable _phasable;
 
     private void Start()
     {
@@ -42,7 +42,7 @@ public class WhichQuest : MonoBehaviour, IQuestLogic
         }
     }
 
-    private void SetNextWord()
+    protected virtual void SetNextWord()
     {
         string word = _words[_currentWordIndex];
         _wordLabel.text = word[0].ToString().ToUpper() + word.Substring(1);
